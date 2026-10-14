@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1 - 2026-10-14
+- Fix: the manifest was refused because the choice value `off` was read as a truth value; every choice value is
+  now written as text.
+
 ## 0.4.0 - 2026-10-14
 - New: the option "Progress" now chooses a bar, the time (1:36 / 7:36), both, or nothing.
 - New: the option "Volume display" shows the volume at the title's right: when it changes (three seconds), always,

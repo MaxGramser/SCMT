@@ -1,6 +1,6 @@
 # Manifest for "Now playing": an info tile (title, artist, progress) and a button tile for a media_player entity.
 id: now_playing
-version: 0.4.0
+version: 0.4.1
 api: "0.10"
 icon: music
 maintainer: Schumey
@@ -38,19 +38,19 @@ tiles:
         label: opt_timeline
         hint: opt_timeline_hint
         choices:
-          - { value: bar, label: tl_bar }
-          - { value: time, label: tl_time }
-          - { value: both, label: tl_both }
-          - { value: none, label: tl_none }
+          - { value: "bar", label: tl_bar }
+          - { value: "time", label: tl_time }
+          - { value: "both", label: tl_both }
+          - { value: "none", label: tl_none }
       - id: volume_display
         kind: choice
         default: change
         label: opt_voldisp
         hint: opt_voldisp_hint
         choices:
-          - { value: change, label: vd_change }
-          - { value: always, label: vd_always }
-          - { value: off, label: vd_off }
+          - { value: "change", label: vd_change }
+          - { value: "always", label: vd_always }
+          - { value: "off", label: vd_off }
       - { id: cover, kind: toggle, default: true, label: opt_cover, hint: opt_cover_hint }
       - { id: controls, kind: toggle, default: false, label: opt_controls, hint: opt_controls_hint }
       - { id: volume, kind: toggle, default: false, label: opt_volume, hint: opt_volume_hint }
@@ -69,8 +69,8 @@ tiles:
         label: opt_action
         hint: opt_action_hint
         choices:
-          - { value: previous, label: act_previous }
-          - { value: play_pause, label: act_play_pause }
-          - { value: next, label: act_next }
-          - { value: volume_up, label: act_volume_up }
-          - { value: volume_down, label: act_volume_down }
+          - { value: "previous", label: act_previous }
+          - { value: "play_pause", label: act_play_pause }
+          - { value: "next", label: act_next }
+          - { value: "volume_up", label: act_volume_up }
+          - { value: "volume_down", label: act_volume_down }
