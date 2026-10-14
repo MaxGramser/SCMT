@@ -1,5 +1,7 @@
 {
-  "_meta": { "name": "English" },
+  "_meta": {
+    "name": "English"
+  },
   "screen": {
     "choose": "Choose a player",
     "idle": "Nothing playing",
@@ -24,6 +26,12 @@
     "act_play_pause": "Play / Pause",
     "act_next": "Next",
     "act_volume_up": "Louder",
-    "act_volume_down": "Quieter"
+    "act_volume_down": "Quieter",
+    "opt_cover": "Album cover",
+    "opt_cover_hint": "Shows the cover beside the title, from two cells wide, if the screen can show pictures.",
+    "opt_controls": "Playback buttons",
+    "opt_controls_hint": "Previous, play/pause and next under the title. Needs a tile of two rows or more.",
+    "opt_volume": "Volume buttons",
+    "opt_volume_hint": "Quieter and louder under the title. Needs a tile of two rows or more."
   }
 }

@@ -1,5 +1,7 @@
 {
-  "_meta": { "name": "Deutsch" },
+  "_meta": {
+    "name": "Deutsch"
+  },
   "screen": {
     "choose": "Player wählen",
     "idle": "Nichts läuft",
@@ -24,6 +26,12 @@
     "act_play_pause": "Play / Pause",
     "act_next": "Weiter",
     "act_volume_up": "Lauter",
-    "act_volume_down": "Leiser"
+    "act_volume_down": "Leiser",
+    "opt_cover": "Albumcover",
+    "opt_cover_hint": "Zeigt das Cover neben dem Titel, ab zwei Zellen Breite, wenn der Bildschirm Bilder zeigen kann.",
+    "opt_controls": "Wiedergabe-Tasten",
+    "opt_controls_hint": "Zurück, Play/Pause und Weiter unter dem Titel. Braucht eine Kachel mit zwei Zeilen oder mehr.",
+    "opt_volume": "Lautstärke-Tasten",
+    "opt_volume_hint": "Leiser und lauter unter dem Titel. Braucht eine Kachel mit zwei Zeilen oder mehr."
   }
 }

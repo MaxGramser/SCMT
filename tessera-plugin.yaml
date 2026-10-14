@@ -1,7 +1,7 @@
 # Manifest for "Now playing": an info tile (title, artist, progress) and a button tile for a media_player entity.
 id: now_playing
-version: 0.2.0
-api: "0.9"
+version: 0.3.1
+api: "0.10"
 icon: music
 maintainer: Schumey
 license: MIT
@@ -25,13 +25,17 @@ tiles:
     name: tile_name
     icon: music
     sizes: { min: 1x1, max: 3x2 }
-    memory: 700
+    memory: 1100
     domains: [media_player]
-    attributes: [media_title, media_artist, media_duration, media_position, media_position_updated_at]
+    attributes: [media_title, media_artist, media_duration, media_position, media_position_updated_at, entity_picture]
+    pictures: 1
     example: tile_example
     preview: { title: "{media_title}" }
     options:
       - { id: progress, kind: toggle, default: true, label: opt_progress, hint: opt_progress_hint }
+      - { id: cover, kind: toggle, default: true, label: opt_cover, hint: opt_cover_hint }
+      - { id: controls, kind: toggle, default: false, label: opt_controls, hint: opt_controls_hint }
+      - { id: volume, kind: toggle, default: false, label: opt_volume, hint: opt_volume_hint }
 
   - id: media_button
     name: button_tile_name

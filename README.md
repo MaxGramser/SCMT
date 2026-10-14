@@ -12,6 +12,10 @@ The title in large letters, the artist below it, and an optional progress bar at
 - The progress bar can be switched off in the tile's options. It needs the player to report `media_duration` and
   `media_position`; a player that does not shows no bar.
 - A tap on the tile plays or pauses.
+- The album cover stands beside the title, when the tile is at least two cells wide and the screen can show pictures
+  (the small boards cannot). It can be switched off in the tile's options.
+- Two options add buttons under the title: "Playback buttons" (previous, play/pause, next) and "Volume buttons"
+  (quieter, louder). They need a tile of two rows or more.
 
 ## Tile "Media button"
 
@@ -24,6 +28,9 @@ options and place as many of these tiles as you like, next to the "Now playing" 
 2. Place the tiles in the layout.
 3. In each tile's inspector, choose the media player. Any `media_player` entity works, for example the one that
    HASS.Agent makes from the Windows media session, or the Spotify integration.
+
+The cover is the picture Home Assistant itself has for the media player (its `entity_picture`); the plugin fetches
+nothing from the internet.
 
 The buttons use the Home Assistant actions `media_player.media_play_pause`, `media_next_track`,
 `media_previous_track`, `volume_up` and `volume_down`. A player that does not support one of them ignores it.
