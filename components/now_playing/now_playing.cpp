@@ -12,8 +12,8 @@ class NowPlayingTile : public tessera::Tile {
 
   void create(const tessera::TileContext &c) override {
     width_ = c.width;
-    title_lbl_ = tessera::ui::label(c.parent, tessera::Font::HEADLINE, tessera::theme::INK);
-    artist_lbl_ = tessera::ui::label(c.parent, tessera::Font::BODY, tessera::theme::INK_SOFT);
+    title_lbl_ = tessera::ui::label(c.parent, tessera::Font::HEADLINE, theme::INK);
+    artist_lbl_ = tessera::ui::label(c.parent, tessera::Font::BODY, theme::INK_SOFT);
     layout_();
   }
 
@@ -44,12 +44,12 @@ class NowPlayingTile : public tessera::Tile {
     tessera::ui::set_font(title_lbl_, f);
     tessera::ui::set_text(title_lbl_, title);
     tessera::ui::set_text(artist_lbl_, artist);
-    tessera::ui::set_color(title_lbl_, paused ? tessera::theme::MUTED : tessera::theme::INK);
+    tessera::ui::set_color(title_lbl_, paused ? theme::MUTED : theme::INK);
     layout_();
   }
 
   void on_theme() override {
-    tessera::ui::set_color(artist_lbl_, tessera::theme::INK_SOFT);
+    tessera::ui::set_color(artist_lbl_, theme::INK_SOFT);
   }
 
  private:
