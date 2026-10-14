@@ -9,8 +9,10 @@ The title in large letters, the artist below it, and an optional progress bar at
 - While something plays, the title and the artist. While paused, the same, with the title dimmed.
 - When nothing plays, "Nothing playing"; before a player is chosen, "Choose a player".
 - A title that is too wide for the tile gets a smaller font first, then is cut with dots.
-- The progress bar can be switched off in the tile's options. It needs the player to report `media_duration` and
-  `media_position`; a player that does not shows no bar.
+- The option "Progress" shows a bar, the time (played / length), both, or nothing. It needs the player to report
+  `media_duration` and `media_position`; a player that does not shows neither.
+- The option "Volume display" shows the volume at the title's right: for three seconds after it changed, always, or
+  never. It needs `volume_level`; a muted player shows "Muted".
 - A tap on the tile plays or pauses.
 - The album cover stands beside the title, when the tile is at least two cells wide and the screen can show pictures
   (the small boards cannot). It can be switched off in the tile's options.

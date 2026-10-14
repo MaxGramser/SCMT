@@ -1,5 +1,7 @@
 #include "now_playing.h"
 
+#include <cmath>
+#include <cstdio>
 #include <cstring>
 #include <string>
 
@@ -33,6 +35,18 @@ static bool picture_allowed_(const char *url) {
          std::strncmp(url, "/local/", 7) == 0;
 }
 
+// Seconds as 1:36, or 1:02:03 from an hour on.
+static std::string fmt_time_(int sec) {
+  if (sec < 0) sec = 0;
+  char b[16];
+  const int h = sec / 3600, m = (sec / 60) % 60, s = sec % 60;
+  if (h > 0)
+    snprintf(b, sizeof b, "%d:%02d:%02d", h, m, s);
+  else
+    snprintf(b, sizeof b, "%d:%02d", m, s);
+  return b;
+}
+
 enum Btn : uint8_t { PREV, PLAY_PAUSE, NEXT, VOL_DOWN, VOL_UP };
 
 static const char *service_for(Btn b) {
@@ -58,7 +72,11 @@ class NowPlayingTile : public tessera::Tile {
     width_ = c.width;
     height_ = c.height;
     entity_ = c.entity;
-    show_progress_ = c.options["progress"] | true;
+    const std::string timeline = (const char *) (c.options["timeline"] | "bar");
+    show_bar_ = timeline == "bar" || timeline == "both";
+    show_time_ = timeline == "time" || timeline == "both";
+    const std::string vd = (const char *) (c.options["volume_display"] | "change");
+    vol_mode_ = vd == "always" ? 2 : (vd == "off" ? 0 : 1);
     const bool want_cover = c.options["cover"] | true;
     const bool want_controls = c.options["controls"] | false;
     const bool want_volume = c.options["volume"] | false;
@@ -82,11 +100,17 @@ class NowPlayingTile : public tessera::Tile {
       ctrl_h_ = 0;
     }
 
+    // From the bottom up: the buttons, the bar, the time. What is left above is for the cover and the text.
     const int gap = ui::px(4);
     bar_h_ = ui::px(4);
+    const int time_h = show_time_ ? ui::line_height(Font::BODY) : 0;
     const int bottom = height_ - ctrl_h_ - (ctrl_h_ > 0 ? gap : 0);  // top of the buttons, or the tile's end
-    bar_y_ = bottom - bar_h_;
-    content_h_ = show_progress_ ? bar_y_ - gap : bottom;
+    bar_y_ = show_bar_ ? bottom - bar_h_ : bottom;
+    time_y_ = (show_bar_ ? bar_y_ - gap : bottom) - time_h;
+    int above = bottom;
+    if (show_time_) above = time_y_;
+    else if (show_bar_) above = bar_y_;
+    content_h_ = (show_bar_ || show_time_) ? above - gap : bottom;
     if (content_h_ < 1) content_h_ = 1;
 
     // The cover, a square at the left, when the tile is two cells wide or more and the screen shows pictures.
@@ -109,6 +133,16 @@ class NowPlayingTile : public tessera::Tile {
     fill_ = ui::block(c.parent, theme::ACCENT);
     lv_obj_set_pos(track_, 0, bar_y_);
     lv_obj_set_pos(fill_, 0, bar_y_);
+
+    if (show_time_) {
+      time_lbl_ = ui::label(c.parent, Font::BODY, theme::INK_SOFT);
+      lv_obj_set_width(time_lbl_, width_);
+      lv_obj_set_pos(time_lbl_, 0, time_y_);
+    }
+    if (vol_mode_ != 0) {
+      vol_lbl_ = ui::label(c.parent, Font::BODY, theme::MUTED);
+      lv_obj_set_style_text_align(vol_lbl_, LV_TEXT_ALIGN_RIGHT, 0);
+    }
     lv_obj_set_size(track_, 0, bar_h_);  // width 0 = not shown; on_tick gives it its width
     lv_obj_set_size(fill_, 0, bar_h_);
 
@@ -145,6 +179,14 @@ class NowPlayingTile : public tessera::Tile {
     duration_ = a["media_duration"] | 0.0f;
     position_ = a["media_position"] | 0.0f;
     updated_ = a["media_position_updated_at"] | 0u;  // seconds since 1970 (an attribute ending in _at)
+    const float v = a["volume_level"] | -1.0f;  // 0 to 1
+    const bool m = a["is_volume_muted"] | false;
+    if (v >= 0.0f) {
+      if (last_volume_ >= 0.0f && (std::fabs(v - last_volume_) > 0.0005f || m != muted_)) vol_flag_ = true;
+      last_volume_ = v;
+    }
+    volume_ = v;
+    muted_ = m;
     if (cover_ != nullptr) {
       const char *pic = a["entity_picture"] | "";
       cover_on_ = picture_allowed_(pic);
@@ -160,7 +202,6 @@ class NowPlayingTile : public tessera::Tile {
     // The text starts after the cover when there is one, and takes the whole width when there is none.
     x0_ = cover_on_ ? cover_size_ + ui::px(8) : 0;
     text_w_ = width_ - x0_;
-    lv_obj_set_width(title_lbl_, text_w_);
     lv_obj_set_width(artist_lbl_, text_w_);
 
     std::string title, artist;
@@ -173,10 +214,24 @@ class NowPlayingTile : public tessera::Tile {
       title = plugin_->text("idle");
     }
 
+    // The volume, as a small text at the title's right: always, or for three seconds after it changed.
+    std::string vtext;
+    if (vol_lbl_ != nullptr && has_entity_ && volume_ >= 0.0f) {
+      if (vol_flag_) {
+        vol_until_ = epoch + 3;
+        vol_flag_ = false;
+      }
+      if (vol_mode_ == 2 || epoch <= vol_until_)
+        vtext = muted_ ? plugin_->text("muted") : std::to_string(static_cast<int>(volume_ * 100.0f + 0.5f)) + " %";
+    }
+    const int vol_w = vtext.empty() ? 0 : ui::text_width(vtext, Font::BODY) + ui::px(4);
+    const int title_w = text_w_ - (vol_w > 0 ? vol_w + ui::px(6) : 0);
+    lv_obj_set_width(title_lbl_, title_w);
+
     // The largest font the title fits in; the label cuts the rest with dots.
     Font f = Font::HEADLINE;
-    if (ui::text_width(title, f) > text_w_) f = Font::TITLE;
-    if (ui::text_width(title, f) > text_w_) f = Font::BODY_LARGE;
+    if (ui::text_width(title, f) > title_w) f = Font::TITLE;
+    if (ui::text_width(title, f) > title_w) f = Font::BODY_LARGE;
     ui::set_font(title_lbl_, f);
     ui::set_text(title_lbl_, title);
     ui::set_text(artist_lbl_, artist);
@@ -190,18 +245,30 @@ class NowPlayingTile : public tessera::Tile {
     lv_obj_set_pos(title_lbl_, x0_, y);
     lv_obj_set_pos(artist_lbl_, x0_, y + th + ui::px(2));
 
-    // Progress bar: the position of the last update plus the time that has passed since while it plays.
-    int track_w = 0, fill_w = 0;
-    if (show_progress_ && (playing || paused_) && duration_ > 0.5f) {
-      float pos = position_;
+    if (vol_lbl_ != nullptr) {
+      ui::set_text(vol_lbl_, vtext);
+      lv_obj_set_width(vol_lbl_, vol_w);
+      lv_obj_set_pos(vol_lbl_, width_ - vol_w, y + (th - ui::line_height(Font::BODY)) / 2);
+    }
+
+    // The position: that of the last update plus the time that has passed since while it plays.
+    const bool timeline = (playing || paused_) && duration_ > 0.5f;
+    float pos = position_;
+    if (timeline) {
       if (playing && updated_ > 0 && epoch > updated_) pos += static_cast<float>(epoch - updated_);
       if (pos < 0.0f) pos = 0.0f;
       if (pos > duration_) pos = duration_;
+    }
+    int track_w = 0, fill_w = 0;
+    if (show_bar_ && timeline) {
       track_w = width_;
       fill_w = static_cast<int>(static_cast<float>(width_) * (pos / duration_));
     }
     lv_obj_set_width(track_, track_w);
     lv_obj_set_width(fill_, fill_w);
+    if (time_lbl_ != nullptr)
+      ui::set_text(time_lbl_, timeline ? fmt_time_(static_cast<int>(pos)) + " / " + fmt_time_(static_cast<int>(duration_))
+                                       : std::string());
 
     // The buttons: plain signs, so no icon outside Tessera's set is needed.
     for (int i = 0; i < n_; ++i) {
@@ -220,6 +287,8 @@ class NowPlayingTile : public tessera::Tile {
   void on_theme() override {
     ui::set_color(title_lbl_, paused_ ? theme::MUTED : theme::INK);
     ui::set_color(artist_lbl_, theme::INK_SOFT);
+    if (time_lbl_ != nullptr) ui::set_color(time_lbl_, theme::INK_SOFT);
+    if (vol_lbl_ != nullptr) ui::set_color(vol_lbl_, theme::MUTED);
     ui::set_fill(track_, tessera::Tone::NORMAL, theme::TRACK);
     ui::set_fill(fill_, tessera::Tone::ACCENT, theme::ACCENT);
     for (int i = 0; i < n_; ++i) {
@@ -251,6 +320,8 @@ class NowPlayingTile : public tessera::Tile {
   lv_obj_t *artist_lbl_{nullptr};
   lv_obj_t *track_{nullptr};
   lv_obj_t *fill_{nullptr};
+  lv_obj_t *time_lbl_{nullptr};
+  lv_obj_t *vol_lbl_{nullptr};
   lv_obj_t *btn_[5]{};
   lv_obj_t *frame_[5]{};
   lv_obj_t *inner_[5]{};
@@ -259,8 +330,12 @@ class NowPlayingTile : public tessera::Tile {
   int width_{0}, height_{0}, text_w_{0}, x0_{0};
   int cover_size_{0};
   bool cover_on_{false};
-  int bar_h_{0}, bar_y_{0}, ctrl_h_{0}, content_h_{0};
-  bool show_progress_{true};
+  int bar_h_{0}, bar_y_{0}, time_y_{0}, ctrl_h_{0}, content_h_{0};
+  bool show_bar_{true}, show_time_{false};
+  int vol_mode_{1};  // 0 never, 1 for three seconds after a change, 2 always
+  float volume_{-1.0f}, last_volume_{-1.0f};
+  bool muted_{false}, vol_flag_{false};
+  uint32_t vol_until_{0};
   bool has_entity_{false};
   bool paused_{false};
   std::string entity_, state_, title_, artist_;

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0 - 2026-10-14
+- New: the option "Progress" now chooses a bar, the time (1:36 / 7:36), both, or nothing.
+- New: the option "Volume display" shows the volume at the title's right: when it changes (three seconds), always,
+  or never. A muted player shows "Muted".
+
 ## 0.3.2 - 2026-10-14
 - The buttons in the tile have a light frame.
 

@@ -9,15 +9,14 @@
     "btn_play_pause": "Play / Pause",
     "btn_next": "Next",
     "btn_volume_up": "Louder",
-    "btn_volume_down": "Quieter"
+    "btn_volume_down": "Quieter",
+    "muted": "Muted"
   },
   "app": {
     "name": "Now playing",
     "summary": "Shows the current song of a media player, with a progress bar and buttons.",
     "tile_name": "Now playing",
     "tile_example": "Artist - Title",
-    "opt_progress": "Progress bar",
-    "opt_progress_hint": "Shows how far the song has played, if the player reports it.",
     "button_tile_name": "Media button",
     "button_tile_example": "Play / Pause",
     "opt_action": "Button",
@@ -32,6 +31,17 @@
     "opt_controls": "Playback buttons",
     "opt_controls_hint": "Previous, play/pause and next under the title. Needs a tile of two rows or more.",
     "opt_volume": "Volume buttons",
-    "opt_volume_hint": "Quieter and louder under the title. Needs a tile of two rows or more."
+    "opt_volume_hint": "Quieter and louder under the title. Needs a tile of two rows or more.",
+    "opt_timeline": "Progress",
+    "opt_timeline_hint": "How far the song has played: as a bar, as the time, or both. Needs a player that reports the position.",
+    "tl_bar": "Bar",
+    "tl_time": "Time",
+    "tl_both": "Bar and time",
+    "tl_none": "Nothing",
+    "opt_voldisp": "Volume display",
+    "opt_voldisp_hint": "Shows the volume at the title's right.",
+    "vd_change": "When it changes",
+    "vd_always": "Always",
+    "vd_off": "Never"
   }
 }

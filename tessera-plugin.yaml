@@ -1,6 +1,6 @@
 # Manifest for "Now playing": an info tile (title, artist, progress) and a button tile for a media_player entity.
 id: now_playing
-version: 0.3.2
+version: 0.4.0
 api: "0.10"
 icon: music
 maintainer: Schumey
@@ -25,14 +25,32 @@ tiles:
     name: tile_name
     icon: music
     sizes: { min: 1x1, max: 3x2 }
-    memory: 1900
+    memory: 2300
     domains: [media_player]
-    attributes: [media_title, media_artist, media_duration, media_position, media_position_updated_at, entity_picture]
+    attributes: [media_title, media_artist, media_duration, media_position, media_position_updated_at, entity_picture, volume_level, is_volume_muted]
     pictures: 1
     example: tile_example
     preview: { title: "{media_title}" }
     options:
-      - { id: progress, kind: toggle, default: true, label: opt_progress, hint: opt_progress_hint }
+      - id: timeline
+        kind: choice
+        default: bar
+        label: opt_timeline
+        hint: opt_timeline_hint
+        choices:
+          - { value: bar, label: tl_bar }
+          - { value: time, label: tl_time }
+          - { value: both, label: tl_both }
+          - { value: none, label: tl_none }
+      - id: volume_display
+        kind: choice
+        default: change
+        label: opt_voldisp
+        hint: opt_voldisp_hint
+        choices:
+          - { value: change, label: vd_change }
+          - { value: always, label: vd_always }
+          - { value: off, label: vd_off }
       - { id: cover, kind: toggle, default: true, label: opt_cover, hint: opt_cover_hint }
       - { id: controls, kind: toggle, default: false, label: opt_controls, hint: opt_controls_hint }
       - { id: volume, kind: toggle, default: false, label: opt_volume, hint: opt_volume_hint }
