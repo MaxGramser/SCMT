@@ -1,0 +1,25 @@
+# Manifest for the "Now playing" tile: shows title + artist of a media_player entity.
+# Copy `requires.esphome`, `boards` etc. from template/ if they differ there.
+id: now_playing
+version: 0.1.0
+api: "0.4"
+icon: music
+maintainer: Schumey
+license: MIT
+stage: beta
+topics: [media]
+requires:
+  esphome: 2026.6.2
+boards: any
+flash_kb: 4
+
+tiles:
+  - id: now_playing
+    name: tile_name
+    icon: music
+    sizes: { min: 2x1, max: 3x2 }
+    memory: 500
+    domains: [media_player]
+    attributes: [media_title, media_artist]
+    example: tile_example
+    preview: { title: "{media_title}" }
