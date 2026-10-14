@@ -1,0 +1,10 @@
+{
+  "_meta": { "name": "Deutsch" },
+  "screen": { "choose": "Player wählen", "idle": "Nichts läuft" },
+  "app": {
+    "name": "Aktueller Titel",
+    "summary": "Zeigt den aktuellen Titel eines Media Players.",
+    "tile_name": "Aktueller Titel",
+    "tile_example": "Interpret - Titel"
+  }
+}

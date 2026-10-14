@@ -1,0 +1,10 @@
+{
+  "_meta": { "name": "English" },
+  "screen": { "choose": "Choose a player", "idle": "Nothing playing" },
+  "app": {
+    "name": "Now playing",
+    "summary": "Shows the current song of a media player.",
+    "tile_name": "Now playing",
+    "tile_example": "Artist - Title"
+  }
+}
