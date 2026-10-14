@@ -1,10 +1,9 @@
-# Manifest for the "Now playing" tile: shows title + artist of a media_player entity.
-# Copy `requires.esphome`, `boards` etc. from template/ if they differ there.
+# Manifest for "Now playing": an info tile (title, artist, progress) and a button tile for a media_player entity.
 id: now_playing
-version: 0.1.1
-api: "0.4"
+version: 0.2.0
+api: "0.9"
 icon: music
-maintainer: your-github-name
+maintainer: Schumey
 license: MIT
 stage: beta
 topics: [media]
@@ -13,13 +12,43 @@ requires:
 boards: any
 flash_kb: 4
 
+permissions:
+  home_assistant_actions:
+    - media_player.media_play_pause
+    - media_player.media_next_track
+    - media_player.media_previous_track
+    - media_player.volume_up
+    - media_player.volume_down
+
 tiles:
   - id: now_playing
     name: tile_name
     icon: music
-    sizes: { min: 2x1, max: 3x2 }
-    memory: 500
+    sizes: { min: 1x1, max: 3x2 }
+    memory: 700
     domains: [media_player]
-    attributes: [media_title, media_artist]
+    attributes: [media_title, media_artist, media_duration, media_position, media_position_updated_at]
     example: tile_example
     preview: { title: "{media_title}" }
+    options:
+      - { id: progress, kind: toggle, default: true, label: opt_progress, hint: opt_progress_hint }
+
+  - id: media_button
+    name: button_tile_name
+    icon: music
+    sizes: { min: 1x1, max: 2x1 }
+    memory: 300
+    domains: [media_player]
+    example: button_tile_example
+    options:
+      - id: action
+        kind: choice
+        default: play_pause
+        label: opt_action
+        hint: opt_action_hint
+        choices:
+          - { value: previous, label: act_previous }
+          - { value: play_pause, label: act_play_pause }
+          - { value: next, label: act_next }
+          - { value: volume_up, label: act_volume_up }
+          - { value: volume_down, label: act_volume_down }

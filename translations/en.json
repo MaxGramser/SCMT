@@ -1,10 +1,29 @@
 {
   "_meta": { "name": "English" },
-  "screen": { "choose": "Choose a player", "idle": "Nothing playing" },
+  "screen": {
+    "choose": "Choose a player",
+    "idle": "Nothing playing",
+    "btn_previous": "Previous",
+    "btn_play_pause": "Play / Pause",
+    "btn_next": "Next",
+    "btn_volume_up": "Louder",
+    "btn_volume_down": "Quieter"
+  },
   "app": {
     "name": "Now playing",
-    "summary": "Shows the current song of a media player.",
+    "summary": "Shows the current song of a media player, with a progress bar and buttons.",
     "tile_name": "Now playing",
-    "tile_example": "Artist - Title"
+    "tile_example": "Artist - Title",
+    "opt_progress": "Progress bar",
+    "opt_progress_hint": "Shows how far the song has played, if the player reports it.",
+    "button_tile_name": "Media button",
+    "button_tile_example": "Play / Pause",
+    "opt_action": "Button",
+    "opt_action_hint": "What this tile does when you tap it.",
+    "act_previous": "Previous",
+    "act_play_pause": "Play / Pause",
+    "act_next": "Next",
+    "act_volume_up": "Louder",
+    "act_volume_down": "Quieter"
   }
 }
