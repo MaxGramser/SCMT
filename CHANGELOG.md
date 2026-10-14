@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.2 - 2026-10-14
+- The buttons in the tile have a light frame.
+
 ## 0.3.1 - 2026-10-14
 - The cover place is shown only when the player has a picture the screen may fetch; otherwise the text takes the whole
   width, and no empty grey square stays.

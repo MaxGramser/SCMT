@@ -115,6 +115,18 @@ class NowPlayingTile : public tessera::Tile {
     if (n_ > 0) {
       const int cell = width_ / n_;
       const int th = ui::line_height(Font::TITLE);
+      const int m = ui::px(2);   // space between two buttons
+      const int bw = ui::px(1);  // width of the frame
+      const int top = height_ - ctrl_h_;
+      for (int i = 0; i < n_; ++i) {
+        // A light frame: a block in the line colour with a smaller one in the card's colour on it.
+        frame_[i] = ui::block(c.parent, theme::LINE);
+        lv_obj_set_size(frame_[i], cell - 2 * m, ctrl_h_ - 2 * m);
+        lv_obj_set_pos(frame_[i], i * cell + m, top + m);
+        inner_[i] = ui::block(c.parent, theme::CARD);
+        lv_obj_set_size(inner_[i], cell - 2 * m - 2 * bw, ctrl_h_ - 2 * m - 2 * bw);
+        lv_obj_set_pos(inner_[i], i * cell + m + bw, top + m + bw);
+      }
       for (int i = 0; i < n_; ++i) {
         btn_[i] = ui::label(c.parent, Font::TITLE, theme::INK);
         lv_obj_set_width(btn_[i], cell);
@@ -210,7 +222,11 @@ class NowPlayingTile : public tessera::Tile {
     ui::set_color(artist_lbl_, theme::INK_SOFT);
     ui::set_fill(track_, tessera::Tone::NORMAL, theme::TRACK);
     ui::set_fill(fill_, tessera::Tone::ACCENT, theme::ACCENT);
-    for (int i = 0; i < n_; ++i) ui::set_color(btn_[i], theme::INK);
+    for (int i = 0; i < n_; ++i) {
+      ui::set_color(btn_[i], theme::INK);
+      ui::set_fill(frame_[i], tessera::Tone::NORMAL, theme::LINE);
+      ui::set_fill(inner_[i], tessera::Tone::NORMAL, theme::CARD);
+    }
   }
 
   void on_tap() override {
@@ -236,6 +252,8 @@ class NowPlayingTile : public tessera::Tile {
   lv_obj_t *track_{nullptr};
   lv_obj_t *fill_{nullptr};
   lv_obj_t *btn_[5]{};
+  lv_obj_t *frame_[5]{};
+  lv_obj_t *inner_[5]{};
   Btn kinds_[5]{};
   int n_{0};
   int width_{0}, height_{0}, text_w_{0}, x0_{0};
