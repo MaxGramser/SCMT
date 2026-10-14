@@ -1,10 +1,10 @@
 # Manifest for the "Now playing" tile: shows title + artist of a media_player entity.
 # Copy `requires.esphome`, `boards` etc. from template/ if they differ there.
 id: now_playing
-version: 0.1.0
+version: 0.1.1
 api: "0.4"
 icon: music
-maintainer: Schumey
+maintainer: your-github-name
 license: MIT
 stage: beta
 topics: [media]
