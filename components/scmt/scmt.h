@@ -3,13 +3,13 @@
 #include "esphome/components/smart_display/plugin_api.h"
 
 namespace esphome {
-namespace now_playing {
+namespace scmt {
 
-class NowPlaying : public Component, public tessera::Plugin {
+class Scmt : public Component, public tessera::Plugin {
  public:
   void setup() override;
   float get_setup_priority() const override { return setup_priority::DATA; }
 };
 
-}  // namespace now_playing
+}  // namespace scmt
 }  // namespace esphome

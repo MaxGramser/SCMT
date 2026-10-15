@@ -1,6 +1,6 @@
-# Manifest for "Now playing": an info tile (title, artist, progress) and a button tile for a media_player entity.
-id: now_playing
-version: 0.5.0
+# Manifest for SCMT (Simple Customizable Media Tile): an info tile and a button tile for a media_player entity.
+id: scmt
+version: 0.7.0
 api: "0.10"
 icon: music
 maintainer: Schumey
@@ -45,6 +45,7 @@ tiles:
           - { value: "time", label: tl_time }
           - { value: "both", label: tl_both }
           - { value: "none", label: tl_none }
+      - { id: bar_height, kind: number, min: 2, max: 16, step: 1, unit: px, default: 4, label: opt_barh, hint: opt_barh_hint }
       - id: volume_display
         kind: choice
         default: change

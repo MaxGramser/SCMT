@@ -1,15 +1,15 @@
-# Now playing
+# SCMT - Simple Customizable Media Tile
 
 Two tiles for Tessera that show and control what a Home Assistant media player is playing.
 
-## Tile "Now playing"
+## Tile "SCMT"
 
 The title in large letters, the artist below it, and an optional progress bar at the bottom.
 
 - While something plays, the title and the artist. While paused, the same, with the title dimmed.
 - When nothing plays, "Nothing playing"; before a player is chosen, "Choose a player".
 - A title that is too wide for the tile gets a smaller font first, then is cut with dots.
-- The option "Progress" shows a bar, the time (played / length), both, or nothing. It needs the player to report
+- The option "Progress" shows a bar (its height is an option too, 2 to 16 pixels), the time (played / length), both, or nothing. It needs the player to report
   `media_duration` and `media_position`; a player that does not shows neither.
 - The option "Volume display" shows the volume at the title's right: for three seconds after it changed, always, or
   never. It needs `volume_level`; a muted player shows "Muted".
@@ -30,10 +30,10 @@ All off until you switch them on in the tile's options:
 - **Volume bar:** a bar under the text; a tap on it sets the volume to that place. Needs two rows.
 - **Album name:** the album as a third line, when the tile is high enough.
 
-## Tile "Media button"
+## Tile "SCMT button"
 
 One button for the same media player: previous, play/pause, next, louder or quieter. Choose the button in the tile's
-options and place as many of these tiles as you like, next to the "Now playing" tile.
+options and place as many of these tiles as you like, next to the "SCMT" tile.
 
 ## Setup
 

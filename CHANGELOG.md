@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.7.0 - 2026-10-14
+- The plugin's id is now `scmt` (it was `now_playing`), the same as its folder and its component. The app sees a new
+  plugin: remove the old one from the screen, add this one, and place its tiles again.
+
+## 0.6.0 - 2026-10-14
+- The plugin is called SCMT (Simple Customizable Media Tile). Its id, `now_playing`, stays, so tiles already on a
+  screen keep working.
+- New option "Height of the progress bar" (2 to 16 pixels, 4 by default).
+
 ## 0.5.0 - 2026-10-14
 - New options: "Seek by tapping the bar", "Mute", "Volume bar" (a tap sets the volume), "Album name" (a third line).
 - New option "Big volume display": a half see-through display over the whole tile for three seconds after a change,

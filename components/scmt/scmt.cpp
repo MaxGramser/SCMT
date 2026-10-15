@@ -1,4 +1,4 @@
-#include "now_playing.h"
+#include "scmt.h"
 
 #include <cmath>
 #include <cstdio>
@@ -6,7 +6,7 @@
 #include <string>
 
 namespace esphome {
-namespace now_playing {
+namespace scmt {
 
 using tessera::Font;
 namespace ui = tessera::ui;
@@ -122,7 +122,9 @@ class NowPlayingTile : public tessera::Tile {
     // From the bottom up: the buttons, the volume bar, the progress bar, the time. What is left above is for the cover
     // and the text.
     const int gap = ui::px(4);
-    bar_h_ = ui::px(4);
+    int bh = c.options["bar_height"] | 4;  // in pixels of the reference look
+    if (bh < 1) bh = 1;
+    bar_h_ = ui::px(bh);
     const int time_h = show_time_ ? ui::line_height(Font::BODY) : 0;
     int bottom = height_;
     if (ctrl_h_ > 0) bottom = height_ - ctrl_h_ - gap;
@@ -601,10 +603,10 @@ class MediaButtonTile : public tessera::Tile {
   std::string entity_, action_;
 };
 
-void NowPlaying::setup() {
+void Scmt::setup() {
   add_tile("now_playing", [this]() { return new NowPlayingTile(this); });
   add_tile("media_button", [this]() { return new MediaButtonTile(this); });
 }
 
-}  // namespace now_playing
+}  // namespace scmt
 }  // namespace esphome

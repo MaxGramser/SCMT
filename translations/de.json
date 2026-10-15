@@ -13,11 +13,11 @@
     "muted": "Stumm"
   },
   "app": {
-    "name": "Aktueller Titel",
-    "summary": "Zeigt den aktuellen Titel eines Media Players, mit Fortschrittsbalken und Tasten.",
-    "tile_name": "Aktueller Titel",
+    "name": "SCMT",
+    "summary": "Simple Customizable Media Tile: Titel, Fortschritt, Lautstärke und Tasten eines Media Players.",
+    "tile_name": "SCMT",
     "tile_example": "Interpret - Titel",
-    "button_tile_name": "Medien-Taste",
+    "button_tile_name": "SCMT-Taste",
     "button_tile_example": "Play / Pause",
     "opt_action": "Taste",
     "opt_action_hint": "Was diese Kachel bei einem Tipp macht.",
@@ -52,6 +52,8 @@
     "opt_volbar": "Lautstärkeleiste",
     "opt_volbar_hint": "Eine Leiste unter dem Text; ein Tipp darauf stellt die Lautstärke an dieser Stelle ein. Braucht eine Kachel mit zwei Zeilen oder mehr.",
     "opt_album": "Albumname",
-    "opt_album_hint": "Das Album als dritte Zeile, wenn die Kachel hoch genug ist."
+    "opt_album_hint": "Das Album als dritte Zeile, wenn die Kachel hoch genug ist.",
+    "opt_barh": "Höhe des Fortschrittsbalkens",
+    "opt_barh_hint": "In Pixeln, 2 bis 16. Braucht den Balken."
   }
 }

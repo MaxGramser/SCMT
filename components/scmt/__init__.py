@@ -5,10 +5,10 @@ from esphome.const import CONF_ID
 
 DEPENDENCIES = ["smart_display"]
 
-now_playing_ns = cg.esphome_ns.namespace("now_playing")
-NowPlaying = now_playing_ns.class_("NowPlaying", cg.Component)
+scmt_ns = cg.esphome_ns.namespace("scmt")
+Scmt = scmt_ns.class_("Scmt", cg.Component)
 
-CONFIG_SCHEMA = cv.Schema({cv.GenerateID(): cv.declare_id(NowPlaying)}).extend(cv.COMPONENT_SCHEMA)
+CONFIG_SCHEMA = cv.Schema({cv.GenerateID(): cv.declare_id(Scmt)}).extend(cv.COMPONENT_SCHEMA)
 
 
 async def to_code(config):
