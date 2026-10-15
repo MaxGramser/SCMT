@@ -42,6 +42,16 @@
     "opt_voldisp_hint": "Zeigt die Lautstärke rechts neben dem Titel.",
     "vd_change": "Bei Änderung",
     "vd_always": "Immer",
-    "vd_off": "Nie"
+    "vd_off": "Nie",
+    "opt_overlay": "Große Lautstärkeanzeige",
+    "opt_overlay_hint": "Ändert sich die Lautstärke, liegt drei Sekunden lang eine halb durchsichtige Anzeige mit der Zahl und einem Lautsprecher über der ganzen Kachel.",
+    "opt_seek": "Spulen per Tipp auf den Balken",
+    "opt_seek_hint": "Ein Tipp auf den Fortschrittsbalken springt an diese Stelle im Titel. Braucht den Balken.",
+    "opt_mute": "Stumm",
+    "opt_mute_hint": "Eine Stumm-Taste bei den Tasten, und ein Tipp auf die Lautstärkeanzeige schaltet stumm oder wieder laut. Die Tasten brauchen zwei Zeilen.",
+    "opt_volbar": "Lautstärkeleiste",
+    "opt_volbar_hint": "Eine Leiste unter dem Text; ein Tipp darauf stellt die Lautstärke an dieser Stelle ein. Braucht eine Kachel mit zwei Zeilen oder mehr.",
+    "opt_album": "Albumname",
+    "opt_album_hint": "Das Album als dritte Zeile, wenn die Kachel hoch genug ist."
   }
 }

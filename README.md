@@ -19,6 +19,17 @@ The title in large letters, the artist below it, and an optional progress bar at
 - Two options add buttons under the title: "Playback buttons" (previous, play/pause, next) and "Volume buttons"
   (quieter, louder). They need a tile of two rows or more.
 
+### More options of this tile
+
+All off until you switch them on in the tile's options:
+
+- **Big volume display:** for three seconds after the volume changes, a half see-through display with the number and a
+  speaker lies over the whole tile. With the option "Mute", a tap on it mutes.
+- **Seek by tapping the bar:** a tap on the progress bar jumps to that place in the song.
+- **Mute:** a mute button among the buttons; a tap on the volume display mutes or unmutes.
+- **Volume bar:** a bar under the text; a tap on it sets the volume to that place. Needs two rows.
+- **Album name:** the album as a third line, when the tile is high enough.
+
 ## Tile "Media button"
 
 One button for the same media player: previous, play/pause, next, louder or quieter. Choose the button in the tile's
@@ -35,9 +46,9 @@ The cover is the picture Home Assistant itself has for the media player (its `en
 nothing from the internet.
 
 The buttons use the Home Assistant actions `media_player.media_play_pause`, `media_next_track`,
-`media_previous_track`, `volume_up` and `volume_down`. A player that does not support one of them ignores it.
+`media_previous_track`, `volume_up`, `volume_down`, `media_seek`, `volume_mute` and `volume_set`. A player that does not support one of them ignores it.
 
 ## Privacy
 
 The plugin makes no network requests. It only reads what Home Assistant already knows about the chosen entity, and
-calls the five media player actions above on it when you tap a tile.
+calls the media player actions above on it when you tap a tile.

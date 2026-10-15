@@ -1,6 +1,6 @@
 # Manifest for "Now playing": an info tile (title, artist, progress) and a button tile for a media_player entity.
 id: now_playing
-version: 0.4.1
+version: 0.5.0
 api: "0.10"
 icon: music
 maintainer: Schumey
@@ -19,15 +19,18 @@ permissions:
     - media_player.media_previous_track
     - media_player.volume_up
     - media_player.volume_down
+    - media_player.media_seek
+    - media_player.volume_mute
+    - media_player.volume_set
 
 tiles:
   - id: now_playing
     name: tile_name
     icon: music
-    sizes: { min: 1x1, max: 3x2 }
-    memory: 2300
+    sizes: { min: 1x1, max: 4x4 }
+    memory: 3800
     domains: [media_player]
-    attributes: [media_title, media_artist, media_duration, media_position, media_position_updated_at, entity_picture, volume_level, is_volume_muted]
+    attributes: [media_title, media_artist, media_duration, media_position, media_position_updated_at, entity_picture, volume_level, is_volume_muted, media_album_name]
     pictures: 1
     example: tile_example
     preview: { title: "{media_title}" }
@@ -51,6 +54,11 @@ tiles:
           - { value: "change", label: vd_change }
           - { value: "always", label: vd_always }
           - { value: "off", label: vd_off }
+      - { id: volume_overlay, kind: toggle, default: false, label: opt_overlay, hint: opt_overlay_hint }
+      - { id: seek, kind: toggle, default: false, label: opt_seek, hint: opt_seek_hint }
+      - { id: mute, kind: toggle, default: false, label: opt_mute, hint: opt_mute_hint }
+      - { id: volume_bar, kind: toggle, default: false, label: opt_volbar, hint: opt_volbar_hint }
+      - { id: album, kind: toggle, default: false, label: opt_album, hint: opt_album_hint }
       - { id: cover, kind: toggle, default: true, label: opt_cover, hint: opt_cover_hint }
       - { id: controls, kind: toggle, default: false, label: opt_controls, hint: opt_controls_hint }
       - { id: volume, kind: toggle, default: false, label: opt_volume, hint: opt_volume_hint }

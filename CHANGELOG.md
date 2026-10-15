@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.0 - 2026-10-14
+- New options: "Seek by tapping the bar", "Mute", "Volume bar" (a tap sets the volume), "Album name" (a third line).
+- New option "Big volume display": a half see-through display over the whole tile for three seconds after a change,
+  with the number in large digits and a speaker after it. The small volume display has a speaker too.
+- The tile can be up to 4x4 cells (the editor offers what fits the screen's grid).
+- Needs three more actions: `media_seek`, `volume_mute`, `volume_set`.
+
 ## 0.4.1 - 2026-10-14
 - Fix: the manifest was refused because the choice value `off` was read as a truth value; every choice value is
   now written as text.

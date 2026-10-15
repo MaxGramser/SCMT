@@ -42,6 +42,16 @@
     "opt_voldisp_hint": "Shows the volume at the title's right.",
     "vd_change": "When it changes",
     "vd_always": "Always",
-    "vd_off": "Never"
+    "vd_off": "Never",
+    "opt_overlay": "Big volume display",
+    "opt_overlay_hint": "When the volume changes, a half see-through display with the number and a speaker lies over the whole tile for three seconds.",
+    "opt_seek": "Seek by tapping the bar",
+    "opt_seek_hint": "A tap on the progress bar jumps to that place in the song. Needs the bar.",
+    "opt_mute": "Mute",
+    "opt_mute_hint": "A mute button among the buttons, and a tap on the volume display mutes or unmutes. The buttons need two rows.",
+    "opt_volbar": "Volume bar",
+    "opt_volbar_hint": "A bar under the text; a tap on it sets the volume to that place. Needs a tile of two rows or more.",
+    "opt_album": "Album name",
+    "opt_album_hint": "The album as a third line, when the tile is high enough."
   }
 }
