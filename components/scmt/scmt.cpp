@@ -96,6 +96,7 @@ class NowPlayingTile : public tessera::Tile {
     want_mute_ = c.options["mute"] | false;
     want_seek_ = c.options["seek"] | false;
     show_album_ = c.options["album"] | false;
+    cover_url_ = (const char *) (c.options["cover_url"] | "");  // fixed address of a cover file, e.g. /local/cover.jpg
 
     // Which buttons, in which order. They need a tile of two rows or more.
     n_ = 0;
@@ -247,10 +248,30 @@ class NowPlayingTile : public tessera::Tile {
     volume_ = v;
     muted_ = mu;
     if (cover_ != nullptr) {
-      const char *pic = a["entity_picture"] | "";
-      cover_on_ = picture_allowed_(pic);
-      lv_obj_set_size(cover_, cover_on_ ? cover_size_ : 0, cover_on_ ? cover_size_ : 0);
-      ui::set_picture(cover_, cover_on_ ? pic : "", tessera::Fit::COVER);  // the same address again does nothing
+      if (!cover_url_.empty()) {
+        // A fixed address (option "Cover address"): the cover is a file that something else keeps up to date. The
+        // address gets a new number for every track, because the same address again does nothing.
+        const bool active = has_entity_ && !title_.empty() && (state_ == "playing" || state_ == "paused");
+        const std::string track = title_ + "|" + artist_ + "|" + album_;
+        if (track != cover_track_) {
+          cover_track_ = track;
+          uint32_t h = 2166136261u;  // FNV-1a
+          for (char ch : track) {
+            h ^= static_cast<uint8_t>(ch);
+            h *= 16777619u;
+          }
+          cover_key_ = h;
+          cover_gen_ = 0;
+          cover_retry_ = true;
+          cover_retry_at_ = 0;
+        }
+        apply_cover_url_(active);
+      } else {
+        const char *pic = a["entity_picture"] | "";
+        cover_on_ = picture_allowed_(pic);
+        lv_obj_set_size(cover_, cover_on_ ? cover_size_ : 0, cover_on_ ? cover_size_ : 0);
+        ui::set_picture(cover_, cover_on_ ? pic : "", tessera::Fit::COVER);  // the same address again does nothing
+      }
     }
   }
 
@@ -258,6 +279,18 @@ class NowPlayingTile : public tessera::Tile {
     const bool playing = state_ == "playing";
     paused_ = state_ == "paused";
     const bool active = playing || paused_;
+
+    // The cover file may be written a moment after the title changes: three seconds later the address changes once
+    // more, so the screen asks again.
+    if (cover_retry_ && cover_ != nullptr && !cover_url_.empty() && cover_on_) {
+      if (cover_retry_at_ == 0) {
+        cover_retry_at_ = epoch + 3;
+      } else if (epoch >= cover_retry_at_) {
+        cover_gen_++;
+        cover_retry_ = false;
+        apply_cover_url_(true);
+      }
+    }
 
     // The text starts after the cover when there is one, and takes the whole width when there is none.
     x0_ = cover_on_ ? cover_size_ + ui::px(8) : 0;
@@ -511,6 +544,14 @@ class NowPlayingTile : public tessera::Tile {
     tessera::action("media_player.volume_mute", entity_.c_str(), "is_volume_muted", muted_ ? "false" : "true");
   }
 
+  // Shows the cover file of the option "Cover address", with a number behind it that changes with the track.
+  void apply_cover_url_(bool active) {
+    std::string addr = cover_url_ + "?v=" + std::to_string(cover_key_ + cover_gen_);
+    cover_on_ = active && picture_allowed_(addr.c_str());
+    lv_obj_set_size(cover_, cover_on_ ? cover_size_ : 0, cover_on_ ? cover_size_ : 0);
+    ui::set_picture(cover_, cover_on_ ? addr.c_str() : "", tessera::Fit::COVER);
+  }
+
   const tessera::Plugin *plugin_;
   lv_obj_t *cover_{nullptr};
   lv_obj_t *title_lbl_{nullptr};
@@ -535,6 +576,9 @@ class NowPlayingTile : public tessera::Tile {
   int width_{0}, height_{0}, text_w_{0}, x0_{0};
   int cover_size_{0};
   bool cover_on_{false};
+  std::string cover_url_, cover_track_;
+  uint32_t cover_key_{0}, cover_gen_{0}, cover_retry_at_{0};
+  bool cover_retry_{false};
   int bar_h_{0}, bar_y_{0}, time_y_{0}, ctrl_h_{0}, content_h_{0};
   int vbar_h_{0}, vbar_y_{0}, vbar_x0_{0}, vbar_w_{1};
   int vol_hit_x_{0}, vol_hit_w_{0}, vol_hit_y_{0}, vol_hit_h_{0};

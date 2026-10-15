@@ -29,6 +29,8 @@ All off until you switch them on in the tile's options:
 - **Mute:** a mute button among the buttons; a tap on the volume display mutes or unmutes.
 - **Volume bar:** a bar under the text; a tap on it sets the volume to that place. Needs two rows.
 - **Album name:** the album as a third line, when the tile is high enough.
+- **Cover address:** a fixed address of a cover file in Home Assistant, shown instead of the player's own picture
+  (see "The cover" below).
 
 ## Tile "SCMT button"
 
@@ -42,11 +44,24 @@ options and place as many of these tiles as you like, next to the "SCMT" tile.
 3. In each tile's inspector, choose the media player. Any `media_player` entity works, for example the one that
    HASS.Agent makes from the Windows media session, or the Spotify integration.
 
-The cover is the picture Home Assistant itself has for the media player (its `entity_picture`); the plugin fetches
-nothing from the internet.
+The buttons use the Home Assistant actions `media_player.media_play_pause`, `media_next_track`, `media_previous_track`, `volume_up`, `volume_down`, `media_seek`, `volume_mute` and `volume_set`. A player that does not support one of them ignores it.
 
-The buttons use the Home Assistant actions `media_player.media_play_pause`, `media_next_track`,
-`media_previous_track`, `volume_up`, `volume_down`, `media_seek`, `volume_mute` and `volume_set`. A player that does not support one of them ignores it.
+## The cover
+
+By default the cover is the picture Home Assistant itself has for the media player (its `entity_picture`); the plugin
+fetches nothing from the internet.
+
+A tile may show only pictures from `/api/image/serve/`, `/api/image_proxy/` or `/local/`, and text attributes are cut
+at 48 bytes. The cover of some players (for example the one of HASS.Agent, `/api/media_player_proxy/...`) is refused
+for that reason. For these, use the option "Cover address":
+
+1. Let something save the current cover as a file in Home Assistant's `www` folder, for example `/config/www/cover.jpg`
+   (an automation that downloads the player's `entity_picture` with a `shell_command`).
+2. Enter `/local/cover.jpg` as the "Cover address" in the tile's options.
+
+The tile then shows that file instead of the player's picture, while something plays or is paused. The address gets a
+number behind it that changes with every track, so the screen asks again; three seconds after a new track it asks once
+more, in case the file was written a moment late.
 
 ## Privacy
 

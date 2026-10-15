@@ -28,6 +28,8 @@
     "act_volume_down": "Quieter",
     "opt_cover": "Album cover",
     "opt_cover_hint": "Shows the cover beside the title, from two cells wide, if the screen can show pictures.",
+    "opt_cover_url": "Cover address",
+    "opt_cover_url_hint": "Address of a cover file in Home Assistant, for example /local/cover.jpg. Use it when the player's own cover is refused. Leave empty to use the player's picture.",
     "opt_controls": "Playback buttons",
     "opt_controls_hint": "Previous, play/pause and next under the title. Needs a tile of two rows or more.",
     "opt_volume": "Volume buttons",

@@ -1,18 +1,251 @@
-# What tools/preview.py shows: the data of your tiles on every kind of screen (docs/PREVIEW.md). Every part is
-# optional; without this file each tile type is shown once with its defaults. Never put a secret here.
+# What tools/preview.py shows: the data of the SCMT tiles on every kind of screen (docs/PREVIEW.md).
+# Never put a secret here.
+#
+# The tile "now_playing" reads a media_player entity, so every example below points at an entity from `states`.
+# The first example is the one the store picture shows (tools/store_image.py), so it is the one that shows SCMT best.
+
 tiles:
-  - tile: days_until
-    name: Holidays
-    options: { date: "{now+12d}", what: Holidays }   # {now+12d}: twelve days from the moment of the run
-  - tile: days_until
-    name: Today
-    options: { date: "{now}", what: Birthday }
-    sizes: [1x1]
-  - tile: days_until
-    name: No date yet
+  # 1. Playing, everything on: cover, album, progress (bar + time), volume display, buttons, seek, mute, volume bar
+  - tile: now_playing
+    name: Everything on
+    entity: media_player.pc_spotify
+    options:
+      timeline: both
+      bar_height: 6
+      volume_display: always
+      volume_overlay: true
+      seek: true
+      mute: true
+      volume_bar: true
+      album: true
+      cover: true
+      controls: true
+      volume: true
+    sizes: [2x2, 3x2, 4x2, 4x3, 4x4]
+
+  # 2. Playing with the defaults, at every size the tile offers (1x1 to 4x4)
+  - tile: now_playing
+    name: Defaults
+    entity: media_player.pc_spotify
+
+  # 3. Progress variants: bar only (higher), time only, nothing
+  - tile: now_playing
+    name: Bar only
+    entity: media_player.pc_spotify
+    options: { timeline: bar, bar_height: 12 }
+    sizes: [2x1, 3x1]
+  - tile: now_playing
+    name: Time only
+    entity: media_player.pc_spotify
+    options: { timeline: time }
+    sizes: [2x1, 3x1]
+  - tile: now_playing
+    name: No progress
+    entity: media_player.pc_spotify
+    options: { timeline: none }
     sizes: [2x1]
 
-# answers:   the answer of each fetch by its id, as the web service gives it (docs/PREVIEW.md)
-# states:    entities as Home Assistant has them, for a tile of an entity or a homeassistant sensor of plugin.yaml
-# commands:  answers to the questions of permissions.ha_commands
-# cards:     the entity a card of the manifest opens with
+  # 4. Volume display: shown for three seconds after a change (the default), always, never
+  - tile: now_playing
+    name: Volume always
+    entity: media_player.pc_spotify
+    options: { volume_display: always }
+    sizes: [2x1, 3x1]
+  - tile: now_playing
+    name: Volume off
+    entity: media_player.pc_spotify
+    options: { volume_display: "off" }    # in quotes: a bare off is read as a truth value (0.4.1)
+    sizes: [2x1]
+
+  # 5. Buttons and the extra options one by one, on tiles that are high enough
+  - tile: now_playing
+    name: Playback buttons
+    entity: media_player.pc_spotify
+    options: { controls: true }
+    sizes: [2x2, 3x2]
+  - tile: now_playing
+    name: Volume buttons
+    entity: media_player.pc_spotify
+    options: { volume: true }
+    sizes: [2x2, 3x2]
+  - tile: now_playing
+    name: Volume bar
+    entity: media_player.pc_spotify
+    options: { volume_bar: true }
+    sizes: [2x2, 3x2]
+  - tile: now_playing
+    name: Album name
+    entity: media_player.pc_spotify
+    options: { album: true }
+    sizes: [2x2, 3x2]
+  - tile: now_playing
+    name: Big volume display
+    entity: media_player.pc_spotify
+    options: { volume_overlay: true, mute: true }
+    sizes: [2x2, 3x2]
+
+  # 6. Without the cover: the text takes the whole width
+  - tile: now_playing
+    name: No cover
+    entity: media_player.pc_spotify
+    options: { cover: false }
+    sizes: [2x1, 3x1]
+
+  # 6b. A cover from a fixed address (option "Cover address"), for a player whose own picture the tile may not fetch.
+  # The bench cannot know the number the plugin puts behind the address, so it draws a placeholder with a note.
+  - tile: now_playing
+    name: Cover address
+    entity: media_player.pc_nopic
+    options: { cover_url: /local/cover.jpg }
+    sizes: [2x1, 3x1]
+
+  # 7. A player without a picture: no empty grey square, the text takes the whole width
+  - tile: now_playing
+    name: No picture
+    entity: media_player.pc_nopic
+    sizes: [2x1, 3x1]
+
+  # 8. A long title: smaller font first, then cut with dots
+  - tile: now_playing
+    name: Long title
+    entity: media_player.pc_longtitle
+    sizes: [1x1, 2x1, 3x1]
+
+  # 9. Paused: the same text, the title dimmed
+  - tile: now_playing
+    name: Paused
+    entity: media_player.pc_paused
+    sizes: [2x1, 2x2]
+
+  # 10. Muted: "Muted" instead of the volume
+  - tile: now_playing
+    name: Muted
+    entity: media_player.pc_muted
+    options: { volume_display: always, mute: true }
+    sizes: [2x1, 2x2]
+
+  # 11. A player that reports no duration and no position: neither bar nor time
+  - tile: now_playing
+    name: No duration
+    entity: media_player.pc_noduration
+    options: { timeline: both }
+    sizes: [2x1]
+
+  # 12. Nothing playing
+  - tile: now_playing
+    name: Idle
+    entity: media_player.pc_idle
+    sizes: [2x1, 2x2]
+
+  # 13. No player chosen yet: "Choose a player"
+  - tile: now_playing
+    name: No player
+    sizes: [2x1]
+
+  # 14. The button tile, one per action
+  - tile: media_button
+    name: Previous
+    entity: media_player.pc_spotify
+    options: { action: previous }
+    sizes: [1x1, 2x1]
+  - tile: media_button
+    name: Play / pause
+    entity: media_player.pc_spotify
+    options: { action: play_pause }
+    sizes: [1x1, 2x1]
+  - tile: media_button
+    name: Next
+    entity: media_player.pc_spotify
+    options: { action: next }
+    sizes: [1x1, 2x1]
+  - tile: media_button
+    name: Louder
+    entity: media_player.pc_spotify
+    options: { action: volume_up }
+    sizes: [1x1, 2x1]
+  - tile: media_button
+    name: Quieter
+    entity: media_player.pc_spotify
+    options: { action: volume_down }
+    sizes: [1x1, 2x1]
+
+# states: the media players as Home Assistant has them (the attributes the manifest names)
+states:
+  media_player.pc_spotify:
+    state: playing
+    attributes:
+      media_title: Bohemian Rhapsody
+      media_artist: Queen
+      media_album_name: A Night at the Opera
+      media_duration: 355
+      media_position: 96
+      media_position_updated_at: "{now}"         # a moment from the time of the run
+      volume_level: 0.45
+      is_volume_muted: false
+      entity_picture: /api/media_player_proxy/media_player.pc_spotify?token=preview
+
+  media_player.pc_nopic:
+    state: playing
+    attributes:
+      media_title: Bohemian Rhapsody
+      media_artist: Queen
+      media_album_name: A Night at the Opera
+      media_duration: 355
+      media_position: 96
+      media_position_updated_at: "{now}"
+      volume_level: 0.45
+      is_volume_muted: false
+
+  media_player.pc_longtitle:
+    state: playing
+    attributes:
+      media_title: Symphony No. 9 in D minor, Op. 125 "Choral" - IV. Presto - Allegro assai (Live at the Royal Albert Hall)
+      media_artist: Ludwig van Beethoven, Berliner Philharmoniker, Herbert von Karajan
+      media_duration: 1450
+      media_position: 600
+      media_position_updated_at: "{now}"
+      volume_level: 0.3
+      is_volume_muted: false
+
+  media_player.pc_paused:
+    state: paused
+    attributes:
+      media_title: Bohemian Rhapsody
+      media_artist: Queen
+      media_duration: 355
+      media_position: 200
+      media_position_updated_at: "{now}"
+      volume_level: 0.45
+      is_volume_muted: false
+      entity_picture: /api/media_player_proxy/media_player.pc_spotify?token=preview
+
+  media_player.pc_muted:
+    state: playing
+    attributes:
+      media_title: Bohemian Rhapsody
+      media_artist: Queen
+      media_duration: 355
+      media_position: 96
+      media_position_updated_at: "{now}"
+      volume_level: 0.45
+      is_volume_muted: true
+      entity_picture: /api/media_player_proxy/media_player.pc_spotify?token=preview
+
+  media_player.pc_noduration:
+    state: playing
+    attributes:
+      media_title: Live stream
+      media_artist: Radio
+      volume_level: 0.5
+      is_volume_muted: false
+
+  media_player.pc_idle:
+    state: idle
+    attributes:
+      volume_level: 0.45
+      is_volume_muted: false
+
+# pictures (plugin API 0.10): the cover the bench shows for an entity_picture, a small JPEG or PNG beside this file.
+# Nothing is fetched from the internet. Put any square cover at preview/cover.jpg.
+pictures:
+  "/api/media_player_proxy/media_player.pc_spotify?token=preview": preview/cover.jpg

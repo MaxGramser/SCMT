@@ -28,6 +28,8 @@
     "act_volume_down": "Leiser",
     "opt_cover": "Albumcover",
     "opt_cover_hint": "Zeigt das Cover neben dem Titel, ab zwei Zellen Breite, wenn der Bildschirm Bilder zeigen kann.",
+    "opt_cover_url": "Cover-Adresse",
+    "opt_cover_url_hint": "Adresse einer Cover-Datei in Home Assistant, zum Beispiel /local/cover.jpg. Für Player, deren eigenes Cover abgelehnt wird. Leer lassen, um das Bild des Players zu nutzen.",
     "opt_controls": "Wiedergabe-Tasten",
     "opt_controls_hint": "Zurück, Play/Pause und Weiter unter dem Titel. Braucht eine Kachel mit zwei Zeilen oder mehr.",
     "opt_volume": "Lautstärke-Tasten",

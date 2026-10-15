@@ -1,6 +1,6 @@
 # Manifest for SCMT (Simple Customizable Media Tile): an info tile and a button tile for a media_player entity.
 id: scmt
-version: 0.7.1
+version: 0.8.0
 api: "0.10"
 icon: music
 maintainer: Schumey
@@ -11,7 +11,6 @@ requires:
   esphome: 2026.6.2
 boards: any
 flash_kb: 4
-
 permissions:
   home_assistant_actions:
     - media_player.media_play_pause
@@ -22,7 +21,6 @@ permissions:
     - media_player.media_seek
     - media_player.volume_mute
     - media_player.volume_set
-
 tiles:
   - id: now_playing
     name: tile_name
@@ -61,9 +59,9 @@ tiles:
       - { id: volume_bar, kind: toggle, default: false, label: opt_volbar, hint: opt_volbar_hint }
       - { id: album, kind: toggle, default: false, label: opt_album, hint: opt_album_hint }
       - { id: cover, kind: toggle, default: true, label: opt_cover, hint: opt_cover_hint }
+      - { id: cover_url, kind: text, label: opt_cover_url, hint: opt_cover_url_hint }
       - { id: controls, kind: toggle, default: false, label: opt_controls, hint: opt_controls_hint }
       - { id: volume, kind: toggle, default: false, label: opt_volume, hint: opt_volume_hint }
-
   - id: media_button
     name: button_tile_name
     icon: music
