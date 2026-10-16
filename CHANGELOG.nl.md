@@ -1,5 +1,10 @@
 # Wijzigingenlogboek
 
+## 0.10.2 - 2026-10-17
+
+- De volumebalk staat altijd aan de rechterrand, ook als de hoes rechts staat, en is een derde smaller.
+- Gelijke afstanden: hoes, tekst, voortgangsbalk en knoppen staan nu even ver van elkaar als van de rand van de kaart.
+
 ## 0.10.1 - 2026-10-17
 
 - Reparatie: op een lage tegel (het kleine 2,8-inch-scherm) ligt de artiest niet meer over de tijd. De titel krijgt ook

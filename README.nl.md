@@ -34,8 +34,8 @@ De titel in grote letters, daaronder de artiest en onderaan een optionele voortg
 - **Spoelen door op de balk te tikken:** een tik op de voortgangsbalk springt naar die plek in het nummer. Standaard
   aan.
 - **Dempen:** een dempknop tussen de knoppen; een tik op de volumeweergave dempt of heft het dempen op.
-- **Volumebalk:** een staande balk langs de rand van de tegel, tegenover de hoes (rechts, of links als de hoes rechts
-  staat); een tik erop stelt het volume op die hoogte in. Vraagt twee kolommen.
+- **Volumebalk:** een staande balk langs de rechterrand van de tegel; een tik erop stelt het volume op die hoogte in.
+  Vraagt twee kolommen.
 - **Albumnaam:** het album op een derde regel, als de tegel hoog genoeg is.
 - **Adres van de hoes:** een vast adres van een hoesbestand in Home Assistant, getoond in plaats van de afbeelding van
   de speler (zie „De hoes” hieronder).

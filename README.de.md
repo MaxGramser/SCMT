@@ -36,8 +36,8 @@ Der Titel in großen Buchstaben, darunter der Interpret und unten optional ein F
 - **Spulen per Tipp auf den Balken:** Ein Tipp auf den Fortschrittsbalken springt an diese Stelle im Titel.
   Standardmäßig an.
 - **Stumm:** eine Stumm-Taste bei den Tasten; ein Tipp auf die Lautstärkeanzeige schaltet stumm oder wieder laut.
-- **Lautstärkeleiste:** eine aufrechte Leiste am Rand der Kachel, gegenüber dem Cover (rechts, oder links, wenn das
-  Cover rechts steht); ein Tipp darauf stellt die Lautstärke auf diese Höhe. Braucht zwei Spalten.
+- **Lautstärkeleiste:** eine aufrechte Leiste am rechten Rand der Kachel; ein Tipp darauf stellt die Lautstärke auf
+  diese Höhe. Braucht zwei Spalten.
 - **Albumname:** das Album als dritte Zeile, wenn die Kachel hoch genug ist.
 - **Cover-Adresse:** eine feste Adresse einer Cover-Datei in Home Assistant, die statt des eigenen Bildes des Players
   angezeigt wird (siehe „Das Cover“ unten).

@@ -35,9 +35,8 @@ El título en letras grandes, debajo el artista y, abajo, una barra de progreso 
   - Pausa: mientras el reproductor está en pausa, el símbolo de pausa.
 - **Avanzar tocando la barra:** un toque en la barra de progreso salta a ese punto del tema. Activado por defecto.
 - **Silencio:** un botón de silencio entre los botones; un toque en el indicador de volumen silencia o reactiva el sonido.
-- **Barra de volumen:** una barra vertical en el borde de la tarjeta, en el lado opuesto a la carátula (a la derecha,
-  o a la izquierda cuando la carátula está a la derecha); un toque en ella ajusta el volumen a esa altura. Necesita dos
-  columnas.
+- **Barra de volumen:** una barra vertical en el borde derecho de la tarjeta; un toque en ella ajusta el volumen a esa
+  altura. Necesita dos columnas.
 - **Nombre del álbum:** el álbum en una tercera línea, cuando la tarjeta es lo bastante alta.
 - **Dirección de la carátula:** una dirección fija de un archivo de carátula en Home Assistant, que se muestra en lugar
   de la imagen del reproductor (véase «La carátula» más abajo).

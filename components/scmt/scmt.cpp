@@ -140,19 +140,20 @@ class NowPlayingTile : public tessera::Tile {
       ctrl_h_ = 0;
     }
 
-    // One space between all parts (cover, text, bars, buttons), so that they stand evenly in the card.
-    const int gap = ui::px(8);
+    // One space between all parts (cover, text, bars, buttons): the card's own padding, so that the parts stand as far
+    // from each other as from the card's edge.
+    gap_ = ui::px(12);
+    const int gap = gap_;
     const int bw = ui::px(1);  // width of a frame
 
-    // The volume bar: upright along the whole height, at the edge away from the cover (right, or left when the cover
-    // is at the right). Everything else lies in the area beside it. A finger needs its width, so it needs two columns.
+    // The volume bar: upright along the whole height, at the right edge. Everything else lies in the area beside it. It
+    // is two thirds of a finger wide; its tap reaches into the space beside it. It needs two columns.
     area_x_ = 0;
     area_w_ = width_;
     if (want_vbar && c.columns >= 2) {
-      vbar_w_ = ui::mm(7);
-      vbar_x_ = cover_right_ ? 0 : width_ - vbar_w_;
+      vbar_w_ = ui::mm(7) * 2 / 3;
+      vbar_x_ = width_ - vbar_w_;
       area_w_ = width_ - vbar_w_ - gap;
-      if (cover_right_) area_x_ = vbar_w_ + gap;
     }
 
     // From the bottom up: the buttons, the progress bar, the time. What is left above is for the cover and the text.
@@ -341,7 +342,7 @@ class NowPlayingTile : public tessera::Tile {
 
     // The text lies beside the cover (at its right when the cover is at the left, at its left when the cover is at
     // the right) and takes the whole width when there is no cover.
-    const int cover_w = cover_on_ ? cover_size_ + ui::px(8) : 0;
+    const int cover_w = cover_on_ ? cover_size_ + gap_ : 0;
     x0_ = area_x_ + (cover_right_ ? 0 : cover_w);
     text_w_ = area_w_ - cover_w;
     text_right_ = x0_ + text_w_;  // where the text area ends: the volume display sits at its right edge
@@ -579,7 +580,7 @@ class NowPlayingTile : public tessera::Tile {
       return;
     }
     // 2. The volume bar: a tap sets the volume where it hit, from 0 at the bottom to 100 at the top.
-    if (known && vbar_w_ > 0 && x >= vbar_x_ - ui::px(4) && x < vbar_x_ + vbar_w_ + ui::px(4)) {
+    if (known && vbar_w_ > 0 && x >= vbar_x_ - gap_ / 2) {
       float lvl = static_cast<float>(vbar_fy_ + vbar_fh_ - y) / static_cast<float>(vbar_fh_);
       if (lvl < 0.0f) lvl = 0.0f;
       if (lvl > 1.0f) lvl = 1.0f;
@@ -679,6 +680,7 @@ class NowPlayingTile : public tessera::Tile {
   uint32_t cover_key_{0}, cover_gen_{0}, cover_retry_at_{0};
   bool cover_retry_{false};
   int bar_h_{0}, bar_y_{0}, time_y_{0}, ctrl_h_{0}, content_h_{0};
+  int gap_{0};                                   // the space between the parts, the card's own padding
   int area_x_{0}, area_w_{0};                    // the area beside the volume bar, for everything else
   int vbar_x_{0}, vbar_w_{0}, vbar_fy_{0}, vbar_fh_{1};  // the volume bar, and where its fill may reach
   int btn_w_{0}, btn_gap_{0};

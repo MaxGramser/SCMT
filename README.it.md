@@ -36,8 +36,8 @@ Il titolo in caratteri grandi, sotto l'artista e in basso una barra di avanzamen
 - **Cerca toccando la barra:** un tocco sulla barra di avanzamento salta a quel punto del brano. Attivo per
   impostazione predefinita.
 - **Muto:** un tasto muto tra i tasti; un tocco sull'indicatore del volume attiva o toglie il muto.
-- **Barra del volume:** una barra verticale sul bordo della tessera, dal lato opposto alla copertina (a destra, o a
-  sinistra quando la copertina è a destra); un tocco su di essa imposta il volume a quell'altezza. Servono due colonne.
+- **Barra del volume:** una barra verticale sul bordo destro della tessera; un tocco su di essa imposta il volume a
+  quell'altezza. Servono due colonne.
 - **Nome dell'album:** l'album su una terza riga, quando la tessera è abbastanza alta.
 - **Indirizzo della copertina:** un indirizzo fisso di un file di copertina in Home Assistant, mostrato al posto
   dell'immagine del lettore (vedi «La copertina» più sotto).

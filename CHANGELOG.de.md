@@ -1,5 +1,11 @@
 # Änderungsprotokoll
 
+## 0.10.2 - 2026-10-17
+
+- Die Lautstärkeleiste steht immer am rechten Rand, auch wenn das Cover rechts ist, und ist ein Drittel schmaler.
+- Gleichmäßige Abstände: Cover, Text, Fortschrittsbalken und Tasten stehen jetzt so weit voneinander entfernt wie vom
+  Rand der Karte.
+
 ## 0.10.1 - 2026-10-17
 
 - Fehlerbehebung: Auf einer niedrigen Kachel (dem kleinen 2,8-Zoll-Bildschirm) liegt der Interpret nicht mehr über der

@@ -58,7 +58,7 @@
     "opt_mute": "Dempen",
     "opt_mute_hint": "Een dempknop tussen de knoppen, en een tik op de volumeweergave dempt of heft het dempen op. De knoppen vragen twee rijen.",
     "opt_volbar": "Volumebalk",
-    "opt_volbar_hint": "Een staande balk langs de rand van de tegel, tegenover de hoes; een tik erop stelt het volume op die hoogte in. Vraagt een tegel van twee kolommen of meer.",
+    "opt_volbar_hint": "Een staande balk langs de rechterrand van de tegel; een tik erop stelt het volume op die hoogte in. Vraagt een tegel van twee kolommen of meer.",
     "opt_album": "Albumnaam",
     "opt_album_hint": "Het album op een derde regel, als de tegel hoog genoeg is.",
     "opt_barh": "Hoogte van de voortgangsbalk",

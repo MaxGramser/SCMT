@@ -1,5 +1,12 @@
 # Journal des modifications
 
+## 0.10.2 - 2026-10-17
+
+- La barre de volume se trouve toujours au bord droit, même quand la pochette est à droite, et est plus étroite d'un
+  tiers.
+- Espacement régulier : la pochette, le texte, la barre de progression et les boutons sont maintenant aussi éloignés
+  les uns des autres que du bord de la carte.
+
 ## 0.10.1 - 2026-10-17
 
 - Correction : sur une tuile basse (le petit écran de 2,8 pouces), l'artiste ne recouvre plus le temps. Le titre prend

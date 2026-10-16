@@ -35,8 +35,8 @@ Le titre en grandes lettres, l'artiste dessous, et en bas une barre de progressi
 - **Avancer en touchant la barre :** un appui sur la barre de progression saute à cet endroit du morceau. Activé par
   défaut.
 - **Muet :** un bouton muet parmi les boutons ; un appui sur l'affichage du volume active ou coupe le muet.
-- **Barre de volume :** une barre verticale au bord de la tuile, du côté opposé à la pochette (à droite, ou à gauche
-  quand la pochette est à droite) ; un appui dessus règle le volume à cette hauteur. Demande deux colonnes.
+- **Barre de volume :** une barre verticale au bord droit de la tuile ; un appui dessus règle le volume à cette
+  hauteur. Demande deux colonnes.
 - **Nom de l'album :** l'album sur une troisième ligne, quand la tuile est assez haute.
 - **Adresse de la pochette :** une adresse fixe d'un fichier de pochette dans Home Assistant, affichée à la place de
   l'image du lecteur (voir « La pochette » plus bas).

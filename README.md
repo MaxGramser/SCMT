@@ -34,8 +34,8 @@ The title in large letters, the artist below it, and an optional progress bar at
   - Pause: while the player is paused, the pause sign.
 - **Seek by tapping the bar:** a tap on the progress bar jumps to that place in the song. On by default.
 - **Mute:** a mute button among the buttons; a tap on the volume display mutes or unmutes.
-- **Volume bar:** an upright bar along the edge of the tile, opposite the cover (at the right, or at the left when the
-  cover is at the right); a tap on it sets the volume to that height. Needs two columns.
+- **Volume bar:** an upright bar along the right edge of the tile; a tap on it sets the volume to that height. Needs two
+  columns.
 - **Album name:** the album as a third line, when the tile is high enough.
 - **Cover address:** a fixed address of a cover file in Home Assistant, shown instead of the player's own picture (see
   "The cover" below).

@@ -1,5 +1,12 @@
 # Registro de cambios
 
+## 0.10.2 - 2026-10-17
+
+- La barra de volumen está siempre en el borde derecho, también cuando la carátula está a la derecha, y es un tercio
+  más estrecha.
+- Espaciado uniforme: la carátula, el texto, la barra de progreso y los botones están ahora tan separados entre sí como
+  del borde de la tarjeta.
+
 ## 0.10.1 - 2026-10-17
 
 - Corrección: en una tarjeta baja (la pantalla pequeña de 2,8 pulgadas) el artista ya no cubre el tiempo. El título

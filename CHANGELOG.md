@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.10.2 - 2026-10-17
+
+- The volume bar always stands at the right edge, also when the cover is at the right, and is a third narrower.
+- Even spacing: the cover, the text, the progress bar and the buttons now stand as far apart as from the card's edge.
+
 ## 0.10.1 - 2026-10-17
 
 - Fix: on a low tile (the small 2.8-inch screen) the artist no longer lies over the time. The title takes a smaller font

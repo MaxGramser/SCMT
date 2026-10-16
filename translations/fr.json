@@ -58,7 +58,7 @@
     "opt_mute": "Muet",
     "opt_mute_hint": "Un bouton muet parmi les boutons, et un appui sur l'affichage du volume active ou coupe le muet. Les boutons demandent deux lignes.",
     "opt_volbar": "Barre de volume",
-    "opt_volbar_hint": "Une barre verticale au bord de la tuile, du côté opposé à la pochette ; un appui dessus règle le volume à cette hauteur. Demande une tuile d'au moins deux colonnes.",
+    "opt_volbar_hint": "Une barre verticale au bord droit de la tuile ; un appui dessus règle le volume à cette hauteur. Demande une tuile d'au moins deux colonnes.",
     "opt_album": "Nom de l'album",
     "opt_album_hint": "L'album sur une troisième ligne, quand la tuile est assez haute.",
     "opt_barh": "Hauteur de la barre de progression",

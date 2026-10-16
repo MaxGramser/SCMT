@@ -58,7 +58,7 @@
     "opt_mute": "Stumm",
     "opt_mute_hint": "Eine Stumm-Taste bei den Tasten, und ein Tipp auf die Lautstärkeanzeige schaltet stumm oder wieder laut. Die Tasten brauchen zwei Zeilen.",
     "opt_volbar": "Lautstärkeleiste",
-    "opt_volbar_hint": "Eine aufrechte Leiste am Rand der Kachel, gegenüber dem Cover; ein Tipp darauf stellt die Lautstärke auf diese Höhe. Braucht eine Kachel mit zwei Spalten oder mehr.",
+    "opt_volbar_hint": "Eine aufrechte Leiste am rechten Rand der Kachel; ein Tipp darauf stellt die Lautstärke auf diese Höhe. Braucht eine Kachel mit zwei Spalten oder mehr.",
     "opt_album": "Albumname",
     "opt_album_hint": "Das Album als dritte Zeile, wenn die Kachel hoch genug ist.",
     "opt_barh": "Höhe des Fortschrittsbalkens",

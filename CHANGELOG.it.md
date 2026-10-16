@@ -1,5 +1,11 @@
 # Registro delle modifiche
 
+## 0.10.2 - 2026-10-17
+
+- La barra del volume sta sempre sul bordo destro, anche quando la copertina è a destra, ed è più stretta di un terzo.
+- Spaziatura uniforme: copertina, testo, barra di avanzamento e tasti ora distano tra loro quanto dal bordo della
+  scheda.
+
 ## 0.10.1 - 2026-10-17
 
 - Correzione: su una tessera bassa (il piccolo schermo da 2,8 pollici) l'artista non copre più il tempo. Il titolo
