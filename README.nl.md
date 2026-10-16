@@ -17,18 +17,18 @@ De titel in grote letters, daaronder de artiest en onderaan een optionele voortg
   heeft `volume_level` nodig; een gedempte speler toont „Gedempt”.
 - Een tik op de tegel start of pauzeert het afspelen.
 - De albumhoes staat naast de titel als de tegel minstens twee cellen breed is en het scherm afbeeldingen kan tonen (de
-  kleine borden kunnen dat niet). In de opties van de tegel kun je hem uitzetten.
-- Twee opties voegen knoppen onder de titel toe: „Afspeelknoppen” (vorige, afspelen/pauze, volgende) en „Volumeknoppen”
-  (zachter, harder). Ze vragen een tegel van twee rijen of meer.
+  kleine borden kunnen dat niet). De optie „Albumhoes” zet hem links (standaard) of rechts van de tekst, of zet hem uit.
+- De optie „Knoppen” voegt knoppen onder de titel toe: afspelen (vorige, afspelen/pauze, volgende), volume (zachter,
+  harder) of allebei. Ze vragen een tegel van twee rijen of meer.
 
 ### Meer opties van deze tegel
 
-- **Positie van de hoes:** de albumhoes links (standaard) of rechts van de tekst.
 - **Positie van de tekst:** titel, artiest en album in het midden (standaard), boven of onderaan de ruimte naast de hoes.
-- **Pauzeweergave:** zolang de speler gepauzeerd is, ligt een half doorzichtige weergave met het pauzeteken over de hele
-  tegel. Standaard uit.
-- **Grote volumeweergave:** drie seconden nadat het volume is veranderd, ligt een half doorzichtige weergave met het
-  getal en een luidspreker over de hele tegel. Met de optie „Dempen” dempt een tik erop. Standaard uit.
+- **Grote weergave:** een half doorzichtige weergave over de hele tegel, voor het volume, voor de pauze of voor allebei.
+  Standaard uit.
+  - Volume: drie seconden nadat het volume is veranderd, het getal en een luidspreker. Met de optie „Dempen” dempt een
+    tik erop.
+  - Pauze: zolang de speler gepauzeerd is, het pauzeteken.
 - **Spoelen door op de balk te tikken:** een tik op de voortgangsbalk springt naar die plek in het nummer.
 - **Dempen:** een dempknop tussen de knoppen; een tik op de volumeweergave dempt of heft het dempen op.
 - **Volumebalk:** een balk onder de tekst; een tik erop stelt het volume op die plek in. Vraagt twee rijen.

@@ -18,20 +18,20 @@ Der Titel in großen Buchstaben, darunter der Interpret und unten optional ein F
   immer oder nie. Sie braucht `volume_level`; ein stummer Player zeigt „Stumm“.
 - Ein Tipp auf die Kachel startet oder pausiert die Wiedergabe.
 - Das Albumcover steht neben dem Titel, wenn die Kachel mindestens zwei Zellen breit ist und der Bildschirm Bilder
-  zeigen kann (die kleinen Boards können das nicht). In den Optionen der Kachel lässt es sich abschalten.
-- Zwei Optionen fügen Tasten unter dem Titel hinzu: „Wiedergabe-Tasten“ (zurück, Play/Pause, weiter) und
-  „Lautstärke-Tasten“ (leiser, lauter). Sie brauchen eine Kachel mit zwei Zeilen oder mehr.
+  zeigen kann (die kleinen Boards können das nicht). Die Option „Albumcover“ setzt es links (Standard) oder rechts vom
+  Text, oder schaltet es ab.
+- Die Option „Tasten“ fügt Tasten unter dem Titel hinzu: Wiedergabe (zurück, Play/Pause, weiter), Lautstärke (leiser,
+  lauter) oder beides. Sie brauchen eine Kachel mit zwei Zeilen oder mehr.
 
 ### Weitere Optionen dieser Kachel
 
-- **Position des Covers:** das Albumcover links (Standard) oder rechts vom Text.
 - **Position des Textes:** Titel, Interpret und Album in der Mitte (Standard), oben oder unten in dem Platz neben dem
   Cover.
-- **Pause-Anzeige:** Solange der Player pausiert ist, liegt eine halb durchsichtige Anzeige mit dem Pause-Zeichen über
-  der ganzen Kachel. Standardmäßig aus.
-- **Große Lautstärkeanzeige:** drei Sekunden nach einer Änderung der Lautstärke liegt eine halb durchsichtige Anzeige
-  mit der Zahl und einem Lautsprecher über der ganzen Kachel. Mit der Option „Stumm“ schaltet ein Tipp darauf stumm.
-  Standardmäßig aus.
+- **Große Anzeige:** eine halb durchsichtige Anzeige über der ganzen Kachel, für die Lautstärke, für die Pause oder für
+  beides. Standardmäßig aus.
+  - Lautstärke: drei Sekunden nach einer Änderung der Lautstärke, mit der Zahl und einem Lautsprecher. Mit der Option
+    „Stumm“ schaltet ein Tipp darauf stumm.
+  - Pause: solange der Player pausiert ist, das Pause-Zeichen.
 - **Spulen per Tipp auf den Balken:** Ein Tipp auf den Fortschrittsbalken springt an diese Stelle im Titel.
 - **Stumm:** eine Stumm-Taste bei den Tasten; ein Tipp auf die Lautstärkeanzeige schaltet stumm oder wieder laut.
 - **Lautstärkeleiste:** eine Leiste unter dem Text; ein Tipp darauf stellt die Lautstärke an dieser Stelle ein. Braucht

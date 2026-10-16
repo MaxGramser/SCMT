@@ -17,20 +17,20 @@ Le titre en grandes lettres, l'artiste dessous, et en bas une barre de progressi
   toujours, ou jamais. Elle demande `volume_level` ; un lecteur en sourdine affiche « Muet ».
 - Un appui sur la tuile lance ou met en pause la lecture.
 - La pochette de l'album se place à côté du titre quand la tuile fait au moins deux cellules de large et que l'écran
-  peut afficher des images (les petites cartes ne le peuvent pas). On peut la désactiver dans les options de la tuile.
-- Deux options ajoutent des boutons sous le titre : « Boutons de lecture » (précédent, lecture/pause, suivant) et
-  « Boutons de volume » (moins fort, plus fort). Ils demandent une tuile d'au moins deux lignes.
+  peut afficher des images (les petites cartes ne le peuvent pas). L'option « Pochette de l'album » la place à gauche
+  (par défaut) ou à droite du texte, ou la désactive.
+- L'option « Boutons » ajoute des boutons sous le titre : lecture (précédent, lecture/pause, suivant), volume (moins
+  fort, plus fort) ou les deux. Ils demandent une tuile d'au moins deux lignes.
 
 ### Autres options de cette tuile
 
-- **Position de la pochette :** la pochette de l'album à gauche (par défaut) ou à droite du texte.
 - **Position du texte :** titre, artiste et album au milieu (par défaut), en haut ou en bas de l'espace à côté de la
   pochette.
-- **Affichage de la pause :** tant que le lecteur est en pause, un affichage semi-transparent avec le symbole de pause
-  recouvre toute la tuile. Désactivé par défaut.
-- **Grand affichage du volume :** pendant trois secondes après un changement de volume, un affichage semi-transparent
-  avec le nombre et un haut-parleur recouvre toute la tuile. Avec l'option « Muet », un appui dessus coupe le son.
-  Désactivé par défaut.
+- **Grand affichage :** un affichage semi-transparent sur toute la tuile, pour le volume, pour la pause ou pour les
+  deux. Désactivé par défaut.
+  - Volume : pendant trois secondes après un changement de volume, le nombre et un haut-parleur. Avec l'option « Muet »,
+    un appui dessus coupe le son.
+  - Pause : tant que le lecteur est en pause, le symbole de pause.
 - **Avancer en touchant la barre :** un appui sur la barre de progression saute à cet endroit du morceau.
 - **Muet :** un bouton muet parmi les boutons ; un appui sur l'affichage du volume active ou coupe le muet.
 - **Barre de volume :** une barre sous le texte ; un appui dessus règle le volume à cet endroit. Demande deux lignes.

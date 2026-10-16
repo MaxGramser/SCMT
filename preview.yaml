@@ -13,15 +13,13 @@ tiles:
       timeline: both
       bar_height: 6
       volume_display: always
-      volume_overlay: true
+      overlay: both
       seek: true
       mute: true
       volume_bar: true
       album: true
-      cover: true
-      controls: true
-      volume: true
-      pause_overlay: true
+      cover: left
+      buttons: both
     sizes: [2x2, 3x2, 4x2, 4x3, 4x4]
 
   # 2. Playing with the defaults, at every size the tile offers (1x1 to 4x4)
@@ -62,12 +60,12 @@ tiles:
   - tile: now_playing
     name: Playback buttons
     entity: media_player.pc_spotify
-    options: { controls: true }
+    options: { buttons: playback }
     sizes: [2x2, 3x2]
   - tile: now_playing
     name: Volume buttons
     entity: media_player.pc_spotify
-    options: { volume: true }
+    options: { buttons: volume }
     sizes: [2x2, 3x2]
   - tile: now_playing
     name: Volume bar
@@ -82,14 +80,14 @@ tiles:
   - tile: now_playing
     name: Big volume display
     entity: media_player.pc_spotify
-    options: { volume_overlay: true, mute: true }
+    options: { overlay: volume, mute: true }
     sizes: [2x2, 3x2]
 
   # 6. Without the cover: the text takes the whole width
   - tile: now_playing
     name: No cover
     entity: media_player.pc_spotify
-    options: { cover: false }
+    options: { cover: "off" }    # in quotes: a bare off is read as a truth value (0.4.1)
     sizes: [2x1, 3x1]
 
   # 6b. A cover from a fixed address (option "Cover address"), for a player whose own picture the tile may not fetch.
@@ -100,11 +98,11 @@ tiles:
     options: { cover_url: "/local/cover.jpg?v={v}" }
     sizes: [2x1, 3x1]
 
-  # 6c. The cover at the right (option "Cover position")
+  # 6c. The cover at the right (option "Album cover")
   - tile: now_playing
     name: Cover right
     entity: media_player.pc_spotify
-    options: { cover_side: right, volume_display: always }
+    options: { cover: right, volume_display: always }
     sizes: [2x1, 3x1, 2x2]
 
   # 6d. The text at the top or at the bottom of the space beside the cover (option "Position of the text")
@@ -123,7 +121,7 @@ tiles:
   - tile: now_playing
     name: Pause display
     entity: media_player.pc_paused
-    options: { pause_overlay: true }
+    options: { overlay: pause }
     sizes: [2x1, 2x2, 3x2]
 
   # 7. A player without a picture: no empty grey square, the text takes the whole width

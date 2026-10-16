@@ -1,5 +1,15 @@
 # Änderungsprotokoll
 
+## 0.9.1 - 2026-10-16
+
+- Fehlerbehebung: Das Manifest wurde abgelehnt („tiles[0].options: at most 12 entries“), weil die Kachel „SCMT“ 15
+  Optionen hatte. Drei Paare sind jetzt je eine Auswahl, ohne dass etwas verloren geht:
+  - „Albumcover“: links, rechts oder aus (war „Albumcover“ und „Position des Covers“).
+  - „Tasten“: keine, Wiedergabe, Lautstärke oder beides (war „Wiedergabe-Tasten“ und „Lautstärke-Tasten“).
+  - „Große Anzeige“: keine, Lautstärke, Pause oder beides (war „Große Lautstärkeanzeige“ und „Pause-Anzeige“).
+- Kacheln, die mit einer älteren Version platziert wurden, behalten ihre Einstellungen; die Kachel liest die früheren
+  Optionen weiterhin.
+
 ## 0.9.0 - 2026-10-16
 
 - Neue Option „Pause-Anzeige“: Solange der Player pausiert ist, liegt eine halb durchsichtige Anzeige mit dem
@@ -13,15 +23,12 @@
   `examples/cover_automation.yaml`.
 - Die Kachel reserviert etwas mehr Speicher für die neue Anzeige.
 
-## 0.8.1.1 - 2026-10-16
-
-- Das Store-Bild `store.png` für den Plugin-Store wurde hinzugefügt.
-
 ## 0.8.1 - 2026-10-16
 
 - Die „Cover-Adresse“ wird jetzt genau so verwendet, wie sie eingegeben wird. Ein `{v}` darin wird durch eine Zahl
   ersetzt, die sich mit jedem Titel ändert (zum Beispiel `/local/cover.jpg?v={v}`); vorher wurde diese Zahl immer als
   `?v=` hinter die Adresse gehängt.
+- Das Store-Bild `store.png` für den Plugin-Store wurde hinzugefügt.
 
 ## 0.8.0 - 2026-10-15
 

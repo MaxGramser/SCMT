@@ -17,19 +17,20 @@ The title in large letters, the artist below it, and an optional progress bar at
   never. It needs `volume_level`; a muted player shows "Muted".
 - A tap on the tile plays or pauses.
 - The album cover stands beside the title, when the tile is at least two cells wide and the screen can show pictures
-  (the small boards cannot). It can be switched off in the tile's options.
-- Two options add buttons under the title: "Playback buttons" (previous, play/pause, next) and "Volume buttons"
-  (quieter, louder). They need a tile of two rows or more.
+  (the small boards cannot). The option "Album cover" puts it at the left (default) or at the right of the text, or
+  switches it off.
+- The option "Buttons" adds buttons under the title: playback (previous, play/pause, next), volume (quieter, louder),
+  or both. They need a tile of two rows or more.
 
 ### More options of this tile
 
-- **Cover position:** the album cover at the left (default) or at the right of the text.
 - **Position of the text:** title, artist and album in the middle (default), at the top or at the bottom of the space
   beside the cover.
-- **Pause display:** while the player is paused, a half see-through display with the pause sign lies over the whole
-  tile. Off by default.
-- **Big volume display:** for three seconds after the volume changes, a half see-through display with the number and a
-  speaker lies over the whole tile. With the option "Mute", a tap on it mutes. Off by default.
+- **Big display:** a half see-through display over the whole tile, for the volume, for the pause, or both. Off by
+  default.
+  - Volume: for three seconds after the volume changes, the number and a speaker. With the option "Mute", a tap on it
+    mutes.
+  - Pause: while the player is paused, the pause sign.
 - **Seek by tapping the bar:** a tap on the progress bar jumps to that place in the song.
 - **Mute:** a mute button among the buttons; a tap on the volume display mutes or unmutes.
 - **Volume bar:** a bar under the text; a tap on it sets the volume to that place. Needs two rows.

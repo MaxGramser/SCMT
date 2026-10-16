@@ -1,5 +1,14 @@
 # Wijzigingenlogboek
 
+## 0.9.1 - 2026-10-16
+
+- Reparatie: het manifest werd geweigerd („tiles[0].options: at most 12 entries”), omdat de tegel „SCMT” 15 opties had.
+  Drie paren zijn nu elk één keuze, zonder dat er iets verloren gaat:
+  - „Albumhoes”: links, rechts of uit (was „Albumhoes” en „Positie van de hoes”).
+  - „Knoppen”: geen, afspelen, volume of allebei (was „Afspeelknoppen” en „Volumeknoppen”).
+  - „Grote weergave”: geen, volume, pauze of allebei (was „Grote volumeweergave” en „Pauzeweergave”).
+- Tegels die met een oudere versie zijn geplaatst, houden hun instellingen; de tegel leest de vroegere opties nog steeds.
+
 ## 0.9.0 - 2026-10-16
 
 - Nieuwe optie „Pauzeweergave”: zolang de speler gepauzeerd is, ligt een half doorzichtige weergave met het pauzeteken
@@ -12,15 +21,12 @@
   `examples/cover_automation.yaml`.
 - De tegel reserveert iets meer geheugen voor de nieuwe weergave.
 
-## 0.8.1.1 - 2026-10-16
-
-- De winkelafbeelding `store.png` voor de pluginwinkel is toegevoegd.
-
 ## 0.8.1 - 2026-10-16
 
 - Het „Adres van de hoes” wordt nu precies zo gebruikt als het is ingevoerd. Een `{v}` erin wordt vervangen door een
   getal dat bij elk nummer verandert (bijvoorbeeld `/local/cover.jpg?v={v}`); eerder werd dat getal altijd als `?v=`
   achter het adres gezet.
+- De winkelafbeelding `store.png` voor de pluginwinkel is toegevoegd.
 
 ## 0.8.0 - 2026-10-15
 

@@ -1,5 +1,17 @@
 # Journal des modifications
 
+## 0.9.1 - 2026-10-16
+
+- Correction : le manifeste était refusé (« tiles[0].options: at most 12 entries »), parce que la tuile « SCMT » avait
+  15 options. Trois paires sont maintenant un seul choix chacune, sans rien perdre :
+  - « Pochette de l'album » : à gauche, à droite ou désactivée (était « Pochette de l'album » et « Position de la
+    pochette »).
+  - « Boutons » : aucun, lecture, volume ou les deux (était « Boutons de lecture » et « Boutons de volume »).
+  - « Grand affichage » : aucun, volume, pause ou les deux (était « Grand affichage du volume » et « Affichage de la
+    pause »).
+- Les tuiles placées avec une version plus ancienne gardent leurs réglages ; la tuile lit toujours les anciennes
+  options.
+
 ## 0.9.0 - 2026-10-16
 
 - Nouvelle option « Affichage de la pause » : tant que le lecteur est en pause, un affichage semi-transparent avec le
@@ -13,15 +25,12 @@
   `examples/cover_automation.yaml`.
 - La tuile réserve un peu plus de mémoire pour le nouvel affichage.
 
-## 0.8.1.1 - 2026-10-16
-
-- L'image de la boutique `store.png` pour la boutique de plugins a été ajoutée.
-
 ## 0.8.1 - 2026-10-16
 
 - L'« Adresse de la pochette » est maintenant utilisée exactement comme saisie. Un `{v}` dedans est remplacé par un
   nombre qui change à chaque titre (par exemple `/local/cover.jpg?v={v}`) ; avant, ce nombre était toujours ajouté
   derrière l'adresse sous la forme `?v=`.
+- L'image de la boutique `store.png` pour la boutique de plugins a été ajoutée.
 
 ## 0.8.0 - 2026-10-15
 

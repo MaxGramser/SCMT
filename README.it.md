@@ -18,20 +18,20 @@ Il titolo in caratteri grandi, sotto l'artista e in basso una barra di avanzamen
   mai. Serve `volume_level`; un lettore in muto mostra «Muto».
 - Un tocco sulla tessera avvia o mette in pausa la riproduzione.
 - La copertina dell'album sta accanto al titolo quando la tessera è larga almeno due celle e lo schermo può mostrare
-  immagini (le schede piccole non possono). Nelle opzioni della tessera si può disattivare.
-- Due opzioni aggiungono tasti sotto il titolo: «Tasti di riproduzione» (precedente, riproduci/pausa, successivo) e
-  «Tasti del volume» (più piano, più forte). Servono una tessera di almeno due righe.
+  immagini (le schede piccole non possono). L'opzione «Copertina dell'album» la mette a sinistra (predefinito) o a
+  destra del testo, oppure la disattiva.
+- L'opzione «Tasti» aggiunge tasti sotto il titolo: riproduzione (precedente, riproduci/pausa, successivo), volume (più
+  piano, più forte) o entrambi. Servono una tessera di almeno due righe.
 
 ### Altre opzioni di questa tessera
 
-- **Posizione della copertina:** la copertina dell'album a sinistra (predefinito) o a destra del testo.
 - **Posizione del testo:** titolo, artista e album al centro (predefinito), in alto o in basso nello spazio accanto alla
   copertina.
-- **Indicatore di pausa:** finché il lettore è in pausa, un indicatore semitrasparente con il simbolo di pausa copre
-  tutta la tessera. Disattivato per impostazione predefinita.
-- **Indicatore del volume grande:** per tre secondi dopo una modifica del volume, un indicatore semitrasparente con il
-  numero e un altoparlante copre tutta la tessera. Con l'opzione «Muto», un tocco su di esso attiva il muto.
+- **Indicatore grande:** un indicatore semitrasparente su tutta la tessera, per il volume, per la pausa o per entrambi.
   Disattivato per impostazione predefinita.
+  - Volume: per tre secondi dopo una modifica del volume, il numero e un altoparlante. Con l'opzione «Muto», un tocco
+    su di esso attiva il muto.
+  - Pausa: finché il lettore è in pausa, il simbolo di pausa.
 - **Cerca toccando la barra:** un tocco sulla barra di avanzamento salta a quel punto del brano.
 - **Muto:** un tasto muto tra i tasti; un tocco sull'indicatore del volume attiva o toglie il muto.
 - **Barra del volume:** una barra sotto il testo; un tocco su di essa imposta il volume in quel punto. Servono due righe.

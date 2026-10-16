@@ -18,20 +18,20 @@ El título en letras grandes, debajo el artista y, abajo, una barra de progreso 
   siempre o nunca. Necesita `volume_level`; un reproductor silenciado muestra «Silenciado».
 - Un toque en la tarjeta reproduce o pausa.
 - La carátula del álbum aparece junto al título cuando la tarjeta tiene al menos dos celdas de ancho y la pantalla puede
-  mostrar imágenes (las placas pequeñas no pueden). Se puede desactivar en las opciones de la tarjeta.
-- Dos opciones añaden botones bajo el título: «Botones de reproducción» (anterior, reproducir/pausa, siguiente) y
-  «Botones de volumen» (más bajo, más alto). Necesitan una tarjeta de dos filas o más.
+  mostrar imágenes (las placas pequeñas no pueden). La opción «Carátula del álbum» la pone a la izquierda (por defecto)
+  o a la derecha del texto, o la desactiva.
+- La opción «Botones» añade botones bajo el título: reproducción (anterior, reproducir/pausa, siguiente), volumen (más
+  bajo, más alto) o ambos. Necesitan una tarjeta de dos filas o más.
 
 ### Más opciones de esta tarjeta
 
-- **Posición de la carátula:** la carátula del álbum a la izquierda (por defecto) o a la derecha del texto.
 - **Posición del texto:** título, artista y álbum en el centro (por defecto), arriba o abajo del espacio junto a la
   carátula.
-- **Indicador de pausa:** mientras el reproductor está en pausa, un indicador semitransparente con el símbolo de pausa
-  cubre toda la tarjeta. Desactivado por defecto.
-- **Indicador de volumen grande:** durante tres segundos tras un cambio de volumen, un indicador semitransparente con
-  el número y un altavoz cubre toda la tarjeta. Con la opción «Silencio», un toque en él silencia. Desactivado por
-  defecto.
+- **Indicador grande:** un indicador semitransparente sobre toda la tarjeta, para el volumen, para la pausa o para
+  ambos. Desactivado por defecto.
+  - Volumen: durante tres segundos tras un cambio de volumen, el número y un altavoz. Con la opción «Silencio», un
+    toque en él silencia.
+  - Pausa: mientras el reproductor está en pausa, el símbolo de pausa.
 - **Avanzar tocando la barra:** un toque en la barra de progreso salta a ese punto del tema.
 - **Silencio:** un botón de silencio entre los botones; un toque en el indicador de volumen silencia o reactiva el sonido.
 - **Barra de volumen:** una barra bajo el texto; un toque en ella ajusta el volumen en ese punto. Necesita dos filas.

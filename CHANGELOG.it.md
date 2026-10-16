@@ -1,5 +1,15 @@
 # Registro delle modifiche
 
+## 0.9.1 - 2026-10-16
+
+- Correzione: il manifesto veniva rifiutato («tiles[0].options: at most 12 entries») perché la tessera «SCMT» aveva 15
+  opzioni. Tre coppie sono ora una sola scelta ciascuna, senza perdere nulla:
+  - «Copertina dell'album»: sinistra, destra o disattivata (era «Copertina dell'album» e «Posizione della copertina»).
+  - «Tasti»: nessuno, riproduzione, volume o entrambi (era «Tasti di riproduzione» e «Tasti del volume»).
+  - «Indicatore grande»: nessuno, volume, pausa o entrambi (era «Indicatore del volume grande» e «Indicatore di pausa»).
+- Le tessere posizionate con una versione precedente mantengono le loro impostazioni; la tessera legge ancora le opzioni
+  precedenti.
+
 ## 0.9.0 - 2026-10-16
 
 - Nuova opzione «Indicatore di pausa»: finché il lettore è in pausa, un indicatore semitrasparente con il simbolo di
@@ -13,15 +23,12 @@
   `examples/cover_automation.yaml`.
 - La tessera riserva un po' più di memoria per il nuovo indicatore.
 
-## 0.8.1.1 - 2026-10-16
-
-- È stata aggiunta l'immagine dello store `store.png` per lo store dei plugin.
-
 ## 0.8.1 - 2026-10-16
 
 - L'«Indirizzo della copertina» viene ora usato esattamente come scritto. Un `{v}` al suo interno viene sostituito da un
   numero che cambia a ogni brano (per esempio `/local/cover.jpg?v={v}`); prima quel numero veniva sempre aggiunto dopo
   l'indirizzo come `?v=`.
+- È stata aggiunta l'immagine dello store `store.png` per lo store dei plugin.
 
 ## 0.8.0 - 2026-10-15
 

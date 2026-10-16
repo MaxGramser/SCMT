@@ -1,5 +1,15 @@
 # Registro de cambios
 
+## 0.9.1 - 2026-10-16
+
+- Corrección: el manifiesto se rechazaba («tiles[0].options: at most 12 entries») porque la tarjeta «SCMT» tenía 15
+  opciones. Tres pares son ahora una sola elección cada uno, sin perder nada:
+  - «Carátula del álbum»: izquierda, derecha o desactivada (era «Carátula del álbum» y «Posición de la carátula»).
+  - «Botones»: ninguno, reproducción, volumen o ambos (era «Botones de reproducción» y «Botones de volumen»).
+  - «Indicador grande»: ninguno, volumen, pausa o ambos (era «Indicador de volumen grande» e «Indicador de pausa»).
+- Las tarjetas colocadas con una versión anterior conservan sus ajustes; la tarjeta sigue leyendo las opciones
+  anteriores.
+
 ## 0.9.0 - 2026-10-16
 
 - Nueva opción «Indicador de pausa»: mientras el reproductor está en pausa, un indicador semitransparente con el símbolo
@@ -13,15 +23,12 @@
   `examples/cover_automation.yaml`.
 - La tarjeta reserva algo más de memoria para el nuevo indicador.
 
-## 0.8.1.1 - 2026-10-16
-
-- Se añadió la imagen de la tienda `store.png` para la tienda de plugins.
-
 ## 0.8.1 - 2026-10-16
 
 - La «Dirección de la carátula» se usa ahora exactamente como se escribe. Un `{v}` en ella se sustituye por un número
   que cambia con cada tema (por ejemplo `/local/cover.jpg?v={v}`); antes ese número se añadía siempre detrás de la
   dirección como `?v=`.
+- Se añadió la imagen de la tienda `store.png` para la tienda de plugins.
 
 ## 0.8.0 - 2026-10-15
 

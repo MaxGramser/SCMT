@@ -88,20 +88,37 @@ class NowPlayingTile : public tessera::Tile {
     show_time_ = timeline == "time" || timeline == "both";
     const std::string vd = (const char *) (c.options["volume_display"] | "change");
     vol_mode_ = vd == "always" ? 2 : (vd == "off" ? 0 : 1);
-    const bool want_cover = c.options["cover"] | true;
-    const bool want_controls = c.options["controls"] | false;
-    const bool want_volume = c.options["volume"] | false;
+    // "cover", "buttons" and "overlay" are choices that each hold two former options (at most 12 options per tile).
+    // Tiles placed before 0.9.0 still carry the former options; they are read when the choice is missing.
+    bool want_cover;
+    if (c.options["cover"].is<bool>()) {
+      want_cover = c.options["cover"].as<bool>();
+      cover_right_ = std::string((const char *) (c.options["cover_side"] | "left")) == "right";
+    } else {
+      const std::string cover = (const char *) (c.options["cover"] | "left");
+      want_cover = cover != "off";
+      cover_right_ = cover == "right";
+    }
+    const bool old_controls = c.options["controls"] | false;
+    const bool old_volume = c.options["volume"] | false;
+    const char *old_buttons = old_controls ? (old_volume ? "both" : "playback") : (old_volume ? "volume" : "none");
+    const std::string buttons = (const char *) (c.options["buttons"] | old_buttons);
+    const bool want_controls = buttons == "playback" || buttons == "both";
+    const bool want_volume = buttons == "volume" || buttons == "both";
+    const bool old_vol_overlay = c.options["volume_overlay"] | false;
+    const bool old_pause_overlay = c.options["pause_overlay"] | false;
+    const char *old_overlay =
+        old_vol_overlay ? (old_pause_overlay ? "both" : "volume") : (old_pause_overlay ? "pause" : "none");
+    const std::string overlay = (const char *) (c.options["overlay"] | old_overlay);
+    const bool want_overlay = overlay == "volume" || overlay == "both";
+    const bool want_pause_overlay = overlay == "pause" || overlay == "both";
     const bool want_vbar = c.options["volume_bar"] | false;
-    const bool want_overlay = c.options["volume_overlay"] | false;
     want_mute_ = c.options["mute"] | false;
     want_seek_ = c.options["seek"] | false;
     show_album_ = c.options["album"] | false;
     cover_url_ = (const char *) (c.options["cover_url"] | "");  // fixed address of a cover file, e.g. /local/cover.jpg
-    const std::string side = (const char *) (c.options["cover_side"] | "left");
-    cover_right_ = side == "right";
     const std::string tpos = (const char *) (c.options["text_pos"] | "middle");
     text_pos_ = tpos == "top" ? 1 : (tpos == "bottom" ? 2 : 0);
-    const bool want_pause_overlay = c.options["pause_overlay"] | false;
 
     // Which buttons, in which order. They need a tile of two rows or more.
     n_ = 0;

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.9.1 - 2026-10-16
+
+- Fix: the manifest was refused ("tiles[0].options: at most 12 entries"), because the tile "SCMT" had 15 options.
+  Three pairs are now one choice each, and nothing is lost:
+  - "Album cover": left, right or off (was "Album cover" and "Cover position").
+  - "Buttons": none, playback, volume, or both (was "Playback buttons" and "Volume buttons").
+  - "Big display": none, volume, pause, or both (was "Big volume display" and "Pause display").
+- Tiles placed with an older version keep their settings; the tile still reads the former options.
+
 ## 0.9.0 - 2026-10-16
 
 - New option "Pause display": while the player is paused, a half see-through display with the pause sign lies over the
@@ -13,14 +22,11 @@
   `examples/cover_automation.yaml`.
 - The tile reserves a little more memory for the new display.
 
-## 0.8.1.1 - 2026-10-16
-
-- The store picture `store.png` for the plugin store was added.
-
 ## 0.8.1 - 2026-10-16
 
 - The "Cover address" is now used exactly as typed. A `{v}` in it is replaced by a number that changes with every track
   (for example `/local/cover.jpg?v={v}`); before, that number was always added behind the address as `?v=`.
+- The store picture `store.png` for the plugin store was added.
 
 ## 0.8.0 - 2026-10-15
 
