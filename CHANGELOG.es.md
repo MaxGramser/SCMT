@@ -1,0 +1,101 @@
+# Registro de cambios
+
+## 0.9.0 - 2026-10-16
+
+- Nueva opción «Indicador de pausa»: mientras el reproductor está en pausa, un indicador semitransparente con el símbolo
+  de pausa cubre toda la tarjeta.
+- Nueva opción «Posición de la carátula»: la carátula del álbum a la izquierda o a la derecha del texto.
+- Nueva opción «Posición del texto»: título, artista y álbum arriba, en el centro o abajo del espacio junto a la
+  carátula.
+- Más idiomas: francés, español, italiano y neerlandés, además de inglés y alemán. El README y este registro también
+  existen en estos idiomas (`README.de.md`, `CHANGELOG.de.md`, etc.).
+- El README describe la automatización que lleva la carátula de un álbum a la pantalla (experimental), con un ejemplo en
+  `examples/cover_automation.yaml`.
+- La tarjeta reserva algo más de memoria para el nuevo indicador.
+
+## 0.8.1.1 - 2026-10-16
+
+- Se añadió la imagen de la tienda `store.png` para la tienda de plugins.
+
+## 0.8.1 - 2026-10-16
+
+- La «Dirección de la carátula» se usa ahora exactamente como se escribe. Un `{v}` en ella se sustituye por un número
+  que cambia con cada tema (por ejemplo `/local/cover.jpg?v={v}`); antes ese número se añadía siempre detrás de la
+  dirección como `?v=`.
+
+## 0.8.0 - 2026-10-15
+
+- Nueva opción «Dirección de la carátula»: una dirección fija de un archivo de carátula en Home Assistant (por ejemplo
+  `/local/cover.jpg`), que se muestra en lugar de la imagen del propio reproductor. Para reproductores cuya carátula la
+  tarjeta no puede cargar.
+
+## 0.7.1 - 2026-10-15
+
+- Corrección: la compilación fallaba con «Component not found: now_playing», porque `plugin.yaml` aún nombraba el
+  componente antiguo. Ahora dice `scmt`, igual que el manifiesto y la carpeta.
+
+## 0.7.0 - 2026-10-15
+
+- El id del plugin es ahora `scmt` (antes `now_playing`), igual que su carpeta y su componente. La aplicación ve un
+  plugin nuevo: quita el antiguo de la pantalla, añade este y vuelve a colocar sus tarjetas.
+
+## 0.6.0 - 2026-10-15
+
+- El plugin se llama SCMT (Simple Customizable Media Tile). Su id, `now_playing`, se mantiene, así que las tarjetas que
+  ya están en una pantalla siguen funcionando.
+- Nueva opción «Altura de la barra de progreso» (de 2 a 16 píxeles, 4 por defecto).
+
+## 0.5.0 - 2026-10-15
+
+- Nuevas opciones: «Avanzar tocando la barra», «Silencio», «Barra de volumen» (un toque ajusta el volumen), «Nombre del
+  álbum» (una tercera línea).
+- Nueva opción «Indicador de volumen grande»: durante tres segundos tras un cambio, un indicador semitransparente cubre
+  toda la tarjeta, con el número en cifras grandes y un altavoz detrás. El indicador de volumen pequeño también tiene un
+  altavoz.
+- La tarjeta puede tener hasta 4x4 celdas (el editor ofrece lo que cabe en la cuadrícula de la pantalla).
+- Necesita tres acciones más: `media_seek`, `volume_mute`, `volume_set`.
+
+## 0.4.1 - 2026-10-14
+
+- Corrección: el manifiesto se rechazaba porque el valor de elección `off` se leía como valor booleano; ahora cada valor
+  de elección se escribe como texto.
+
+## 0.4.0 - 2026-10-14
+
+- Nuevo: la opción «Progreso» elige ahora una barra, el tiempo (1:36 / 7:36), ambos o nada.
+- Nuevo: la opción «Indicador de volumen» muestra el volumen a la derecha del título: al cambiar (tres segundos),
+  siempre o nunca. Un reproductor silenciado muestra «Silenciado».
+
+## 0.3.2 - 2026-10-14
+
+- Los botones de la tarjeta tienen un marco claro.
+
+## 0.3.1 - 2026-10-14
+
+- El hueco de la carátula solo se muestra cuando el reproductor tiene una imagen que la pantalla puede cargar; si no, el
+  texto ocupa todo el ancho y no queda un cuadrado gris vacío.
+
+## 0.3.0 - 2026-10-14
+
+- Nuevo: la carátula del álbum junto al título (opción «Carátula del álbum»), desde dos celdas de ancho, en pantallas
+  que muestran imágenes.
+- Nuevo: botones de reproducción (anterior, reproducir/pausa, siguiente) y de volumen (más bajo, más alto) dentro de la
+  tarjeta, como opciones. Necesitan una tarjeta de dos filas o más.
+- Necesita la API de plugins 0.10.
+
+## 0.2.0 - 2026-10-14
+
+- Nuevo: una barra de progreso en la tarjeta (opción «Barra de progreso», activada por defecto), si el reproductor
+  indica duración y posición.
+- Nuevo: un toque en la tarjeta reproduce o pausa.
+- Nuevo: la tarjeta «Botón multimedia» (anterior, reproducir/pausa, siguiente, más alto, más bajo), una tarjeta por
+  botón.
+- La tarjeta ya puede ser de 1x1; antes era al menos de 2x1.
+
+## 0.1.1 - 2026-10-14
+
+- Corrección: la compilación fallaba porque los colores estaban escritos como `tessera::theme::`; es `theme::`.
+
+## 0.1.0 - 2026-10-14
+
+- Primera versión: muestra el título y el artista de un reproductor multimedia.

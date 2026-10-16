@@ -21,6 +21,7 @@ tiles:
       cover: true
       controls: true
       volume: true
+      pause_overlay: true
     sizes: [2x2, 3x2, 4x2, 4x3, 4x4]
 
   # 2. Playing with the defaults, at every size the tile offers (1x1 to 4x4)
@@ -98,6 +99,32 @@ tiles:
     entity: media_player.pc_nopic
     options: { cover_url: "/local/cover.jpg?v={v}" }
     sizes: [2x1, 3x1]
+
+  # 6c. The cover at the right (option "Cover position")
+  - tile: now_playing
+    name: Cover right
+    entity: media_player.pc_spotify
+    options: { cover_side: right, volume_display: always }
+    sizes: [2x1, 3x1, 2x2]
+
+  # 6d. The text at the top or at the bottom of the space beside the cover (option "Position of the text")
+  - tile: now_playing
+    name: Text top
+    entity: media_player.pc_spotify
+    options: { text_pos: top, album: true }
+    sizes: [2x2, 3x2]
+  - tile: now_playing
+    name: Text bottom
+    entity: media_player.pc_spotify
+    options: { text_pos: bottom, album: true }
+    sizes: [2x2, 3x2]
+
+  # 6e. The pause display: the pause sign over the whole tile while the player is paused
+  - tile: now_playing
+    name: Pause display
+    entity: media_player.pc_paused
+    options: { pause_overlay: true }
+    sizes: [2x1, 2x2, 3x2]
 
   # 7. A player without a picture: no empty grey square, the text takes the whole width
   - tile: now_playing

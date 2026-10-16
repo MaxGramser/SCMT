@@ -1,6 +1,6 @@
 # Manifest for SCMT (Simple Customizable Media Tile): an info tile and a button tile for a media_player entity.
 id: scmt
-version: 0.8.1
+version: 0.9.0
 api: "0.10"
 icon: music
 maintainer: Schumey
@@ -26,7 +26,7 @@ tiles:
     name: tile_name
     icon: music
     sizes: { min: 1x1, max: 4x4 }
-    memory: 3800
+    memory: 4300
     domains: [media_player]
     attributes: [media_title, media_artist, media_duration, media_position, media_position_updated_at, entity_picture, volume_level, is_volume_muted, media_album_name]
     pictures: 1
@@ -60,6 +60,24 @@ tiles:
       - { id: album, kind: toggle, default: false, label: opt_album, hint: opt_album_hint }
       - { id: cover, kind: toggle, default: true, label: opt_cover, hint: opt_cover_hint }
       - { id: cover_url, kind: text, label: opt_cover_url, hint: opt_cover_url_hint }
+      - id: cover_side
+        kind: choice
+        default: left
+        label: opt_cover_side
+        hint: opt_cover_side_hint
+        choices:
+          - { value: "left", label: cs_left }
+          - { value: "right", label: cs_right }
+      - id: text_pos
+        kind: choice
+        default: middle
+        label: opt_text_pos
+        hint: opt_text_pos_hint
+        choices:
+          - { value: "middle", label: tp_middle }
+          - { value: "top", label: tp_top }
+          - { value: "bottom", label: tp_bottom }
+      - { id: pause_overlay, kind: toggle, default: false, label: opt_pause_overlay, hint: opt_pause_overlay_hint }
       - { id: controls, kind: toggle, default: false, label: opt_controls, hint: opt_controls_hint }
       - { id: volume, kind: toggle, default: false, label: opt_volume, hint: opt_volume_hint }
   - id: media_button

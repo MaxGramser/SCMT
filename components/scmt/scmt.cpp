@@ -97,6 +97,11 @@ class NowPlayingTile : public tessera::Tile {
     want_seek_ = c.options["seek"] | false;
     show_album_ = c.options["album"] | false;
     cover_url_ = (const char *) (c.options["cover_url"] | "");  // fixed address of a cover file, e.g. /local/cover.jpg
+    const std::string side = (const char *) (c.options["cover_side"] | "left");
+    cover_right_ = side == "right";
+    const std::string tpos = (const char *) (c.options["text_pos"] | "middle");
+    text_pos_ = tpos == "top" ? 1 : (tpos == "bottom" ? 2 : 0);
+    const bool want_pause_overlay = c.options["pause_overlay"] | false;
 
     // Which buttons, in which order. They need a tile of two rows or more.
     n_ = 0;
@@ -141,16 +146,18 @@ class NowPlayingTile : public tessera::Tile {
     content_h_ = (show_bar_ || show_time_) ? above - gap : bottom;
     if (content_h_ < 1) content_h_ = 1;
 
-    // The cover, a square at the left, when the tile is two cells wide or more and the screen shows pictures.
+    // The cover, a square at the left or the right (option), when the tile is two cells wide or more and the screen
+    // shows pictures.
     x0_ = 0;
     if (want_cover && ui::pictures() && c.columns >= 2 && content_h_ > ui::px(24)) {
       cover_size_ = content_h_;
       if (cover_size_ > width_ / 2) cover_size_ = width_ / 2;
       cover_ = ui::picture(c.parent);
       lv_obj_set_size(cover_, 0, 0);  // shown only when the player has a picture the screen may fetch
-      lv_obj_set_pos(cover_, 0, 0);
+      lv_obj_set_pos(cover_, cover_right_ ? width_ - cover_size_ : 0, 0);
     }
     text_w_ = width_;
+    text_right_ = width_;
 
     title_lbl_ = ui::label(c.parent, Font::HEADLINE, theme::INK);
     artist_lbl_ = ui::label(c.parent, Font::BODY, theme::INK_SOFT);
@@ -215,6 +222,16 @@ class NowPlayingTile : public tessera::Tile {
         lv_obj_set_style_text_align(btn_[i], LV_TEXT_ALIGN_CENTER, 0);
         lv_obj_set_pos(btn_[i], i * cell, top + (ctrl_h_ - ui::line_height(Font::TITLE)) / 2);
       }
+    }
+
+    // The pause display over the whole tile: a half see-through block and the pause sign, while the player is paused.
+    // Before the volume display, so that the volume display lies on top of it.
+    if (want_pause_overlay) {
+      pz_bg_ = ui::block(c.parent, theme::CARD);
+      lv_obj_set_pos(pz_bg_, 0, 0);
+      lv_obj_set_size(pz_bg_, 0, 0);
+      lv_obj_set_style_bg_opa(pz_bg_, LV_OPA_70, 0);
+      pz_icon_ = ui::label(c.parent, Font::ICON, theme::INK);
     }
 
     // The big volume display over the whole tile, last, so that it lies on top: a half see-through block, the number
@@ -292,9 +309,12 @@ class NowPlayingTile : public tessera::Tile {
       }
     }
 
-    // The text starts after the cover when there is one, and takes the whole width when there is none.
-    x0_ = cover_on_ ? cover_size_ + ui::px(8) : 0;
-    text_w_ = width_ - x0_;
+    // The text lies beside the cover (at its right when the cover is at the left, at its left when the cover is at
+    // the right) and takes the whole width when there is no cover.
+    const int cover_w = cover_on_ ? cover_size_ + ui::px(8) : 0;
+    x0_ = cover_right_ ? 0 : cover_w;
+    text_w_ = width_ - cover_w;
+    text_right_ = x0_ + text_w_;  // where the text area ends: the volume display sits at its right edge
     lv_obj_set_width(artist_lbl_, text_w_);
     if (album_lbl_ != nullptr) lv_obj_set_width(album_lbl_, text_w_);
 
@@ -342,14 +362,15 @@ class NowPlayingTile : public tessera::Tile {
     ui::set_text(artist_lbl_, artist);
     ui::set_color(title_lbl_, paused_ ? theme::MUTED : theme::INK);
 
-    // Title, artist and, when it fits, the album, together in the middle of the space beside the cover.
+    // Title, artist and, when it fits, the album, together at the top, in the middle or at the bottom of the space
+    // beside the cover (option).
     const int th = ui::line_height(f);
     const int ah = ui::line_height(Font::BODY);
     const int g2 = ui::px(2);
     int block_h = th + g2 + ah;
     const bool with_album = album_lbl_ != nullptr && !album.empty() && block_h + g2 + ah <= content_h_;
     if (with_album) block_h += g2 + ah;
-    int y = (content_h_ - block_h) / 2;
+    int y = text_pos_ == 1 ? 0 : (text_pos_ == 2 ? content_h_ - block_h : (content_h_ - block_h) / 2);
     if (y < 0) y = 0;
     lv_obj_set_pos(title_lbl_, x0_, y);
     lv_obj_set_pos(artist_lbl_, x0_, y + th + g2);
@@ -362,12 +383,12 @@ class NowPlayingTile : public tessera::Tile {
     if (vol_lbl_ != nullptr) {
       ui::set_text(vol_lbl_, vtext);
       lv_obj_set_width(vol_lbl_, vol_tw);
-      lv_obj_set_pos(vol_lbl_, width_ - vol_total, y + (th - ui::line_height(Font::BODY)) / 2);
+      lv_obj_set_pos(vol_lbl_, text_right_ - vol_total, y + (th - ui::line_height(Font::BODY)) / 2);
       ui::set_text(vol_icon_lbl_, vol_iw > 0 ? vic : "");
       lv_obj_set_width(vol_icon_lbl_, vol_iw);
-      lv_obj_set_pos(vol_icon_lbl_, width_ - vol_iw, y + (th - ui::line_height(Font::ICON_SMALL)) / 2);
+      lv_obj_set_pos(vol_icon_lbl_, text_right_ - vol_iw, y + (th - ui::line_height(Font::ICON_SMALL)) / 2);
     }
-    vol_hit_x_ = width_ - vol_total;
+    vol_hit_x_ = text_right_ - vol_total;
     vol_hit_w_ = vol_total;
     vol_hit_y_ = y;
     vol_hit_h_ = th;
@@ -455,6 +476,26 @@ class NowPlayingTile : public tessera::Tile {
         ui::set_text(ov_icon_, "");
       }
     }
+
+    // The pause display: the pause sign over the whole tile while the player is paused (not while the big volume
+    // display is there).
+    if (pz_bg_ != nullptr) {
+      if (has_entity_ && paused_ && !title_.empty() && !ov_on_) {
+        const char *ic = "\U000F03E4";  // pause (Material Design Icons)
+        const bool icon_ok = ui::covers(ic, Font::ICON);
+        const char *sign = icon_ok ? ic : "||";
+        const Font pf = icon_ok ? Font::ICON : Font::HEADLINE;
+        const int pw = ui::text_width(sign, pf);
+        lv_obj_set_size(pz_bg_, width_, height_);
+        ui::set_font(pz_icon_, pf);
+        ui::set_text(pz_icon_, sign);
+        lv_obj_set_width(pz_icon_, pw + ui::px(4));
+        lv_obj_set_pos(pz_icon_, (width_ - pw) / 2, (height_ - ui::line_height(pf)) / 2);
+      } else {
+        lv_obj_set_size(pz_bg_, 0, 0);
+        ui::set_text(pz_icon_, "");
+      }
+    }
   }
 
   void on_theme() override {
@@ -475,6 +516,11 @@ class NowPlayingTile : public tessera::Tile {
       ui::set_color(btn_[i], theme::INK);
       ui::set_fill(frame_[i], tessera::Tone::NORMAL, theme::LINE);
       ui::set_fill(inner_[i], tessera::Tone::NORMAL, theme::CARD);
+    }
+    if (pz_bg_ != nullptr) {
+      ui::set_fill(pz_bg_, tessera::Tone::NORMAL, theme::CARD);
+      lv_obj_set_style_bg_opa(pz_bg_, LV_OPA_70, 0);  // after the fill, which may set its own
+      ui::set_color(pz_icon_, theme::INK);
     }
     if (ov_bg_ != nullptr) {
       ui::set_fill(ov_bg_, tessera::Tone::NORMAL, theme::CARD);
@@ -575,9 +621,13 @@ class NowPlayingTile : public tessera::Tile {
   lv_obj_t *ov_bg_{nullptr};
   lv_obj_t *ov_num_{nullptr};
   lv_obj_t *ov_icon_{nullptr};
+  lv_obj_t *pz_bg_{nullptr};
+  lv_obj_t *pz_icon_{nullptr};
   Btn kinds_[6]{};
   int n_{0};
-  int width_{0}, height_{0}, text_w_{0}, x0_{0};
+  int width_{0}, height_{0}, text_w_{0}, x0_{0}, text_right_{0};
+  bool cover_right_{false};
+  int text_pos_{0};  // 0 middle, 1 top, 2 bottom
   int cover_size_{0};
   bool cover_on_{false};
   std::string cover_url_, cover_track_;

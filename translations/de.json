@@ -56,6 +56,17 @@
     "opt_album": "Albumname",
     "opt_album_hint": "Das Album als dritte Zeile, wenn die Kachel hoch genug ist.",
     "opt_barh": "Höhe des Fortschrittsbalkens",
-    "opt_barh_hint": "In Pixeln, 2 bis 16. Braucht den Balken."
+    "opt_barh_hint": "In Pixeln, 2 bis 16. Braucht den Balken.",
+    "opt_cover_side": "Position des Covers",
+    "opt_cover_side_hint": "Ob das Albumcover links oder rechts vom Text steht.",
+    "cs_left": "Links",
+    "cs_right": "Rechts",
+    "opt_text_pos": "Position des Textes",
+    "opt_text_pos_hint": "Wo Titel und Interpret (und das Album) in dem Platz neben dem Cover stehen: oben, in der Mitte oder unten.",
+    "tp_middle": "Mitte",
+    "tp_top": "Oben",
+    "tp_bottom": "Unten",
+    "opt_pause_overlay": "Pause-Anzeige",
+    "opt_pause_overlay_hint": "Solange der Player pausiert ist, liegt eine halb durchsichtige Anzeige mit dem Pause-Zeichen über der ganzen Kachel."
   }
 }

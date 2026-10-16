@@ -1,19 +1,36 @@
 # Changelog
 
+## 0.9.0 - 2026-10-16
+
+- New option "Pause display": while the player is paused, a half see-through display with the pause sign lies over the
+  whole tile.
+- New option "Cover position": the album cover at the left or at the right of the text.
+- New option "Position of the text": title, artist and album at the top, in the middle or at the bottom of the space
+  beside the cover.
+- More languages: French, Spanish, Italian and Dutch, beside English and German. The README and this changelog come in
+  these languages too (`README.de.md`, `CHANGELOG.de.md`, and so on).
+- The README describes the automation that brings an album cover to the display (experimental), with an example in
+  `examples/cover_automation.yaml`.
+- The tile reserves a little more memory for the new display.
+
+## 0.8.1.1 - 2026-10-16
+
+- The store picture `store.png` for the plugin store was added.
+
 ## 0.8.1 - 2026-10-16
 
-- The "Cover address" is now used exactly as typed. A `{v}` in it is replaced by a number that changes with every
-  track (for example `/local/cover.jpg?v={v}`); before, that number was always added behind the address as `?v=`.
+- The "Cover address" is now used exactly as typed. A `{v}` in it is replaced by a number that changes with every track
+  (for example `/local/cover.jpg?v={v}`); before, that number was always added behind the address as `?v=`.
 
 ## 0.8.0 - 2026-10-15
 
-- New option "Cover address": a fixed address of a cover file in Home Assistant (for example `/local/cover.jpg`),
-  shown instead of the player's own picture. For players whose cover the tile may not fetch.
+- New option "Cover address": a fixed address of a cover file in Home Assistant (for example `/local/cover.jpg`), shown
+  instead of the player's own picture. For players whose cover the tile may not fetch.
 
 ## 0.7.1 - 2026-10-15
 
-- Fix: the build failed with "Component not found: now_playing", because `plugin.yaml` still named the old
-  component. It now says `scmt`, the same as the manifest and the folder.
+- Fix: the build failed with "Component not found: now_playing", because `plugin.yaml` still named the old component. It
+  now says `scmt`, the same as the manifest and the folder.
 
 ## 0.7.0 - 2026-10-15
 
@@ -22,28 +39,28 @@
 
 ## 0.6.0 - 2026-10-15
 
-- The plugin is called SCMT (Simple Customizable Media Tile). Its id, `now_playing`, stays, so tiles already on a
-  screen keep working.
+- The plugin is called SCMT (Simple Customizable Media Tile). Its id, `now_playing`, stays, so tiles already on a screen
+  keep working.
 - New option "Height of the progress bar" (2 to 16 pixels, 4 by default).
 
 ## 0.5.0 - 2026-10-15
 
 - New options: "Seek by tapping the bar", "Mute", "Volume bar" (a tap sets the volume), "Album name" (a third line).
-- New option "Big volume display": a half see-through display over the whole tile for three seconds after a change,
-  with the number in large digits and a speaker after it. The small volume display has a speaker too.
+- New option "Big volume display": a half see-through display over the whole tile for three seconds after a change, with
+  the number in large digits and a speaker after it. The small volume display has a speaker too.
 - The tile can be up to 4x4 cells (the editor offers what fits the screen's grid).
 - Needs three more actions: `media_seek`, `volume_mute`, `volume_set`.
 
 ## 0.4.1 - 2026-10-14
 
-- Fix: the manifest was refused because the choice value `off` was read as a truth value; every choice value is
-  now written as text.
+- Fix: the manifest was refused because the choice value `off` was read as a truth value; every choice value is now
+  written as text.
 
 ## 0.4.0 - 2026-10-14
 
 - New: the option "Progress" now chooses a bar, the time (1:36 / 7:36), both, or nothing.
-- New: the option "Volume display" shows the volume at the title's right: when it changes (three seconds), always,
-  or never. A muted player shows "Muted".
+- New: the option "Volume display" shows the volume at the title's right: when it changes (three seconds), always, or
+  never. A muted player shows "Muted".
 
 ## 0.3.2 - 2026-10-14
 

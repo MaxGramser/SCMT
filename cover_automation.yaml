@@ -1,0 +1,40 @@
+# Cover automation for SCMT (experimental): saves the cover of a media player as a file in Home Assistant, so that the
+# tile can show it with the option "Cover address" (enter /local/cover.jpg?v={v} there).
+#
+# Replace media_player.your_player with your media player, and YOUR_HOME_ASSISTANT with the address under which you
+# open Home Assistant, as the computer of Home Assistant sees it (for example http://192.168.0.10:8123 or
+# https://ha.example.com). The folder /config/www must exist (restart Home Assistant once after creating it).
+
+# --- 1. In configuration.yaml ---------------------------------------------------------------------------------------
+# No "&& mv ...": Home Assistant runs commands that contain {{ }} without a shell, so "&&" would be handed to curl.
+#
+# shell_command:
+#   cover_fetch: >-
+#     curl -sSfkL --connect-timeout 5 --max-time 20 -o /config/www/cover.jpg "{{ url }}"
+
+# --- 2. The automation -----------------------------------------------------------------------------------------------
+alias: Cover for Tessera
+description: Saves the cover of the media player as /config/www/cover.jpg (reachable as /local/cover.jpg)
+triggers:
+  # On a new title, not on every change of entity_picture: its token changes all the time.
+  - trigger: state
+    entity_id: media_player.your_player
+    attribute: media_title
+actions:
+  # Give the player a moment, so that entity_picture belongs to the new title.
+  - delay: "00:00:02"
+  - condition: template
+    value_template: "{{ state_attr('media_player.your_player', 'entity_picture') not in [none, ''] }}"
+  # Fetch three times (after 2, 7 and 15 seconds): the new cover often arrives some seconds after the title.
+  - action: shell_command.cover_fetch
+    data:
+      url: "http://YOUR_HOME_ASSISTANT{{ state_attr('media_player.your_player', 'entity_picture') }}"
+  - delay: "00:00:05"
+  - action: shell_command.cover_fetch
+    data:
+      url: "http://YOUR_HOME_ASSISTANT{{ state_attr('media_player.your_player', 'entity_picture') }}"
+  - delay: "00:00:08"
+  - action: shell_command.cover_fetch
+    data:
+      url: "http://YOUR_HOME_ASSISTANT{{ state_attr('media_player.your_player', 'entity_picture') }}"
+mode: restart

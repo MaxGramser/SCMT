@@ -56,6 +56,17 @@
     "opt_album": "Album name",
     "opt_album_hint": "The album as a third line, when the tile is high enough.",
     "opt_barh": "Height of the progress bar",
-    "opt_barh_hint": "In pixels, 2 to 16. Needs the bar."
+    "opt_barh_hint": "In pixels, 2 to 16. Needs the bar.",
+    "opt_cover_side": "Cover position",
+    "opt_cover_side_hint": "Whether the album cover sits at the left or at the right of the text.",
+    "cs_left": "Left",
+    "cs_right": "Right",
+    "opt_text_pos": "Position of the text",
+    "opt_text_pos_hint": "Where title and artist (and the album) stand in the space beside the cover: at the top, in the middle or at the bottom.",
+    "tp_middle": "Middle",
+    "tp_top": "Top",
+    "tp_bottom": "Bottom",
+    "opt_pause_overlay": "Pause display",
+    "opt_pause_overlay_hint": "While the player is paused, a half see-through display with the pause sign lies over the whole tile."
   }
 }
