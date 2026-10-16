@@ -64,8 +64,14 @@ plugin ne charge rien depuis Internet.
 
 Une tuile ne peut afficher que des images venant de `/api/image/serve/`, `/api/image_proxy/` ou `/local/`, et les
 attributs texte sont coupés à 48 octets. La pochette de certains lecteurs (par exemple celui de HASS.Agent,
-`/api/media_player_proxy/...`) est refusée pour cette raison. Pour ceux-là, utilisez l'option « Adresse de la
-pochette » avec l'automatisation ci-dessous.
+`/api/media_player_proxy/...`) est refusée pour cette raison.
+
+**Remarque :** l'option « Adresse de la pochette » avec l'automatisation ci-dessous était prévue pour ces lecteurs, mais
+elle ne fonctionne pas avec l'application Tessera actuelle (0.4.88). L'application récupère une adresse sous `/local/`
+via le Supervisor (`http://supervisor/core/local/...`), qui la refuse (403, dans le journal de l'application « no
+picture from /local/cover.jpg »), donc la tuile affiche un bloc gris au lieu de la pochette, quel que soit le format du
+fichier. Les deux restent dans le plugin jusqu'à ce que Tessera récupère `/local/` autrement ou autorise la pochette
+propre au lecteur ([MaxGramser/tessera-plugins#6](https://github.com/MaxGramser/tessera-plugins/issues/6)).
 
 ### Automatisation de la pochette (expérimental)
 

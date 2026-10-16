@@ -1,0 +1,3 @@
+/components/scmt/__pycache__
+# What tools/preview.py writes: pictures, logs and findings of the bench
+.preview/

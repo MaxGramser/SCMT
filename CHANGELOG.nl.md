@@ -1,5 +1,13 @@
 # Wijzigingenlogboek
 
+## 0.10.1 - 2026-10-17
+
+- Reparatie: op een lage tegel (het kleine 2,8-inch-scherm) ligt de artiest niet meer over de tijd. De titel krijgt ook
+  een kleiner lettertype als hij te hoog is, en staat alleen als er geen plaats is voor de artiest.
+- De README zegt nu dat de optie „Adres van de hoes” en de hoesautomatisering niet werken met de huidige Tessera-app
+  (0.4.88): die haalt `/local/` op via de Supervisor, en die weigert het (403), dus de tegel toont een grijs blok.
+- De afbeelding voor de pluginwinkel toont het nieuwe uiterlijk.
+
 ## 0.10.0 - 2026-10-16
 
 - Een titel, artiest of album die te breed is voor de tegel loopt als lichtkrant door in plaats van met puntjes te

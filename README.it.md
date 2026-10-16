@@ -64,8 +64,14 @@ Per impostazione predefinita la copertina è l'immagine che Home Assistant stess
 
 Una tessera può mostrare solo immagini da `/api/image/serve/`, `/api/image_proxy/` o `/local/`, e gli attributi di
 testo vengono tagliati a 48 byte. La copertina di alcuni lettori (per esempio quello di HASS.Agent,
-`/api/media_player_proxy/...`) viene rifiutata per questo motivo. Per questi, usa l'opzione «Indirizzo della copertina»
-insieme all'automazione qui sotto.
+`/api/media_player_proxy/...`) viene rifiutata per questo motivo.
+
+**Nota:** l'opzione «Indirizzo della copertina» insieme all'automazione qui sotto era pensata per questi lettori, ma non
+funziona con l'app Tessera attuale (0.4.88). L'app recupera un indirizzo sotto `/local/` tramite il Supervisor
+(`http://supervisor/core/local/...`), che lo rifiuta (403, nel log dell'app «no picture from /local/cover.jpg»), quindi
+la tessera mostra un blocco grigio al posto della copertina, qualunque sia il formato del file. Entrambe restano nel
+plugin finché Tessera non recupera `/local/` in un altro modo o permette la copertina propria del lettore
+([MaxGramser/tessera-plugins#6](https://github.com/MaxGramser/tessera-plugins/issues/6)).
 
 ### Automazione della copertina (sperimentale)
 

@@ -65,8 +65,14 @@ plugin no descarga nada de internet.
 
 Una tarjeta solo puede mostrar imágenes de `/api/image/serve/`, `/api/image_proxy/` o `/local/`, y los atributos de
 texto se cortan a los 48 bytes. La carátula de algunos reproductores (por ejemplo la de HASS.Agent,
-`/api/media_player_proxy/...`) se rechaza por esa razón. Para ellos, usa la opción «Dirección de la carátula» junto con
-la automatización de abajo.
+`/api/media_player_proxy/...`) se rechaza por esa razón.
+
+**Nota:** la opción «Dirección de la carátula» junto con la automatización de abajo estaba pensada para estos
+reproductores, pero no funciona con la aplicación Tessera actual (0.4.88). La aplicación obtiene una dirección bajo
+`/local/` a través del Supervisor (`http://supervisor/core/local/...`), que la rechaza (403, en el registro de la
+aplicación «no picture from /local/cover.jpg»), así que la tarjeta muestra un bloque gris en lugar de la carátula, sea
+cual sea el formato del archivo. Ambas siguen en el plugin hasta que Tessera obtenga `/local/` de otra forma o permita
+la carátula propia del reproductor ([MaxGramser/tessera-plugins#6](https://github.com/MaxGramser/tessera-plugins/issues/6)).
 
 ### Automatización de la carátula (experimental)
 

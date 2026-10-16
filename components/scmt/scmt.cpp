@@ -176,9 +176,12 @@ class NowPlayingTile : public tessera::Tile {
     if (want_cover && ui::pictures() && c.columns >= 2 && content_h_ > ui::px(24)) {
       cover_size_ = content_h_;
       if (cover_size_ > area_w_ / 2) cover_size_ = area_w_ / 2;
+      // Its size is set here, once, as the app cuts the picture to it; it is hidden, not shrunk, while the player has
+      // no picture the screen may fetch.
       cover_ = ui::picture(c.parent);
-      lv_obj_set_size(cover_, 0, 0);  // shown only when the player has a picture the screen may fetch
+      lv_obj_set_size(cover_, cover_size_, cover_size_);
       lv_obj_set_pos(cover_, cover_right_ ? area_x_ + area_w_ - cover_size_ : area_x_, 0);
+      lv_obj_add_flag(cover_, LV_OBJ_FLAG_HIDDEN);
     }
     text_w_ = area_w_;
     text_right_ = area_x_ + area_w_;
@@ -314,8 +317,7 @@ class NowPlayingTile : public tessera::Tile {
       } else {
         const char *pic = a["entity_picture"] | "";
         cover_on_ = picture_allowed_(pic);
-        lv_obj_set_size(cover_, cover_on_ ? cover_size_ : 0, cover_on_ ? cover_size_ : 0);
-        ui::set_picture(cover_, cover_on_ ? pic : "", tessera::Fit::COVER);  // the same address again does nothing
+        show_cover_(cover_on_ ? pic : "");
       }
     }
   }
@@ -381,24 +383,27 @@ class NowPlayingTile : public tessera::Tile {
     const int title_w = text_w_ - (vol_total > 0 ? vol_total + ui::px(6) : 0);
     lv_obj_set_width(title_lbl_, title_w);
 
-    // The largest font the title fits in; a title wider still runs as a marquee.
+    // The largest font the title fits in, in width and, with the artist below it, in height; a title wider still runs
+    // as a marquee.
+    const int space_h = cover_on_ ? cover_size_ : content_h_;
+    const int ah = ui::line_height(Font::BODY);
+    const int g2 = ui::px(2);
+    auto fits = [&](Font ff) { return ui::text_width(title, ff) <= title_w && ui::line_height(ff) + g2 + ah <= space_h; };
     Font f = Font::HEADLINE;
-    if (ui::text_width(title, f) > title_w) f = Font::TITLE;
-    if (ui::text_width(title, f) > title_w) f = Font::BODY_LARGE;
+    if (!fits(f)) f = Font::TITLE;
+    if (!fits(f)) f = Font::BODY_LARGE;
     ui::set_font(title_lbl_, f);
     ui::set_text(title_lbl_, title);
-    ui::set_text(artist_lbl_, artist);
     ui::set_color(title_lbl_, paused_ ? theme::MUTED : theme::INK);
 
     // Title, artist and, when it fits, the album, together at the top, in the middle or at the bottom of the space
     // beside the cover (option). With a cover that space is the cover's height, so "top" and "bottom" line up with its
-    // upper and lower edge.
+    // upper and lower edge. When even the smallest title leaves no room for the artist, the title stands alone.
     const int th = ui::line_height(f);
-    const int ah = ui::line_height(Font::BODY);
-    const int g2 = ui::px(2);
-    const int space_h = cover_on_ ? cover_size_ : content_h_;
-    int block_h = th + g2 + ah;
-    const bool with_album = album_lbl_ != nullptr && !album.empty() && block_h + g2 + ah <= space_h;
+    const bool with_artist = th + g2 + ah <= space_h;
+    ui::set_text(artist_lbl_, with_artist ? artist : std::string());
+    int block_h = with_artist ? th + g2 + ah : th;
+    const bool with_album = with_artist && album_lbl_ != nullptr && !album.empty() && block_h + g2 + ah <= space_h;
     if (with_album) block_h += g2 + ah;
     int y = text_pos_ == 1 ? 0 : (text_pos_ == 2 ? space_h - block_h : (space_h - block_h) / 2);
     if (y < 0) y = 0;
@@ -630,8 +635,16 @@ class NowPlayingTile : public tessera::Tile {
     if (pos != std::string::npos)
       addr.replace(pos, 3, std::to_string(cover_key_ + cover_gen_));
     cover_on_ = active && picture_allowed_(addr.c_str());
-    lv_obj_set_size(cover_, cover_on_ ? cover_size_ : 0, cover_on_ ? cover_size_ : 0);
-    ui::set_picture(cover_, cover_on_ ? addr.c_str() : "", tessera::Fit::COVER);
+    show_cover_(cover_on_ ? addr.c_str() : "");
+  }
+
+  // Shows the cover place with that picture, or hides it for "". The same address again does nothing.
+  void show_cover_(const char *url) {
+    if (*url != '\0')
+      lv_obj_clear_flag(cover_, LV_OBJ_FLAG_HIDDEN);
+    else
+      lv_obj_add_flag(cover_, LV_OBJ_FLAG_HIDDEN);
+    ui::set_picture(cover_, url, tessera::Fit::COVER);
   }
 
   const tessera::Plugin *plugin_;

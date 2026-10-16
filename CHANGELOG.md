@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.10.1 - 2026-10-17
+
+- Fix: on a low tile (the small 2.8-inch screen) the artist no longer lies over the time. The title takes a smaller font
+  when it is too high as well, and stands alone when there is no room for the artist.
+- The README now says that the option "Cover address" and the cover automation do not work with the current Tessera
+  app (0.4.88): it fetches `/local/` through the Supervisor, which refuses it (403), so the tile shows a grey block.
+- The picture for the plugin store shows the new look.
+
 ## 0.10.0 - 2026-10-16
 
 - A title, artist or album too wide for the tile runs as a marquee instead of being cut with dots.

@@ -63,8 +63,14 @@ niets van internet.
 
 Een tegel mag alleen afbeeldingen van `/api/image/serve/`, `/api/image_proxy/` of `/local/` tonen, en tekstattributen
 worden bij 48 bytes afgekapt. De hoes van sommige spelers (bijvoorbeeld die van HASS.Agent,
-`/api/media_player_proxy/...`) wordt daarom geweigerd. Gebruik daarvoor de optie „Adres van de hoes” samen met de
-automatisering hieronder.
+`/api/media_player_proxy/...`) wordt daarom geweigerd.
+
+**Let op:** de optie „Adres van de hoes” samen met de automatisering hieronder was voor deze spelers bedoeld, maar werkt
+niet met de huidige Tessera-app (0.4.88). De app haalt een adres onder `/local/` op via de Supervisor
+(`http://supervisor/core/local/...`), en die weigert het (403, in het log van de app „no picture from /local/cover.jpg”),
+dus de tegel toont een grijs blok in plaats van de hoes, ongeacht het formaat van het bestand. Beide blijven in de
+plugin tot Tessera `/local/` op een andere manier ophaalt of de eigen hoes van de speler toestaat
+([MaxGramser/tessera-plugins#6](https://github.com/MaxGramser/tessera-plugins/issues/6)).
 
 ### Hoesautomatisering (experimenteel)
 

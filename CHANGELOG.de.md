@@ -1,5 +1,15 @@
 # Änderungsprotokoll
 
+## 0.10.1 - 2026-10-17
+
+- Fehlerbehebung: Auf einer niedrigen Kachel (dem kleinen 2,8-Zoll-Bildschirm) liegt der Interpret nicht mehr über der
+  Zeit. Der Titel bekommt auch dann eine kleinere Schrift, wenn er zu hoch ist, und steht allein, wenn für den Interpreten
+  kein Platz ist.
+- Die README sagt jetzt, dass die Option „Cover-Adresse“ und die Cover-Automation mit der aktuellen Tessera-App nicht
+  funktionieren (0.4.88): Sie holt `/local/` über den Supervisor, der das ablehnt (403), deshalb zeigt die Kachel ein
+  graues Viereck.
+- Das Bild für den Plugin-Store zeigt das neue Aussehen.
+
 ## 0.10.0 - 2026-10-16
 
 - Ein Titel, Interpret oder Album, der zu breit für die Kachel ist, läuft als Laufschrift durch, statt mit Punkten

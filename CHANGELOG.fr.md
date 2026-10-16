@@ -1,5 +1,14 @@
 # Journal des modifications
 
+## 0.10.1 - 2026-10-17
+
+- Correction : sur une tuile basse (le petit écran de 2,8 pouces), l'artiste ne recouvre plus le temps. Le titre prend
+  aussi une police plus petite quand il est trop haut, et reste seul quand il n'y a pas de place pour l'artiste.
+- Le README indique maintenant que l'option « Adresse de la pochette » et l'automatisation de la pochette ne
+  fonctionnent pas avec l'application Tessera actuelle (0.4.88) : elle récupère `/local/` via le Supervisor, qui le
+  refuse (403), donc la tuile affiche un bloc gris.
+- L'image de la boutique de plugins montre le nouvel aspect.
+
 ## 0.10.0 - 2026-10-16
 
 - Un titre, un artiste ou un album trop large pour la tuile défile comme un texte déroulant au lieu d'être coupé avec

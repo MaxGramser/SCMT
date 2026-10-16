@@ -1,5 +1,14 @@
 # Registro de cambios
 
+## 0.10.1 - 2026-10-17
+
+- Corrección: en una tarjeta baja (la pantalla pequeña de 2,8 pulgadas) el artista ya no cubre el tiempo. El título
+  toma también una letra más pequeña cuando es demasiado alto, y queda solo cuando no hay sitio para el artista.
+- El README indica ahora que la opción «Dirección de la carátula» y la automatización de la carátula no funcionan con la
+  aplicación Tessera actual (0.4.88): obtiene `/local/` a través del Supervisor, que lo rechaza (403), así que la
+  tarjeta muestra un bloque gris.
+- La imagen de la tienda de plugins muestra el nuevo aspecto.
+
 ## 0.10.0 - 2026-10-16
 
 - Un título, artista o álbum demasiado ancho para la tarjeta se desplaza como texto corrido en lugar de cortarse con

@@ -65,8 +65,14 @@ Plugin holt nichts aus dem Internet.
 
 Eine Kachel darf nur Bilder von `/api/image/serve/`, `/api/image_proxy/` oder `/local/` zeigen, und Textattribute
 werden bei 48 Bytes abgeschnitten. Das Cover mancher Player (zum Beispiel das von HASS.Agent,
-`/api/media_player_proxy/...`) wird deshalb abgelehnt. Für diese gibt es die Option „Cover-Adresse“ zusammen mit der
-Automation unten.
+`/api/media_player_proxy/...`) wird deshalb abgelehnt.
+
+**Hinweis:** Die Option „Cover-Adresse“ zusammen mit der Automation unten war für diese Player gedacht, funktioniert mit
+der aktuellen Tessera-App (0.4.88) aber nicht. Die App holt eine Adresse unter `/local/` über den Supervisor
+(`http://supervisor/core/local/...`), und der lehnt sie ab (403, im Log der App als „no picture from /local/cover.jpg“).
+Deshalb zeigt die Kachel statt des Covers ein graues Viereck, egal in welchem Format die Datei ist. Beides bleibt im
+Plugin, bis Tessera `/local/` auf anderem Weg holt oder das eigene Cover des Players erlaubt
+([MaxGramser/tessera-plugins#6](https://github.com/MaxGramser/tessera-plugins/issues/6)).
 
 ### Cover-Automation (experimentell)
 

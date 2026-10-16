@@ -63,7 +63,14 @@ fetches nothing from the internet.
 
 A tile may show only pictures from `/api/image/serve/`, `/api/image_proxy/` or `/local/`, and text attributes are cut at
 48 bytes. The cover of some players (for example the one of HASS.Agent, `/api/media_player_proxy/...`) is refused for
-that reason. For these, use the option "Cover address" together with the automation below.
+that reason.
+
+**Note:** the option "Cover address" together with the automation below was meant for these players, but it does not
+work with the current Tessera app (0.4.88). The app fetches an address under `/local/` through the Supervisor
+(`http://supervisor/core/local/...`), which refuses it (403, logged by the app as "no picture from /local/cover.jpg"),
+so the tile shows a grey block instead of the cover, whatever the format of the file. Both stay in the plugin until
+Tessera fetches `/local/` in another way, or allows the player's own cover
+([MaxGramser/tessera-plugins#6](https://github.com/MaxGramser/tessera-plugins/issues/6)).
 
 ### Cover automation (experimental)
 

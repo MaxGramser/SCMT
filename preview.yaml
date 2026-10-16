@@ -104,6 +104,11 @@ tiles:
     entity: media_player.pc_spotify
     options: { cover: right, volume_display: always }
     sizes: [2x1, 3x1, 2x2]
+  - tile: now_playing
+    name: Cover right, volume bar
+    entity: media_player.pc_spotify
+    options: { cover: right, volume_bar: true, text_pos: bottom }
+    sizes: [2x1, 3x2]
 
   # 6d. The text at the top or at the bottom of the space beside the cover (option "Position of the text")
   - tile: now_playing
@@ -207,7 +212,7 @@ states:
       media_position_updated_at: "{now}"         # a moment from the time of the run
       volume_level: 0.45
       is_volume_muted: false
-      entity_picture: /api/media_player_proxy/media_player.pc_spotify?token=preview
+      entity_picture: /local/cover.jpg
 
   media_player.pc_nopic:
     state: playing
@@ -242,7 +247,7 @@ states:
       media_position_updated_at: "{now}"
       volume_level: 0.45
       is_volume_muted: false
-      entity_picture: /api/media_player_proxy/media_player.pc_spotify?token=preview
+      entity_picture: /local/cover.jpg
 
   media_player.pc_muted:
     state: playing
@@ -254,7 +259,7 @@ states:
       media_position_updated_at: "{now}"
       volume_level: 0.45
       is_volume_muted: true
-      entity_picture: /api/media_player_proxy/media_player.pc_spotify?token=preview
+      entity_picture: /local/cover.jpg
 
   media_player.pc_noduration:
     state: playing
@@ -272,5 +277,7 @@ states:
 
 # pictures (plugin API 0.10): the cover the bench shows for an entity_picture, a small JPEG or PNG beside this file.
 # Nothing is fetched from the internet. Put any square cover at preview/cover.jpg.
+# The players' picture is /local/cover.jpg, an address the tile may show. A real player's own picture
+# (/api/media_player_proxy/...) the tile does not show; for that there is the option "Cover address".
 pictures:
-  "/api/media_player_proxy/media_player.pc_spotify?token=preview": preview/cover.jpg
+  "/local/cover.jpg": preview/cover.jpg

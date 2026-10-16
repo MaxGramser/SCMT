@@ -1,5 +1,14 @@
 # Registro delle modifiche
 
+## 0.10.1 - 2026-10-17
+
+- Correzione: su una tessera bassa (il piccolo schermo da 2,8 pollici) l'artista non copre più il tempo. Il titolo
+  prende un carattere più piccolo anche quando è troppo alto, e resta da solo quando non c'è posto per l'artista.
+- Il README ora dice che l'opzione «Indirizzo della copertina» e l'automazione della copertina non funzionano con l'app
+  Tessera attuale (0.4.88): recupera `/local/` tramite il Supervisor, che lo rifiuta (403), quindi la tessera mostra un
+  blocco grigio.
+- L'immagine dello store dei plugin mostra il nuovo aspetto.
+
 ## 0.10.0 - 2026-10-16
 
 - Un titolo, artista o album troppo largo per la tessera scorre come testo scorrevole invece di essere tagliato con dei
