@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.1 - 2026-10-16
+
+- The "Cover address" is now used exactly as typed. A `{v}` in it is replaced by a number that changes with every
+  track (for example `/local/cover.jpg?v={v}`); before, that number was always added behind the address as `?v=`.
+
 ## 0.8.0 - 2026-10-15
 
 - New option "Cover address": a fixed address of a cover file in Home Assistant (for example `/local/cover.jpg`),

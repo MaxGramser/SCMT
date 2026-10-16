@@ -92,11 +92,11 @@ tiles:
     sizes: [2x1, 3x1]
 
   # 6b. A cover from a fixed address (option "Cover address"), for a player whose own picture the tile may not fetch.
-  # The bench cannot know the number the plugin puts behind the address, so it draws a placeholder with a note.
+  # The bench cannot know the number the plugin puts in place of {v}, so it draws a placeholder with a note.
   - tile: now_playing
     name: Cover address
     entity: media_player.pc_nopic
-    options: { cover_url: /local/cover.jpg }
+    options: { cover_url: "/local/cover.jpg?v={v}" }
     sizes: [2x1, 3x1]
 
   # 7. A player without a picture: no empty grey square, the text takes the whole width

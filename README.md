@@ -57,11 +57,13 @@ for that reason. For these, use the option "Cover address":
 
 1. Let something save the current cover as a file in Home Assistant's `www` folder, for example `/config/www/cover.jpg`
    (an automation that downloads the player's `entity_picture` with a `shell_command`).
-2. Enter `/local/cover.jpg` as the "Cover address" in the tile's options.
+2. Enter `/local/cover.jpg?v={v}` as the "Cover address" in the tile's options.
 
-The tile then shows that file instead of the player's picture, while something plays or is paused. The address gets a
-number behind it that changes with every track, so the screen asks again; three seconds after a new track it asks once
-more, in case the file was written a moment late.
+The tile then shows that file instead of the player's picture, while something plays or is paused. The address is used
+exactly as typed, except for `{v}`: the plugin replaces it with a number that changes with every track, so the screen
+asks again (Home Assistant ignores the `?v=...` part and sends the file). Three seconds after a new track it asks once
+more, in case the file was written a moment late. An address without `{v}` never changes, so the screen shows the first
+picture it loaded until the address changes.
 
 ## Privacy
 

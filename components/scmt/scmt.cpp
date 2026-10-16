@@ -544,9 +544,13 @@ class NowPlayingTile : public tessera::Tile {
     tessera::action("media_player.volume_mute", entity_.c_str(), "is_volume_muted", muted_ ? "false" : "true");
   }
 
-  // Shows the cover file of the option "Cover address", with a number behind it that changes with the track.
+  // Shows the cover file of the option "Cover address"; a "{v}" in it becomes a number that changes with the track.
   void apply_cover_url_(bool active) {
-    std::string addr = cover_url_ + "?v=" + std::to_string(cover_key_ + cover_gen_);
+    // "{v}" in the address is replaced by the number of the track; an address without it is used as it is.
+    std::string addr = cover_url_;
+    const size_t pos = addr.find("{v}");
+    if (pos != std::string::npos)
+      addr.replace(pos, 3, std::to_string(cover_key_ + cover_gen_));
     cover_on_ = active && picture_allowed_(addr.c_str());
     lv_obj_set_size(cover_, cover_on_ ? cover_size_ : 0, cover_on_ ? cover_size_ : 0);
     ui::set_picture(cover_, cover_on_ ? addr.c_str() : "", tessera::Fit::COVER);
