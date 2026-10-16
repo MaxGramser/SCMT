@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.10.0 - 2026-10-16
+
+- A title, artist or album too wide for the tile runs as a marquee instead of being cut with dots.
+- The volume bar stands upright along the edge of the tile, opposite the cover (at the right, or at the left when the
+  cover is at the right). It now needs two columns instead of two rows.
+- "Seek by tapping the bar" is on by default.
+- Even spacing: the same gap between the cover, the text, the progress bar and the buttons, and the outer buttons line
+  up with the edges.
+- With the text at the top or the bottom, it lines up with the cover's upper or lower edge.
+
 ## 0.9.1 - 2026-10-16
 
 - Fix: the manifest was refused ("tiles[0].options: at most 12 entries"), because the tile "SCMT" had 15 options.

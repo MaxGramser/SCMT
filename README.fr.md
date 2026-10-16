@@ -10,7 +10,8 @@ Le titre en grandes lettres, l'artiste dessous, et en bas une barre de progressi
 
 - Pendant la lecture : le titre et l'artiste. En pause : la même chose, avec le titre atténué.
 - Quand rien ne joue : « Aucune lecture » ; tant qu'aucun lecteur n'est choisi : « Choisir un lecteur ».
-- Un titre trop large pour la tuile reçoit d'abord une police plus petite, puis est coupé avec des points.
+- Un titre trop large pour la tuile reçoit d'abord une police plus petite, puis défile comme un texte déroulant. De
+  même pour un artiste et un album trop larges.
 - L'option « Progression » affiche une barre (sa hauteur est aussi une option, de 2 à 16 pixels), le temps (écoulé /
   durée), les deux, ou rien. Le lecteur doit indiquer `media_duration` et `media_position` ; sinon rien ne s'affiche.
 - L'option « Affichage du volume » montre le volume à droite du titre : pendant trois secondes après un changement,
@@ -24,16 +25,18 @@ Le titre en grandes lettres, l'artiste dessous, et en bas une barre de progressi
 
 ### Autres options de cette tuile
 
-- **Position du texte :** titre, artiste et album au milieu (par défaut), en haut ou en bas de l'espace à côté de la
-  pochette.
+- **Position du texte :** titre, artiste et album au milieu (par défaut), en haut ou en bas à côté de la pochette. En
+  haut ou en bas, le texte s'aligne sur le bord supérieur ou inférieur de la pochette.
 - **Grand affichage :** un affichage semi-transparent sur toute la tuile, pour le volume, pour la pause ou pour les
   deux. Désactivé par défaut.
   - Volume : pendant trois secondes après un changement de volume, le nombre et un haut-parleur. Avec l'option « Muet »,
     un appui dessus coupe le son.
   - Pause : tant que le lecteur est en pause, le symbole de pause.
-- **Avancer en touchant la barre :** un appui sur la barre de progression saute à cet endroit du morceau.
+- **Avancer en touchant la barre :** un appui sur la barre de progression saute à cet endroit du morceau. Activé par
+  défaut.
 - **Muet :** un bouton muet parmi les boutons ; un appui sur l'affichage du volume active ou coupe le muet.
-- **Barre de volume :** une barre sous le texte ; un appui dessus règle le volume à cet endroit. Demande deux lignes.
+- **Barre de volume :** une barre verticale au bord de la tuile, du côté opposé à la pochette (à droite, ou à gauche
+  quand la pochette est à droite) ; un appui dessus règle le volume à cette hauteur. Demande deux colonnes.
 - **Nom de l'album :** l'album sur une troisième ligne, quand la tuile est assez haute.
 - **Adresse de la pochette :** une adresse fixe d'un fichier de pochette dans Home Assistant, affichée à la place de
   l'image du lecteur (voir « La pochette » plus bas).

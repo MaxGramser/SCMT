@@ -1,5 +1,16 @@
 # Registro de cambios
 
+## 0.10.0 - 2026-10-16
+
+- Un título, artista o álbum demasiado ancho para la tarjeta se desplaza como texto corrido en lugar de cortarse con
+  puntos.
+- La barra de volumen está en vertical en el borde de la tarjeta, en el lado opuesto a la carátula (a la derecha, o a
+  la izquierda cuando la carátula está a la derecha). Ahora necesita dos columnas en lugar de dos filas.
+- «Avanzar tocando la barra» está activado por defecto.
+- Espaciado uniforme: la misma separación entre la carátula, el texto, la barra de progreso y los botones, y los
+  botones exteriores se alinean con los bordes.
+- Con el texto arriba o abajo, se alinea con el borde superior o inferior de la carátula.
+
 ## 0.9.1 - 2026-10-16
 
 - Corrección: el manifiesto se rechazaba («tiles[0].options: at most 12 entries») porque la tarjeta «SCMT» tenía 15

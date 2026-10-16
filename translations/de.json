@@ -58,7 +58,7 @@
     "opt_mute": "Stumm",
     "opt_mute_hint": "Eine Stumm-Taste bei den Tasten, und ein Tipp auf die Lautstärkeanzeige schaltet stumm oder wieder laut. Die Tasten brauchen zwei Zeilen.",
     "opt_volbar": "Lautstärkeleiste",
-    "opt_volbar_hint": "Eine Leiste unter dem Text; ein Tipp darauf stellt die Lautstärke an dieser Stelle ein. Braucht eine Kachel mit zwei Zeilen oder mehr.",
+    "opt_volbar_hint": "Eine aufrechte Leiste am Rand der Kachel, gegenüber dem Cover; ein Tipp darauf stellt die Lautstärke auf diese Höhe. Braucht eine Kachel mit zwei Spalten oder mehr.",
     "opt_album": "Albumname",
     "opt_album_hint": "Das Album als dritte Zeile, wenn die Kachel hoch genug ist.",
     "opt_barh": "Höhe des Fortschrittsbalkens",
@@ -67,7 +67,7 @@
     "cs_right": "Rechts",
     "cs_off": "Kein Cover",
     "opt_text_pos": "Position des Textes",
-    "opt_text_pos_hint": "Wo Titel und Interpret (und das Album) in dem Platz neben dem Cover stehen: oben, in der Mitte oder unten.",
+    "opt_text_pos_hint": "Wo Titel und Interpret (und das Album) neben dem Cover stehen: oben, in der Mitte oder unten, bündig mit den Kanten des Covers.",
     "tp_middle": "Mitte",
     "tp_top": "Oben",
     "tp_bottom": "Unten"

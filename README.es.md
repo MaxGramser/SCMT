@@ -10,7 +10,8 @@ El título en letras grandes, debajo el artista y, abajo, una barra de progreso 
 
 - Mientras suena algo: el título y el artista. En pausa: lo mismo, con el título atenuado.
 - Cuando no suena nada: «Nada en reproducción»; mientras no se haya elegido reproductor: «Elegir reproductor».
-- Un título demasiado ancho para la tarjeta recibe primero una letra más pequeña y después se corta con puntos.
+- Un título demasiado ancho para la tarjeta recibe primero una letra más pequeña y después se desplaza como texto
+  corrido. Igual un artista y un álbum demasiado anchos.
 - La opción «Progreso» muestra una barra (su altura también es una opción, de 2 a 16 píxeles), el tiempo (reproducido /
   duración), ambos o nada. El reproductor debe informar de `media_duration` y `media_position`; si no, no se muestra
   ninguno.
@@ -25,16 +26,18 @@ El título en letras grandes, debajo el artista y, abajo, una barra de progreso 
 
 ### Más opciones de esta tarjeta
 
-- **Posición del texto:** título, artista y álbum en el centro (por defecto), arriba o abajo del espacio junto a la
-  carátula.
+- **Posición del texto:** título, artista y álbum en el centro (por defecto), arriba o abajo junto a la carátula.
+  Arriba o abajo, el texto se alinea con el borde superior o inferior de la carátula.
 - **Indicador grande:** un indicador semitransparente sobre toda la tarjeta, para el volumen, para la pausa o para
   ambos. Desactivado por defecto.
   - Volumen: durante tres segundos tras un cambio de volumen, el número y un altavoz. Con la opción «Silencio», un
     toque en él silencia.
   - Pausa: mientras el reproductor está en pausa, el símbolo de pausa.
-- **Avanzar tocando la barra:** un toque en la barra de progreso salta a ese punto del tema.
+- **Avanzar tocando la barra:** un toque en la barra de progreso salta a ese punto del tema. Activado por defecto.
 - **Silencio:** un botón de silencio entre los botones; un toque en el indicador de volumen silencia o reactiva el sonido.
-- **Barra de volumen:** una barra bajo el texto; un toque en ella ajusta el volumen en ese punto. Necesita dos filas.
+- **Barra de volumen:** una barra vertical en el borde de la tarjeta, en el lado opuesto a la carátula (a la derecha,
+  o a la izquierda cuando la carátula está a la derecha); un toque en ella ajusta el volumen a esa altura. Necesita dos
+  columnas.
 - **Nombre del álbum:** el álbum en una tercera línea, cuando la tarjeta es lo bastante alta.
 - **Dirección de la carátula:** una dirección fija de un archivo de carátula en Home Assistant, que se muestra en lugar
   de la imagen del reproductor (véase «La carátula» más abajo).

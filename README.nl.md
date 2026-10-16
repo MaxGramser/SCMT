@@ -10,7 +10,8 @@ De titel in grote letters, daaronder de artiest en onderaan een optionele voortg
 
 - Zolang er iets speelt: titel en artiest. Bij pauze hetzelfde, met een gedempte titel.
 - Als er niets speelt: „Er wordt niets afgespeeld”; zolang er nog geen speler is gekozen: „Kies een speler”.
-- Een titel die te breed is voor de tegel krijgt eerst een kleiner lettertype en wordt daarna met puntjes afgekapt.
+- Een titel die te breed is voor de tegel krijgt eerst een kleiner lettertype en loopt daarna als lichtkrant door.
+  Net zo een artiest en een album die te breed zijn.
 - De optie „Voortgang” toont een balk (de hoogte is ook een optie, 2 tot 16 pixels), de tijd (gespeeld / duur), beide of
   niets. De speler moet `media_duration` en `media_position` doorgeven; anders verschijnt geen van beide.
 - De optie „Volumeweergave” toont het volume rechts van de titel: drie seconden na een wijziging, altijd of nooit. Ze
@@ -23,15 +24,18 @@ De titel in grote letters, daaronder de artiest en onderaan een optionele voortg
 
 ### Meer opties van deze tegel
 
-- **Positie van de tekst:** titel, artiest en album in het midden (standaard), boven of onderaan de ruimte naast de hoes.
+- **Positie van de tekst:** titel, artiest en album in het midden (standaard), boven of onderaan naast de hoes. Boven
+  of onderaan sluit de tekst gelijk met de boven- of onderrand van de hoes.
 - **Grote weergave:** een half doorzichtige weergave over de hele tegel, voor het volume, voor de pauze of voor allebei.
   Standaard uit.
   - Volume: drie seconden nadat het volume is veranderd, het getal en een luidspreker. Met de optie „Dempen” dempt een
     tik erop.
   - Pauze: zolang de speler gepauzeerd is, het pauzeteken.
-- **Spoelen door op de balk te tikken:** een tik op de voortgangsbalk springt naar die plek in het nummer.
+- **Spoelen door op de balk te tikken:** een tik op de voortgangsbalk springt naar die plek in het nummer. Standaard
+  aan.
 - **Dempen:** een dempknop tussen de knoppen; een tik op de volumeweergave dempt of heft het dempen op.
-- **Volumebalk:** een balk onder de tekst; een tik erop stelt het volume op die plek in. Vraagt twee rijen.
+- **Volumebalk:** een staande balk langs de rand van de tegel, tegenover de hoes (rechts, of links als de hoes rechts
+  staat); een tik erop stelt het volume op die hoogte in. Vraagt twee kolommen.
 - **Albumnaam:** het album op een derde regel, als de tegel hoog genoeg is.
 - **Adres van de hoes:** een vast adres van een hoesbestand in Home Assistant, getoond in plaats van de afbeelding van
   de speler (zie „De hoes” hieronder).

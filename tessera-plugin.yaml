@@ -1,6 +1,6 @@
 # Manifest for SCMT (Simple Customizable Media Tile): an info tile and a button tile for a media_player entity.
 id: scmt
-version: 0.9.1
+version: 0.10.0
 api: "0.10"
 icon: music
 maintainer: Schumey
@@ -63,7 +63,7 @@ tiles:
           - { value: "volume", label: ov_volume }
           - { value: "pause", label: ov_pause }
           - { value: "both", label: ov_both }
-      - { id: seek, kind: toggle, default: false, label: opt_seek, hint: opt_seek_hint }
+      - { id: seek, kind: toggle, default: true, label: opt_seek, hint: opt_seek_hint }
       - { id: mute, kind: toggle, default: false, label: opt_mute, hint: opt_mute_hint }
       - { id: volume_bar, kind: toggle, default: false, label: opt_volbar, hint: opt_volbar_hint }
       - { id: album, kind: toggle, default: false, label: opt_album, hint: opt_album_hint }

@@ -58,7 +58,7 @@
     "opt_mute": "Muto",
     "opt_mute_hint": "Un tasto muto tra i tasti, e un tocco sull'indicatore del volume attiva o toglie il muto. I tasti richiedono due righe.",
     "opt_volbar": "Barra del volume",
-    "opt_volbar_hint": "Una barra sotto il testo; un tocco su di essa imposta il volume in quel punto. Serve una tessera di almeno due righe.",
+    "opt_volbar_hint": "Una barra verticale sul bordo della tessera, dal lato opposto alla copertina; un tocco su di essa imposta il volume a quell'altezza. Serve una tessera di almeno due colonne.",
     "opt_album": "Nome dell'album",
     "opt_album_hint": "L'album su una terza riga, quando la tessera è abbastanza alta.",
     "opt_barh": "Altezza della barra di avanzamento",
@@ -67,7 +67,7 @@
     "cs_right": "Destra",
     "cs_off": "Nessuna",
     "opt_text_pos": "Posizione del testo",
-    "opt_text_pos_hint": "Dove stanno il titolo e l'artista (e l'album) nello spazio accanto alla copertina: in alto, al centro o in basso.",
+    "opt_text_pos_hint": "Dove stanno il titolo e l'artista (e l'album) accanto alla copertina: in alto, al centro o in basso, allineati ai bordi della copertina.",
     "tp_middle": "Centro",
     "tp_top": "In alto",
     "tp_bottom": "In basso"

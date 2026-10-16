@@ -1,5 +1,16 @@
 # Journal des modifications
 
+## 0.10.0 - 2026-10-16
+
+- Un titre, un artiste ou un album trop large pour la tuile défile comme un texte déroulant au lieu d'être coupé avec
+  des points.
+- La barre de volume se dresse au bord de la tuile, du côté opposé à la pochette (à droite, ou à gauche quand la
+  pochette est à droite). Elle demande maintenant deux colonnes au lieu de deux lignes.
+- « Avancer en touchant la barre » est activé par défaut.
+- Espacement régulier : le même écart entre la pochette, le texte, la barre de progression et les boutons, et les
+  boutons extérieurs s'alignent sur les bords.
+- Avec le texte en haut ou en bas, il s'aligne sur le bord supérieur ou inférieur de la pochette.
+
 ## 0.9.1 - 2026-10-16
 
 - Correction : le manifeste était refusé (« tiles[0].options: at most 12 entries »), parce que la tuile « SCMT » avait

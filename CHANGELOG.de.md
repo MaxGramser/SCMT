@@ -1,5 +1,16 @@
 # Änderungsprotokoll
 
+## 0.10.0 - 2026-10-16
+
+- Ein Titel, Interpret oder Album, der zu breit für die Kachel ist, läuft als Laufschrift durch, statt mit Punkten
+  gekürzt zu werden.
+- Die Lautstärkeleiste steht aufrecht am Rand der Kachel, gegenüber dem Cover (rechts, oder links, wenn das Cover rechts
+  steht). Sie braucht jetzt zwei Spalten statt zwei Zeilen.
+- „Spulen per Tipp auf den Balken“ ist standardmäßig an.
+- Gleichmäßige Abstände: derselbe Abstand zwischen Cover, Text, Fortschrittsbalken und Tasten, und die äußeren Tasten
+  schließen bündig mit den Rändern ab.
+- Steht der Text oben oder unten, schließt er bündig mit der Ober- oder Unterkante des Covers ab.
+
 ## 0.9.1 - 2026-10-16
 
 - Fehlerbehebung: Das Manifest wurde abgelehnt („tiles[0].options: at most 12 entries“), weil die Kachel „SCMT“ 15

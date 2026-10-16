@@ -1,5 +1,16 @@
 # Registro delle modifiche
 
+## 0.10.0 - 2026-10-16
+
+- Un titolo, artista o album troppo largo per la tessera scorre come testo scorrevole invece di essere tagliato con dei
+  puntini.
+- La barra del volume sta in verticale sul bordo della tessera, dal lato opposto alla copertina (a destra, o a sinistra
+  quando la copertina è a destra). Ora servono due colonne invece di due righe.
+- «Cerca toccando la barra» è attivo per impostazione predefinita.
+- Spaziatura uniforme: la stessa distanza tra copertina, testo, barra di avanzamento e tasti, e i tasti esterni sono
+  allineati ai bordi.
+- Con il testo in alto o in basso, si allinea al bordo superiore o inferiore della copertina.
+
 ## 0.9.1 - 2026-10-16
 
 - Correzione: il manifesto veniva rifiutato («tiles[0].options: at most 12 entries») perché la tessera «SCMT» aveva 15

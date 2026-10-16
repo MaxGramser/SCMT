@@ -10,7 +10,8 @@ Der Titel in großen Buchstaben, darunter der Interpret und unten optional ein F
 
 - Solange etwas läuft: Titel und Interpret. Bei Pause dasselbe, mit gedämpftem Titel.
 - Wenn nichts läuft: „Nichts läuft“; solange noch kein Player gewählt ist: „Player wählen“.
-- Ein Titel, der zu breit für die Kachel ist, bekommt zuerst eine kleinere Schrift und wird dann mit Punkten gekürzt.
+- Ein Titel, der zu breit für die Kachel ist, bekommt zuerst eine kleinere Schrift und läuft dann als Laufschrift durch.
+  Ebenso ein Interpret und ein Album, die zu breit sind.
 - Die Option „Fortschritt“ zeigt einen Balken (seine Höhe ist auch eine Option, 2 bis 16 Pixel), die Zeit (gespielt /
   Länge), beides oder nichts. Dafür muss der Player `media_duration` und `media_position` melden; sonst erscheint
   weder das eine noch das andere.
@@ -25,17 +26,18 @@ Der Titel in großen Buchstaben, darunter der Interpret und unten optional ein F
 
 ### Weitere Optionen dieser Kachel
 
-- **Position des Textes:** Titel, Interpret und Album in der Mitte (Standard), oben oder unten in dem Platz neben dem
-  Cover.
+- **Position des Textes:** Titel, Interpret und Album in der Mitte (Standard), oben oder unten neben dem Cover. Oben
+  oder unten schließt der Text bündig mit der Ober- oder Unterkante des Covers ab.
 - **Große Anzeige:** eine halb durchsichtige Anzeige über der ganzen Kachel, für die Lautstärke, für die Pause oder für
   beides. Standardmäßig aus.
   - Lautstärke: drei Sekunden nach einer Änderung der Lautstärke, mit der Zahl und einem Lautsprecher. Mit der Option
     „Stumm“ schaltet ein Tipp darauf stumm.
   - Pause: solange der Player pausiert ist, das Pause-Zeichen.
 - **Spulen per Tipp auf den Balken:** Ein Tipp auf den Fortschrittsbalken springt an diese Stelle im Titel.
+  Standardmäßig an.
 - **Stumm:** eine Stumm-Taste bei den Tasten; ein Tipp auf die Lautstärkeanzeige schaltet stumm oder wieder laut.
-- **Lautstärkeleiste:** eine Leiste unter dem Text; ein Tipp darauf stellt die Lautstärke an dieser Stelle ein. Braucht
-  zwei Zeilen.
+- **Lautstärkeleiste:** eine aufrechte Leiste am Rand der Kachel, gegenüber dem Cover (rechts, oder links, wenn das
+  Cover rechts steht); ein Tipp darauf stellt die Lautstärke auf diese Höhe. Braucht zwei Spalten.
 - **Albumname:** das Album als dritte Zeile, wenn die Kachel hoch genug ist.
 - **Cover-Adresse:** eine feste Adresse einer Cover-Datei in Home Assistant, die statt des eigenen Bildes des Players
   angezeigt wird (siehe „Das Cover“ unten).

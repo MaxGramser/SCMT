@@ -10,7 +10,8 @@ Il titolo in caratteri grandi, sotto l'artista e in basso una barra di avanzamen
 
 - Mentre qualcosa suona: titolo e artista. In pausa: lo stesso, con il titolo attenuato.
 - Quando non suona nulla: «Nessuna riproduzione»; finché non è scelto un lettore: «Scegli un lettore».
-- Un titolo troppo largo per la tessera riceve prima un carattere più piccolo, poi viene tagliato con dei puntini.
+- Un titolo troppo largo per la tessera riceve prima un carattere più piccolo, poi scorre come testo scorrevole. Lo
+  stesso vale per un artista e un album troppo larghi.
 - L'opzione «Avanzamento» mostra una barra (anche la sua altezza è un'opzione, da 2 a 16 pixel), il tempo (trascorso /
   durata), entrambi o niente. Il lettore deve indicare `media_duration` e `media_position`; altrimenti non compare né
   l'una né l'altro.
@@ -25,16 +26,18 @@ Il titolo in caratteri grandi, sotto l'artista e in basso una barra di avanzamen
 
 ### Altre opzioni di questa tessera
 
-- **Posizione del testo:** titolo, artista e album al centro (predefinito), in alto o in basso nello spazio accanto alla
-  copertina.
+- **Posizione del testo:** titolo, artista e album al centro (predefinito), in alto o in basso accanto alla copertina.
+  In alto o in basso, il testo si allinea al bordo superiore o inferiore della copertina.
 - **Indicatore grande:** un indicatore semitrasparente su tutta la tessera, per il volume, per la pausa o per entrambi.
   Disattivato per impostazione predefinita.
   - Volume: per tre secondi dopo una modifica del volume, il numero e un altoparlante. Con l'opzione «Muto», un tocco
     su di esso attiva il muto.
   - Pausa: finché il lettore è in pausa, il simbolo di pausa.
-- **Cerca toccando la barra:** un tocco sulla barra di avanzamento salta a quel punto del brano.
+- **Cerca toccando la barra:** un tocco sulla barra di avanzamento salta a quel punto del brano. Attivo per
+  impostazione predefinita.
 - **Muto:** un tasto muto tra i tasti; un tocco sull'indicatore del volume attiva o toglie il muto.
-- **Barra del volume:** una barra sotto il testo; un tocco su di essa imposta il volume in quel punto. Servono due righe.
+- **Barra del volume:** una barra verticale sul bordo della tessera, dal lato opposto alla copertina (a destra, o a
+  sinistra quando la copertina è a destra); un tocco su di essa imposta il volume a quell'altezza. Servono due colonne.
 - **Nome dell'album:** l'album su una terza riga, quando la tessera è abbastanza alta.
 - **Indirizzo della copertina:** un indirizzo fisso di un file di copertina in Home Assistant, mostrato al posto
   dell'immagine del lettore (vedi «La copertina» più sotto).

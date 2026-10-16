@@ -58,7 +58,7 @@
     "opt_mute": "Muet",
     "opt_mute_hint": "Un bouton muet parmi les boutons, et un appui sur l'affichage du volume active ou coupe le muet. Les boutons demandent deux lignes.",
     "opt_volbar": "Barre de volume",
-    "opt_volbar_hint": "Une barre sous le texte ; un appui dessus règle le volume à cet endroit. Demande une tuile d'au moins deux lignes.",
+    "opt_volbar_hint": "Une barre verticale au bord de la tuile, du côté opposé à la pochette ; un appui dessus règle le volume à cette hauteur. Demande une tuile d'au moins deux colonnes.",
     "opt_album": "Nom de l'album",
     "opt_album_hint": "L'album sur une troisième ligne, quand la tuile est assez haute.",
     "opt_barh": "Hauteur de la barre de progression",
@@ -67,7 +67,7 @@
     "cs_right": "Droite",
     "cs_off": "Aucune",
     "opt_text_pos": "Position du texte",
-    "opt_text_pos_hint": "Où se placent le titre et l'artiste (et l'album) dans l'espace à côté de la pochette : en haut, au milieu ou en bas.",
+    "opt_text_pos_hint": "Où se placent le titre et l'artiste (et l'album) à côté de la pochette : en haut, au milieu ou en bas, alignés sur les bords de la pochette.",
     "tp_middle": "Milieu",
     "tp_top": "Haut",
     "tp_bottom": "Bas"

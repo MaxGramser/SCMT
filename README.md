@@ -10,7 +10,8 @@ The title in large letters, the artist below it, and an optional progress bar at
 
 - While something plays, the title and the artist. While paused, the same, with the title dimmed.
 - When nothing plays, "Nothing playing"; before a player is chosen, "Choose a player".
-- A title that is too wide for the tile gets a smaller font first, then is cut with dots.
+- A title that is too wide for the tile gets a smaller font first, then runs as a marquee. So do an artist and an
+  album that are too wide.
 - The option "Progress" shows a bar (its height is an option too, 2 to 16 pixels), the time (played / length), both, or
   nothing. It needs the player to report `media_duration` and `media_position`; a player that does not shows neither.
 - The option "Volume display" shows the volume at the title's right: for three seconds after it changed, always, or
@@ -24,16 +25,17 @@ The title in large letters, the artist below it, and an optional progress bar at
 
 ### More options of this tile
 
-- **Position of the text:** title, artist and album in the middle (default), at the top or at the bottom of the space
-  beside the cover.
+- **Position of the text:** title, artist and album in the middle (default), at the top or at the bottom beside the
+  cover. At the top or the bottom, the text lines up with the cover's upper or lower edge.
 - **Big display:** a half see-through display over the whole tile, for the volume, for the pause, or both. Off by
   default.
   - Volume: for three seconds after the volume changes, the number and a speaker. With the option "Mute", a tap on it
     mutes.
   - Pause: while the player is paused, the pause sign.
-- **Seek by tapping the bar:** a tap on the progress bar jumps to that place in the song.
+- **Seek by tapping the bar:** a tap on the progress bar jumps to that place in the song. On by default.
 - **Mute:** a mute button among the buttons; a tap on the volume display mutes or unmutes.
-- **Volume bar:** a bar under the text; a tap on it sets the volume to that place. Needs two rows.
+- **Volume bar:** an upright bar along the edge of the tile, opposite the cover (at the right, or at the left when the
+  cover is at the right); a tap on it sets the volume to that height. Needs two columns.
 - **Album name:** the album as a third line, when the tile is high enough.
 - **Cover address:** a fixed address of a cover file in Home Assistant, shown instead of the player's own picture (see
   "The cover" below).

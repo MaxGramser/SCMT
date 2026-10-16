@@ -114,7 +114,7 @@ class NowPlayingTile : public tessera::Tile {
     const bool want_pause_overlay = overlay == "pause" || overlay == "both";
     const bool want_vbar = c.options["volume_bar"] | false;
     want_mute_ = c.options["mute"] | false;
-    want_seek_ = c.options["seek"] | false;
+    want_seek_ = c.options["seek"] | true;
     show_album_ = c.options["album"] | false;
     cover_url_ = (const char *) (c.options["cover_url"] | "");  // fixed address of a cover file, e.g. /local/cover.jpg
     const std::string tpos = (const char *) (c.options["text_pos"] | "middle");
@@ -135,28 +135,35 @@ class NowPlayingTile : public tessera::Tile {
       if (want_mute_) kinds_[n_++] = MUTE;
     }
     ctrl_h_ = n_ > 0 ? ui::mm(8) : 0;
-    vbar_h_ = (c.rows >= 2 && want_vbar) ? ui::mm(7) : 0;
-    if ((ctrl_h_ + vbar_h_) * 2 > height_) vbar_h_ = 0;  // too little room: the volume bar goes first
     if (ctrl_h_ * 2 > height_) {
       n_ = 0;
       ctrl_h_ = 0;
     }
 
-    // From the bottom up: the buttons, the volume bar, the progress bar, the time. What is left above is for the cover
-    // and the text.
-    const int gap = ui::px(4);
+    // One space between all parts (cover, text, bars, buttons), so that they stand evenly in the card.
+    const int gap = ui::px(8);
+    const int bw = ui::px(1);  // width of a frame
+
+    // The volume bar: upright along the whole height, at the edge away from the cover (right, or left when the cover
+    // is at the right). Everything else lies in the area beside it. A finger needs its width, so it needs two columns.
+    area_x_ = 0;
+    area_w_ = width_;
+    if (want_vbar && c.columns >= 2) {
+      vbar_w_ = ui::mm(7);
+      vbar_x_ = cover_right_ ? 0 : width_ - vbar_w_;
+      area_w_ = width_ - vbar_w_ - gap;
+      if (cover_right_) area_x_ = vbar_w_ + gap;
+    }
+
+    // From the bottom up: the buttons, the progress bar, the time. What is left above is for the cover and the text.
     int bh = c.options["bar_height"] | 4;  // in pixels of the reference look
     if (bh < 1) bh = 1;
     bar_h_ = ui::px(bh);
     const int time_h = show_time_ ? ui::line_height(Font::BODY) : 0;
     int bottom = height_;
     if (ctrl_h_ > 0) bottom = height_ - ctrl_h_ - gap;
-    if (vbar_h_ > 0) {
-      vbar_y_ = bottom - vbar_h_;
-      bottom = vbar_y_ - gap;
-    }
     bar_y_ = show_bar_ ? bottom - bar_h_ : bottom;
-    time_y_ = (show_bar_ ? bar_y_ - gap : bottom) - time_h;
+    time_y_ = (show_bar_ ? bar_y_ - ui::px(4) : bottom) - time_h;  // the time sits close over its bar
     int above = bottom;
     if (show_time_) above = time_y_;
     else if (show_bar_) above = bar_y_;
@@ -165,79 +172,83 @@ class NowPlayingTile : public tessera::Tile {
 
     // The cover, a square at the left or the right (option), when the tile is two cells wide or more and the screen
     // shows pictures.
-    x0_ = 0;
+    x0_ = area_x_;
     if (want_cover && ui::pictures() && c.columns >= 2 && content_h_ > ui::px(24)) {
       cover_size_ = content_h_;
-      if (cover_size_ > width_ / 2) cover_size_ = width_ / 2;
+      if (cover_size_ > area_w_ / 2) cover_size_ = area_w_ / 2;
       cover_ = ui::picture(c.parent);
       lv_obj_set_size(cover_, 0, 0);  // shown only when the player has a picture the screen may fetch
-      lv_obj_set_pos(cover_, cover_right_ ? width_ - cover_size_ : 0, 0);
+      lv_obj_set_pos(cover_, cover_right_ ? area_x_ + area_w_ - cover_size_ : area_x_, 0);
     }
-    text_w_ = width_;
-    text_right_ = width_;
+    text_w_ = area_w_;
+    text_right_ = area_x_ + area_w_;
 
+    // Title, artist and album run as a marquee when they are wider than their room.
     title_lbl_ = ui::label(c.parent, Font::HEADLINE, theme::INK);
+    lv_label_set_long_mode(title_lbl_, LV_LABEL_LONG_SCROLL_CIRCULAR);
     artist_lbl_ = ui::label(c.parent, Font::BODY, theme::INK_SOFT);
+    lv_label_set_long_mode(artist_lbl_, LV_LABEL_LONG_SCROLL_CIRCULAR);
     lv_obj_set_width(artist_lbl_, text_w_);
     if (show_album_) {
       album_lbl_ = ui::label(c.parent, Font::BODY, theme::MUTED);
+      lv_label_set_long_mode(album_lbl_, LV_LABEL_LONG_SCROLL_CIRCULAR);
       lv_obj_set_width(album_lbl_, text_w_);
     }
 
     track_ = ui::block(c.parent, theme::TRACK);
     fill_ = ui::block(c.parent, theme::ACCENT);
-    lv_obj_set_pos(track_, 0, bar_y_);
-    lv_obj_set_pos(fill_, 0, bar_y_);
+    lv_obj_set_pos(track_, area_x_, bar_y_);
+    lv_obj_set_pos(fill_, area_x_, bar_y_);
     lv_obj_set_size(track_, 0, bar_h_);  // width 0 = not shown; on_tick gives it its width
     lv_obj_set_size(fill_, 0, bar_h_);
 
     if (show_time_) {
       time_lbl_ = ui::label(c.parent, Font::BODY, theme::INK_SOFT);
-      lv_obj_set_width(time_lbl_, width_);
-      lv_obj_set_pos(time_lbl_, 0, time_y_);
+      lv_obj_set_width(time_lbl_, area_w_);
+      lv_obj_set_pos(time_lbl_, area_x_, time_y_);
     }
     if (vol_mode_ != 0) {
       vol_lbl_ = ui::label(c.parent, Font::BODY, theme::MUTED);
       vol_icon_lbl_ = ui::label(c.parent, Font::ICON_SMALL, theme::MUTED);
     }
 
-    const int m = ui::px(2);   // space between two buttons, and at the sides
-    const int bw = ui::px(1);  // width of a frame
-
-    // The volume bar: a framed track with a fill that shows the volume. A tap on it sets the volume.
-    if (vbar_h_ > 0) {
+    // The volume bar: a framed track with a fill that grows from the bottom. A tap on it sets the volume.
+    if (vbar_w_ > 0) {
       const int pad = ui::px(2);
-      vbar_x0_ = m + bw + pad;
-      vbar_w_ = width_ - 2 * (m + bw + pad);
-      if (vbar_w_ < 1) vbar_w_ = 1;
+      vbar_fy_ = bw + pad;
+      vbar_fh_ = height_ - 2 * (bw + pad);
+      if (vbar_fh_ < 1) vbar_fh_ = 1;
       vbar_frame_ = ui::block(c.parent, theme::LINE);
-      lv_obj_set_size(vbar_frame_, width_ - 2 * m, vbar_h_);
-      lv_obj_set_pos(vbar_frame_, m, vbar_y_);
+      lv_obj_set_size(vbar_frame_, vbar_w_, height_);
+      lv_obj_set_pos(vbar_frame_, vbar_x_, 0);
       vbar_inner_ = ui::block(c.parent, theme::CARD);
-      lv_obj_set_size(vbar_inner_, width_ - 2 * m - 2 * bw, vbar_h_ - 2 * bw);
-      lv_obj_set_pos(vbar_inner_, m + bw, vbar_y_ + bw);
+      lv_obj_set_size(vbar_inner_, vbar_w_ - 2 * bw, height_ - 2 * bw);
+      lv_obj_set_pos(vbar_inner_, vbar_x_ + bw, bw);
       vbar_fill_ = ui::block(c.parent, theme::ACCENT);
-      lv_obj_set_size(vbar_fill_, 0, vbar_h_ - 2 * (bw + pad));
-      lv_obj_set_pos(vbar_fill_, vbar_x0_, vbar_y_ + bw + pad);
+      lv_obj_set_size(vbar_fill_, vbar_w_ - 2 * (bw + pad), 0);
+      lv_obj_set_pos(vbar_fill_, vbar_x_ + bw + pad, vbar_fy_ + vbar_fh_);
     }
 
     // The buttons, each with a light frame: a block in the line colour with a smaller one in the card's colour on it.
+    // The outer ones stand flush with the edges of the area, like the progress bar.
     if (n_ > 0) {
-      const int cell = width_ / n_;
+      btn_gap_ = ui::px(4);
+      btn_w_ = (area_w_ - (n_ - 1) * btn_gap_) / n_;
       const int top = height_ - ctrl_h_;
       for (int i = 0; i < n_; ++i) {
+        const int x = area_x_ + i * (btn_w_ + btn_gap_);
         frame_[i] = ui::block(c.parent, theme::LINE);
-        lv_obj_set_size(frame_[i], cell - 2 * m, ctrl_h_ - 2 * m);
-        lv_obj_set_pos(frame_[i], i * cell + m, top + m);
+        lv_obj_set_size(frame_[i], btn_w_, ctrl_h_);
+        lv_obj_set_pos(frame_[i], x, top);
         inner_[i] = ui::block(c.parent, theme::CARD);
-        lv_obj_set_size(inner_[i], cell - 2 * m - 2 * bw, ctrl_h_ - 2 * m - 2 * bw);
-        lv_obj_set_pos(inner_[i], i * cell + m + bw, top + m + bw);
+        lv_obj_set_size(inner_[i], btn_w_ - 2 * bw, ctrl_h_ - 2 * bw);
+        lv_obj_set_pos(inner_[i], x + bw, top + bw);
       }
       for (int i = 0; i < n_; ++i) {
         btn_[i] = ui::label(c.parent, Font::TITLE, theme::INK);
-        lv_obj_set_width(btn_[i], cell);
+        lv_obj_set_width(btn_[i], btn_w_);
         lv_obj_set_style_text_align(btn_[i], LV_TEXT_ALIGN_CENTER, 0);
-        lv_obj_set_pos(btn_[i], i * cell, top + (ctrl_h_ - ui::line_height(Font::TITLE)) / 2);
+        lv_obj_set_pos(btn_[i], area_x_ + i * (btn_w_ + btn_gap_), top + (ctrl_h_ - ui::line_height(Font::TITLE)) / 2);
       }
     }
 
@@ -329,8 +340,8 @@ class NowPlayingTile : public tessera::Tile {
     // The text lies beside the cover (at its right when the cover is at the left, at its left when the cover is at
     // the right) and takes the whole width when there is no cover.
     const int cover_w = cover_on_ ? cover_size_ + ui::px(8) : 0;
-    x0_ = cover_right_ ? 0 : cover_w;
-    text_w_ = width_ - cover_w;
+    x0_ = area_x_ + (cover_right_ ? 0 : cover_w);
+    text_w_ = area_w_ - cover_w;
     text_right_ = x0_ + text_w_;  // where the text area ends: the volume display sits at its right edge
     lv_obj_set_width(artist_lbl_, text_w_);
     if (album_lbl_ != nullptr) lv_obj_set_width(album_lbl_, text_w_);
@@ -370,7 +381,7 @@ class NowPlayingTile : public tessera::Tile {
     const int title_w = text_w_ - (vol_total > 0 ? vol_total + ui::px(6) : 0);
     lv_obj_set_width(title_lbl_, title_w);
 
-    // The largest font the title fits in; the label cuts the rest with dots.
+    // The largest font the title fits in; a title wider still runs as a marquee.
     Font f = Font::HEADLINE;
     if (ui::text_width(title, f) > title_w) f = Font::TITLE;
     if (ui::text_width(title, f) > title_w) f = Font::BODY_LARGE;
@@ -380,14 +391,16 @@ class NowPlayingTile : public tessera::Tile {
     ui::set_color(title_lbl_, paused_ ? theme::MUTED : theme::INK);
 
     // Title, artist and, when it fits, the album, together at the top, in the middle or at the bottom of the space
-    // beside the cover (option).
+    // beside the cover (option). With a cover that space is the cover's height, so "top" and "bottom" line up with its
+    // upper and lower edge.
     const int th = ui::line_height(f);
     const int ah = ui::line_height(Font::BODY);
     const int g2 = ui::px(2);
+    const int space_h = cover_on_ ? cover_size_ : content_h_;
     int block_h = th + g2 + ah;
-    const bool with_album = album_lbl_ != nullptr && !album.empty() && block_h + g2 + ah <= content_h_;
+    const bool with_album = album_lbl_ != nullptr && !album.empty() && block_h + g2 + ah <= space_h;
     if (with_album) block_h += g2 + ah;
-    int y = text_pos_ == 1 ? 0 : (text_pos_ == 2 ? content_h_ - block_h : (content_h_ - block_h) / 2);
+    int y = text_pos_ == 1 ? 0 : (text_pos_ == 2 ? space_h - block_h : (space_h - block_h) / 2);
     if (y < 0) y = 0;
     lv_obj_set_pos(title_lbl_, x0_, y);
     lv_obj_set_pos(artist_lbl_, x0_, y + th + g2);
@@ -420,8 +433,8 @@ class NowPlayingTile : public tessera::Tile {
     }
     int track_w = 0, fill_w = 0;
     if (show_bar_ && timeline) {
-      track_w = width_;
-      fill_w = static_cast<int>(static_cast<float>(width_) * (pos / duration_));
+      track_w = area_w_;
+      fill_w = static_cast<int>(static_cast<float>(area_w_) * (pos / duration_));
     }
     lv_obj_set_width(track_, track_w);
     lv_obj_set_width(fill_, fill_w);
@@ -433,11 +446,12 @@ class NowPlayingTile : public tessera::Tile {
     if (vbar_fill_ != nullptr) {
       float lvl = volume_ < 0.0f ? 0.0f : volume_;
       if (lvl > 1.0f) lvl = 1.0f;
-      lv_obj_set_width(vbar_fill_, static_cast<int>(static_cast<float>(vbar_w_) * lvl));
+      const int fh = static_cast<int>(static_cast<float>(vbar_fh_) * lvl);
+      lv_obj_set_height(vbar_fill_, fh);
+      lv_obj_set_y(vbar_fill_, vbar_fy_ + vbar_fh_ - fh);
     }
 
     // The buttons: plain signs, and the speaker for muting when the icon set has it.
-    const int cell = n_ > 0 ? width_ / n_ : 0;
     for (int i = 0; i < n_; ++i) {
       const char *s = "";
       Font bf = Font::TITLE;
@@ -460,7 +474,7 @@ class NowPlayingTile : public tessera::Tile {
       }
       ui::set_font(btn_[i], bf);
       ui::set_text(btn_[i], s);
-      lv_obj_set_pos(btn_[i], i * cell, height_ - ctrl_h_ + (ctrl_h_ - ui::line_height(bf)) / 2);
+      lv_obj_set_pos(btn_[i], area_x_ + i * (btn_w_ + btn_gap_), height_ - ctrl_h_ + (ctrl_h_ - ui::line_height(bf)) / 2);
     }
 
     // The big volume display: the number in the largest font that fits, and the speaker after it.
@@ -559,9 +573,20 @@ class NowPlayingTile : public tessera::Tile {
       mute_();
       return;
     }
-    // 2. A button.
+    // 2. The volume bar: a tap sets the volume where it hit, from 0 at the bottom to 100 at the top.
+    if (known && vbar_w_ > 0 && x >= vbar_x_ - ui::px(4) && x < vbar_x_ + vbar_w_ + ui::px(4)) {
+      float lvl = static_cast<float>(vbar_fy_ + vbar_fh_ - y) / static_cast<float>(vbar_fh_);
+      if (lvl < 0.0f) lvl = 0.0f;
+      if (lvl > 1.0f) lvl = 1.0f;
+      char b[16];
+      snprintf(b, sizeof b, "%.2f", lvl);
+      tessera::action("media_player.volume_set", entity_.c_str(), "volume_level", b);
+      return;
+    }
+    // 3. A button.
     if (known && n_ > 0 && y >= height_ - ctrl_h_) {
-      int i = x / (width_ / n_);
+      int i = (x - area_x_) / (btn_w_ + btn_gap_);
+      if (i < 0) i = 0;
       if (i >= n_) i = n_ - 1;
       if (kinds_[i] == MUTE) {
         mute_();
@@ -569,16 +594,6 @@ class NowPlayingTile : public tessera::Tile {
         const char *service = service_for(kinds_[i]);
         if (service != nullptr) tessera::action(service, entity_.c_str());
       }
-      return;
-    }
-    // 3. The volume bar: a tap sets the volume where it hit.
-    if (known && vbar_h_ > 0 && y >= vbar_y_ - ui::px(4) && y < vbar_y_ + vbar_h_ + ui::px(4)) {
-      float lvl = static_cast<float>(x - vbar_x0_) / static_cast<float>(vbar_w_);
-      if (lvl < 0.0f) lvl = 0.0f;
-      if (lvl > 1.0f) lvl = 1.0f;
-      char b[16];
-      snprintf(b, sizeof b, "%.2f", lvl);
-      tessera::action("media_player.volume_set", entity_.c_str(), "volume_level", b);
       return;
     }
     // 4. The small volume display: a tap mutes (option).
@@ -590,7 +605,7 @@ class NowPlayingTile : public tessera::Tile {
     // 5. The progress bar: a tap seeks to where it hit (option).
     if (known && want_seek_ && show_bar_ && duration_ > 0.5f && y >= bar_y_ - ui::mm(3) &&
         y <= bar_y_ + bar_h_ + ui::mm(2)) {
-      float frac = static_cast<float>(x) / static_cast<float>(width_);
+      float frac = static_cast<float>(x - area_x_) / static_cast<float>(area_w_);
       if (frac < 0.0f) frac = 0.0f;
       if (frac > 1.0f) frac = 1.0f;
       char b[16];
@@ -651,7 +666,9 @@ class NowPlayingTile : public tessera::Tile {
   uint32_t cover_key_{0}, cover_gen_{0}, cover_retry_at_{0};
   bool cover_retry_{false};
   int bar_h_{0}, bar_y_{0}, time_y_{0}, ctrl_h_{0}, content_h_{0};
-  int vbar_h_{0}, vbar_y_{0}, vbar_x0_{0}, vbar_w_{1};
+  int area_x_{0}, area_w_{0};                    // the area beside the volume bar, for everything else
+  int vbar_x_{0}, vbar_w_{0}, vbar_fy_{0}, vbar_fh_{1};  // the volume bar, and where its fill may reach
+  int btn_w_{0}, btn_gap_{0};
   int vol_hit_x_{0}, vol_hit_w_{0}, vol_hit_y_{0}, vol_hit_h_{0};
   bool show_bar_{true}, show_time_{false}, show_album_{false};
   bool want_mute_{false}, want_seek_{false};

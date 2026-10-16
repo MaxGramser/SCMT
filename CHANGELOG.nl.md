@@ -1,5 +1,16 @@
 # Wijzigingenlogboek
 
+## 0.10.0 - 2026-10-16
+
+- Een titel, artiest of album die te breed is voor de tegel loopt als lichtkrant door in plaats van met puntjes te
+  worden afgekapt.
+- De volumebalk staat rechtop langs de rand van de tegel, tegenover de hoes (rechts, of links als de hoes rechts staat).
+  Hij vraagt nu twee kolommen in plaats van twee rijen.
+- „Spoelen door op de balk te tikken” staat standaard aan.
+- Gelijke afstanden: dezelfde ruimte tussen hoes, tekst, voortgangsbalk en knoppen, en de buitenste knoppen sluiten
+  gelijk met de randen.
+- Staat de tekst boven of onderaan, dan sluit hij gelijk met de boven- of onderrand van de hoes.
+
 ## 0.9.1 - 2026-10-16
 
 - Reparatie: het manifest werd geweigerd („tiles[0].options: at most 12 entries”), omdat de tegel „SCMT” 15 opties had.

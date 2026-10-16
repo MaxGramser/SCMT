@@ -58,7 +58,7 @@
     "opt_mute": "Silencio",
     "opt_mute_hint": "Un botón de silencio entre los botones, y un toque en el indicador de volumen silencia o reactiva el sonido. Los botones necesitan dos filas.",
     "opt_volbar": "Barra de volumen",
-    "opt_volbar_hint": "Una barra bajo el texto; un toque en ella ajusta el volumen en ese punto. Necesita una tarjeta de dos filas o más.",
+    "opt_volbar_hint": "Una barra vertical en el borde de la tarjeta, en el lado opuesto a la carátula; un toque en ella ajusta el volumen a esa altura. Necesita una tarjeta de dos columnas o más.",
     "opt_album": "Nombre del álbum",
     "opt_album_hint": "El álbum en una tercera línea, cuando la tarjeta es lo bastante alta.",
     "opt_barh": "Altura de la barra de progreso",
@@ -67,7 +67,7 @@
     "cs_right": "Derecha",
     "cs_off": "Ninguna",
     "opt_text_pos": "Posición del texto",
-    "opt_text_pos_hint": "Dónde van el título y el artista (y el álbum) en el espacio junto a la carátula: arriba, en el centro o abajo.",
+    "opt_text_pos_hint": "Dónde van el título y el artista (y el álbum) junto a la carátula: arriba, en el centro o abajo, alineados con los bordes de la carátula.",
     "tp_middle": "Centro",
     "tp_top": "Arriba",
     "tp_bottom": "Abajo"
