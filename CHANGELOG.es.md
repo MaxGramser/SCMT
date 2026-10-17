@@ -1,5 +1,16 @@
 # Registro de cambios
 
+## 0.12.0 - 2026-10-17
+
+- Nueva opción «Tempo»: el tempo de la música (por ejemplo «138 BPM») en una línea bajo el artista. Viene de un sensor
+  elegido por pantalla en Tessera (nueva entrada «Sensor de tempo»), por ejemplo el que HASS.Agent crea a partir de
+  BPM2SCMT. Tras una pista nueva, la línea espera a que el sensor tenga el nuevo tempo.
+- El plugin lee ahora él mismo esa entidad (permiso `read_entities`); Tessera lo pide al actualizar.
+- El README describe un nuevo camino a la carátula para los reproductores cuya carátula se rechaza: una imagen de
+  plantilla en Home Assistant, mostrada con la «Dirección de la carátula» `/api/image_proxy/image.scmt_cover?v={v}`.
+  Sustituye a la automatización de la carátula con un archivo en `/local/`, que no funciona con Tessera 0.4.88 (403).
+  El plugin no cambia para ello.
+
 ## 0.11.0 - 2026-10-17
 
 - Nueva opción «Tamaño del texto»: pequeño (como antes de 0.10.3), mediano (por defecto, como ahora) o grande (artista

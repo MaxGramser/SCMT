@@ -38,8 +38,17 @@ Weitere Fakten aus dem Tessera-Code, falls das Thema wiederkommt:
 ## Entscheidungen
 
 - Am SCMT-Code wird für dieses Problem nichts geändert; der Fehler wird bei Tessera gemeldet.
-- „Cover address“ und die Cover-Automation bleiben im Plugin, obwohl Tessera 0.4.88 `/local/` über den Supervisor
-  holt und 403 bekommt (siehe README und MaxGramser/tessera-plugins#6).
+- Cover für Player, deren eigenes Cover abgelehnt wird (HASS.Agent, `/api/media_player_proxy/`): über einen
+  Template-Bild-Helfer in Home Assistant (`image.scmt_cover`, URL
+  `http://127.0.0.1{{ state_attr('media_player.desktop_ljbgp13', 'entity_picture') }}`) und die „Cover address“
+  `/api/image_proxy/image.scmt_cover?v={v}`. Am 2026-10-17 am Display getestet, keine Code-Änderung nötig. Die
+  Cover-Automation über `/local/` ist aus README und Repo entfernt: Tessera 0.4.88 holt `/local/` über den Supervisor
+  und bekommt 403 (MaxGramser/tessera-plugins#6).
+
+- Tempo (0.12.0): Eine Kachel bekommt nur ihre eine Entität. Deshalb liest `plugin.yaml` den BPM-Sensor als
+  `homeassistant`-Sensor (Eingabe `bpm` pro Bildschirm, `read_entities: ["{bpm}"]`), und die Kachel-Option `bpm`
+  schaltet nur die Zeile unter dem Interpreten ein. Sensor beim Nutzer: `sensor.wohnzimmer_heimrechner_bpm` (HASS.Agent
+  liest ihn aus BPM2SCMT, Repo Schumey/BPM2SCMT). Damit hat `now_playing` 12 Optionen, das Maximum.
 
 ## Offene Punkte
 
@@ -48,7 +57,6 @@ Weitere Fakten aus dem Tessera-Code, falls das Thema wiederkommt:
   `sidecar` aufrufen).
 - Nicht verifiziert: ob im 08:22-Log `Building CXX object …/scmt/scmt.cpp.obj` fehlt (wäre ein Beleg fürs Issue).
 - Analyse beruht auf `main`, nicht exakt auf App 0.4.88, und wurde nicht nachgestellt.
-- Cover über `/local/` funktioniert nicht (403), wartet auf Tessera (tessera-plugins#6).
 
 ## Nächste Schritte
 

@@ -88,6 +88,11 @@ tiles:
     options: { album: true }
     sizes: [2x2, 3x2]
   - tile: now_playing
+    name: Tempo
+    entity: media_player.pc_spotify
+    options: { bpm: true, album: true }
+    sizes: [2x2, 3x2]
+  - tile: now_playing
     name: Big volume display
     entity: media_player.pc_spotify
     options: { overlay: volume, buttons: volume }
@@ -105,7 +110,7 @@ tiles:
   - tile: now_playing
     name: Cover address
     entity: media_player.pc_nopic
-    options: { cover_url: "/local/cover.jpg?v={v}" }
+    options: { cover_url: "/api/image_proxy/image.scmt_cover?v={v}" }
     sizes: [2x1, 3x1]
 
   # 6c. The cover at the right (option "Album cover")
@@ -209,8 +214,14 @@ tiles:
     options: { action: volume_down }
     sizes: [1x1, 2x1]
 
-# states: the media players as Home Assistant has them (the attributes the manifest names)
+# states: the media players as Home Assistant has them (the attributes the manifest names), and the tempo sensor that
+# plugin.yaml reads (its default entity)
 states:
+  sensor.bpm:
+    state: "138"
+    attributes:
+      unit_of_measurement: BPM
+
   media_player.pc_spotify:
     state: playing
     attributes:

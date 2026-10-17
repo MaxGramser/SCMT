@@ -1,5 +1,16 @@
 # Wijzigingenlogboek
 
+## 0.12.0 - 2026-10-17
+
+- Nieuwe optie „Tempo”: het tempo van de muziek (bijvoorbeeld „138 BPM”) als regel onder de artiest. Het komt van een
+  sensor die per scherm in Tessera wordt gekozen (nieuwe invoer „Temposensor”), bijvoorbeeld die welke HASS.Agent maakt
+  van BPM2SCMT. Na een nieuw nummer wacht de regel tot de sensor het nieuwe tempo heeft.
+- De plug-in leest die ene entiteit nu zelf (recht `read_entities`); Tessera vraagt erom bij de update.
+- De README beschrijft een nieuwe weg naar de hoes voor spelers waarvan de eigen hoes wordt geweigerd: een
+  sjabloonafbeelding in Home Assistant, getoond met het „Adres van de hoes” `/api/image_proxy/image.scmt_cover?v={v}`.
+  Die vervangt de hoesautomatisering met een bestand onder `/local/`, dat niet werkt met Tessera 0.4.88 (403). De
+  plug-in verandert daarvoor niet.
+
 ## 0.11.0 - 2026-10-17
 
 - Nieuwe optie „Tekstgrootte”: klein (zoals vóór 0.10.3), middel (standaard, zoals nu) of groot (artiest en album een

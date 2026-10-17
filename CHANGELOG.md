@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.12.0 - 2026-10-17
+
+- New option "Tempo": the tempo of the music (for example "138 BPM") as a line under the artist. It comes from a sensor
+  chosen per screen in Tessera (new input "Tempo sensor"), for example the one HASS.Agent makes from BPM2SCMT. After a
+  new track the line waits until the sensor has the new tempo.
+- The plugin now reads that one entity itself (permission `read_entities`); Tessera asks for it on the update.
+- The README describes a new way to the cover for players whose own cover is refused: a template image in Home
+  Assistant, shown with the "Cover address" `/api/image_proxy/image.scmt_cover?v={v}`. It replaces the cover
+  automation with a file under `/local/`, which does not work with Tessera 0.4.88 (403). The plugin is unchanged there.
+
 ## 0.11.0 - 2026-10-17
 
 - New option "Text size": small (as before 0.10.3), medium (default, as now) or large (artist and album one step

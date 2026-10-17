@@ -39,8 +39,10 @@ Der Titel in großen Buchstaben, darunter der Interpret und unten optional ein F
 - **Lautstärkeleiste:** eine aufrechte Leiste am rechten Rand der Kachel; ein Tipp darauf stellt die Lautstärke auf
   diese Höhe. Braucht zwei Spalten.
 - **Albumname:** das Album als dritte Zeile, wenn die Kachel hoch genug ist.
-- **Cover-Adresse:** eine feste Adresse einer Cover-Datei in Home Assistant, die statt des eigenen Bildes des Players
-  angezeigt wird (siehe „Das Cover“ unten).
+- **Tempo:** das Tempo der Musik (zum Beispiel „138 BPM“) als Zeile unter dem Interpreten, wenn die Kachel hoch
+  genug ist. Es kommt vom Tempo-Sensor, der für den Bildschirm gewählt ist (siehe „Tempo“ unten).
+- **Cover-Adresse:** die Adresse eines Bildes in Home Assistant, das statt des eigenen Bildes des Players angezeigt
+  wird, zum Beispiel ein Template-Bild mit dem Cover des Players (siehe „Das Cover“ unten).
 
 ## Kachel „SCMT-Taste“
 
@@ -58,6 +60,21 @@ Die Tasten nutzen die Home-Assistant-Aktionen `media_player.media_play_pause`, `
 `media_previous_track`, `volume_up`, `volume_down`, `media_seek`, `volume_mute` und `volume_set`. Ein Player, der eine
 davon nicht unterstützt, ignoriert sie.
 
+## Tempo
+
+Die Option „Tempo“ der Kachel „SCMT“ zeigt das Tempo der Musik als Zeile unter dem Interpreten. Home Assistant kennt
+kein eigenes Tempo, deshalb kommt es von einem Sensor, zum Beispiel dem, den HASS.Agent aus
+[BPM2SCMT](https://github.com/Schumey/BPM2SCMT) macht; das misst, was ein Windows-PC abspielt.
+
+1. In Tessera (Plugins) den Sensor als „Tempo-Sensor“ des Plugins für den Bildschirm wählen und den Bildschirm bauen.
+   Sein Zustand muss das Tempo als Zahl sein (`138`); `unknown` oder leer blendet die Zeile aus.
+2. In den Optionen der Kachel „Tempo“ einschalten.
+
+Die Kachel zeigt das Tempo, solange der Player spielt oder pausiert ist. Nach einem neuen Titel wartet sie, bis der
+Sensor das neue Tempo hat (er war einmal leer und hat wieder einen Wert), höchstens 12 Sekunden, damit sie nicht das
+Tempo des vorigen Titels zeigt. Den Sensor gibt es einmal pro Bildschirm, nicht pro Kachel: Er gehört zu dem PC, der
+spielt, egal welchen Player die Kachel zeigt.
+
 ## Das Cover
 
 Standardmäßig ist das Cover das Bild, das Home Assistant selbst für den Media Player hat (sein `entity_picture`); das
@@ -67,72 +84,47 @@ Eine Kachel darf nur Bilder von `/api/image/serve/`, `/api/image_proxy/` oder `/
 werden bei 48 Bytes abgeschnitten. Das Cover mancher Player (zum Beispiel das von HASS.Agent,
 `/api/media_player_proxy/...`) wird deshalb abgelehnt.
 
-**Hinweis:** Die Option „Cover-Adresse“ zusammen mit der Automation unten war für diese Player gedacht, funktioniert mit
-der aktuellen Tessera-App (0.4.88) aber nicht. Die App holt eine Adresse unter `/local/` über den Supervisor
-(`http://supervisor/core/local/...`), und der lehnt sie ab (403, im Log der App als „no picture from /local/cover.jpg“).
-Deshalb zeigt die Kachel statt des Covers ein graues Viereck, egal in welchem Format die Datei ist. Beides bleibt im
-Plugin, bis Tessera `/local/` auf anderem Weg holt oder das eigene Cover des Players erlaubt
+Für diese Player gibt es die Option „Cover-Adresse“ zusammen mit einem Template-Bild in Home Assistant.
+
+### Cover über ein Template-Bild
+
+Ein Template-Bild ist eine Entität in Home Assistant, die das aktuelle Cover des Players enthält. Die Kachel zeigt es
+über `/api/image_proxy/`, eine Adresse, die die Tessera-App holen darf. Dafür braucht es keine Automation, keine Datei
+und keine Änderung in der `configuration.yaml`.
+
+1. In Home Assistant **Einstellungen → Geräte & Dienste → Helfer → Helfer erstellen → Template → Bild** öffnen. Einen
+   Namen vergeben, zum Beispiel „SCMT Cover“ (die Entität heißt dann `image.scmt_cover`), und als URL eintragen:
+
+```
+http://127.0.0.1{{ state_attr('media_player.your_player', 'entity_picture') }}
+```
+
+   `media_player.your_player` durch deinen Player ersetzen. `http://127.0.0.1` ist Home Assistant, so wie es sich
+   selbst erreicht; die Adresse des Player-Bildes enthält ihr Token schon, Home Assistant darf sie also ohne Anmeldung
+   holen.
+2. In den Optionen der Kachel als „Cover-Adresse“ eintragen:
+
+```
+/api/image_proxy/image.scmt_cover?v={v}
+```
+
+   Die Entity-ID muss genau zu der des Helfers passen (sie steht in den Einstellungen des Helfers).
+
+Die Adresse wird genau so verwendet, wie sie eingegeben ist, nur `{v}` ersetzt das Plugin durch eine Zahl, die sich
+mit jedem Titel ändert, damit der Bildschirm neu fragt (Home Assistant ignoriert den Teil `?v=...`). Drei Sekunden nach
+einem neuen Titel fragt er noch einmal, falls das Bild einen Moment später kam. Eine Adresse ohne `{v}` ändert sich
+nie, dann zeigt der Bildschirm das erste geladene Bild, bis sich die Adresse ändert.
+
+Zum Prüfen den Helfer in Home Assistant öffnen: Er zeigt das aktuelle Cover. Wer
+`http://YOUR_HOME_ASSISTANT/api/image_proxy/image.scmt_cover` im Browser öffnet, bekommt „401: Unauthorized“. Das ist
+normal, denn die Adresse braucht ein Token (`?token=...`), und das schickt die Tessera-App selbst mit.
+
+Eine Datei im Ordner `www` (`/local/...`) funktioniert mit der aktuellen Tessera-App (0.4.88) nicht: Sie holt `/local/`
+über den Supervisor, und der lehnt das ab (403), deshalb zeigt die Kachel ein graues Viereck
 ([MaxGramser/tessera-plugins#6](https://github.com/MaxGramser/tessera-plugins/issues/6)).
-
-### Cover-Automation (experimentell)
-
-Die Automation speichert das aktuelle Cover des Players als Datei im Ordner `www` von Home Assistant. Die Kachel zeigt
-dann diese Datei. Die Seite in Home Assistant funktioniert; ob dein Bildschirm die Datei anzeigt, hängt von deiner
-Tessera-Version ab, deshalb gilt sie als experimentell. Derselbe Code steht in `examples/cover_automation.yaml`.
-
-1. Den Ordner `/config/www/` anlegen, falls er fehlt, und Home Assistant einmal neu starten.
-2. Den Befehl in die `configuration.yaml` eintragen (danach die Shell-Befehle neu laden oder neu starten). Es steht
-   absichtlich kein `&&` darin: Home Assistant führt Befehle mit `{{ }}` ohne Shell aus.
-
-```yaml
-shell_command:
-  cover_fetch: >-
-    curl -sSfkL --connect-timeout 5 --max-time 20 -o /config/www/cover.jpg "{{ url }}"
-```
-
-3. Die Automation anlegen. `media_player.your_player` durch deinen Player und `YOUR_HOME_ASSISTANT` durch die Adresse
-   ersetzen, unter der du Home Assistant öffnest, so wie der Rechner von Home Assistant sie sieht (zum Beispiel
-   `http://192.168.0.10:8123`, oder `https://ha.example.com`, dafür steht die Option `-k` schon im Befehl). Sie reagiert
-   auf einen neuen Titel, wartet zwei Sekunden und holt das Cover dreimal (nach 2, 7 und 15 Sekunden), weil das neue
-   Cover oft erst einige Sekunden nach dem Titel ankommt.
-
-```yaml
-alias: Cover for Tessera
-triggers:
-  - trigger: state
-    entity_id: media_player.your_player
-    attribute: media_title
-actions:
-  - delay: "00:00:02"
-  - condition: template
-    value_template: "{{ state_attr('media_player.your_player', 'entity_picture') not in [none, ''] }}"
-  - action: shell_command.cover_fetch
-    data:
-      url: "http://YOUR_HOME_ASSISTANT{{ state_attr('media_player.your_player', 'entity_picture') }}"
-  - delay: "00:00:05"
-  - action: shell_command.cover_fetch
-    data:
-      url: "http://YOUR_HOME_ASSISTANT{{ state_attr('media_player.your_player', 'entity_picture') }}"
-  - delay: "00:00:08"
-  - action: shell_command.cover_fetch
-    data:
-      url: "http://YOUR_HOME_ASSISTANT{{ state_attr('media_player.your_player', 'entity_picture') }}"
-mode: restart
-```
-
-4. In den Optionen der Kachel `/local/cover.jpg?v={v}` als „Cover-Adresse“ eintragen.
-
-Die Adresse wird genau so verwendet, wie sie eingegeben ist, bis auf `{v}`: Das ersetzt das Plugin durch eine Zahl, die
-sich mit jedem Titel ändert, damit der Bildschirm neu nachfragt (Home Assistant ignoriert den Teil `?v=...` und liefert
-die Datei). Drei Sekunden nach einem neuen Titel fragt es noch einmal nach, falls die Datei etwas später geschrieben
-wurde. Eine Adresse ohne `{v}` ändert sich nie, der Bildschirm zeigt dann das erste geladene Bild, bis sich die Adresse
-ändert.
-
-Zum Prüfen der Datei `http://YOUR_HOME_ASSISTANT/local/cover.jpg?x=1` in einem privaten Browserfenster öffnen (die
-Zahl jedes Mal ändern, weil der Browser das Bild behält).
 
 ## Datenschutz
 
 Das Plugin macht keine Netzwerkanfragen. Es liest nur, was Home Assistant über die gewählte Entity schon weiß, und ruft
-bei einem Tipp auf eine Kachel die oben genannten Media-Player-Aktionen auf. Die Cover-Automation läuft in Home
-Assistant, nicht im Plugin.
+bei einem Tipp auf eine Kachel die oben genannten Media-Player-Aktionen auf. Das Template-Bild für das Cover läuft in
+Home Assistant, nicht im Plugin.

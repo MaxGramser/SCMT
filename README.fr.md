@@ -38,8 +38,10 @@ Le titre en grandes lettres, l'artiste dessous, et en bas une barre de progressi
 - **Barre de volume :** une barre verticale au bord droit de la tuile ; un appui dessus règle le volume à cette
   hauteur. Demande deux colonnes.
 - **Nom de l'album :** l'album sur une troisième ligne, quand la tuile est assez haute.
-- **Adresse de la pochette :** une adresse fixe d'un fichier de pochette dans Home Assistant, affichée à la place de
-  l'image du lecteur (voir « La pochette » plus bas).
+- **Tempo :** le tempo de la musique (par exemple « 138 BPM ») sur une ligne sous l'artiste, quand la tuile est
+  assez haute. Il vient du capteur de tempo choisi pour l'écran (voir « Tempo » plus bas).
+- **Adresse de la pochette :** l'adresse d'une image dans Home Assistant, affichée à la place de l'image du lecteur,
+  par exemple une image de modèle avec la pochette du lecteur (voir « La pochette » plus bas).
 
 ## Tuile « Bouton SCMT »
 
@@ -57,6 +59,21 @@ Les boutons utilisent les actions Home Assistant `media_player.media_play_pause`
 `media_previous_track`, `volume_up`, `volume_down`, `media_seek`, `volume_mute` et `volume_set`. Un lecteur qui ne
 prend pas l'une d'elles en charge l'ignore.
 
+## Tempo
+
+L'option « Tempo » de la tuile « SCMT » affiche le tempo de la musique sur une ligne sous l'artiste. Home Assistant ne
+connaît pas de tempo par lui-même : il vient donc d'un capteur, par exemple celui que HASS.Agent crée à partir de
+[BPM2SCMT](https://github.com/Schumey/BPM2SCMT), qui mesure ce que joue un PC Windows.
+
+1. Dans Tessera (Plugins), choisissez le capteur comme « Capteur de tempo » du plugin pour l'écran, puis construisez
+   l'écran. Son état doit être le tempo sous forme de nombre (`138`) ; `unknown` ou vide masque la ligne.
+2. Activez « Tempo » dans les options de la tuile.
+
+La tuile affiche le tempo tant que le lecteur joue ou est en pause. Après un nouveau morceau, elle attend que le capteur
+ait le nouveau tempo (il a été vide une fois et a de nouveau une valeur), au plus 12 secondes, pour ne pas afficher le
+tempo du morceau précédent. Le capteur est unique par écran, pas par tuile : il appartient au PC qui joue, quel que soit
+le lecteur que montre la tuile.
+
 ## La pochette
 
 Par défaut, la pochette est l'image que Home Assistant possède lui-même pour le lecteur (son `entity_picture`) ; le
@@ -66,71 +83,47 @@ Une tuile ne peut afficher que des images venant de `/api/image/serve/`, `/api/i
 attributs texte sont coupés à 48 octets. La pochette de certains lecteurs (par exemple celui de HASS.Agent,
 `/api/media_player_proxy/...`) est refusée pour cette raison.
 
-**Remarque :** l'option « Adresse de la pochette » avec l'automatisation ci-dessous était prévue pour ces lecteurs, mais
-elle ne fonctionne pas avec l'application Tessera actuelle (0.4.88). L'application récupère une adresse sous `/local/`
-via le Supervisor (`http://supervisor/core/local/...`), qui la refuse (403, dans le journal de l'application « no
-picture from /local/cover.jpg »), donc la tuile affiche un bloc gris au lieu de la pochette, quel que soit le format du
-fichier. Les deux restent dans le plugin jusqu'à ce que Tessera récupère `/local/` autrement ou autorise la pochette
-propre au lecteur ([MaxGramser/tessera-plugins#6](https://github.com/MaxGramser/tessera-plugins/issues/6)).
+Pour ces lecteurs, il y a l'option « Adresse de la pochette » avec une image de modèle (template) dans Home Assistant.
 
-### Automatisation de la pochette (expérimental)
+### La pochette par une image de modèle
 
-L'automatisation enregistre la pochette actuelle du lecteur comme fichier dans le dossier `www` de Home Assistant. La
-tuile affiche alors ce fichier. Le côté Home Assistant fonctionne ; que votre écran affiche le fichier dépend de votre
-version de Tessera, donc c'est expérimental. Le même code se trouve dans `examples/cover_automation.yaml`.
+Une image de modèle est une entité de Home Assistant qui contient la pochette actuelle du lecteur. La tuile l'affiche
+via `/api/image_proxy/`, une adresse que l'application Tessera peut récupérer. Il ne faut ni automatisation, ni
+fichier, ni modification de `configuration.yaml`.
 
-1. Créez le dossier `/config/www/` s'il n'existe pas et redémarrez Home Assistant une fois.
-2. Ajoutez la commande à votre `configuration.yaml` (puis rechargez les commandes shell ou redémarrez). Il n'y a pas de
-   `&&` volontairement : Home Assistant exécute les commandes contenant `{{ }}` sans shell.
+1. Dans Home Assistant, ouvrez **Paramètres → Appareils et services → Entrées → Créer une entrée → Modèle → Image**.
+   Donnez-lui un nom, par exemple « SCMT Cover » (l'entité est alors `image.scmt_cover`), et saisissez comme URL :
 
-```yaml
-shell_command:
-  cover_fetch: >-
-    curl -sSfkL --connect-timeout 5 --max-time 20 -o /config/www/cover.jpg "{{ url }}"
+```
+http://127.0.0.1{{ state_attr('media_player.your_player', 'entity_picture') }}
 ```
 
-3. Créez l'automatisation. Remplacez `media_player.your_player` par votre lecteur et `YOUR_HOME_ASSISTANT` par
-   l'adresse sous laquelle vous ouvrez Home Assistant, telle que l'ordinateur de Home Assistant la voit (par exemple
-   `http://192.168.0.10:8123`, ou `https://ha.example.com`, l'option `-k` est déjà dans la commande). Elle réagit à un
-   nouveau titre, attend deux secondes et récupère la pochette trois fois (après 2, 7 et 15 secondes), car la nouvelle
-   pochette arrive souvent quelques secondes après le titre.
+   Remplacez `media_player.your_player` par votre lecteur. `http://127.0.0.1` est Home Assistant tel qu'il se joint
+   lui-même ; l'adresse de l'image du lecteur contient déjà son jeton, donc Home Assistant peut la récupérer sans
+   connexion.
+2. Dans les options de la tuile, saisissez comme « Adresse de la pochette » :
 
-```yaml
-alias: Cover for Tessera
-triggers:
-  - trigger: state
-    entity_id: media_player.your_player
-    attribute: media_title
-actions:
-  - delay: "00:00:02"
-  - condition: template
-    value_template: "{{ state_attr('media_player.your_player', 'entity_picture') not in [none, ''] }}"
-  - action: shell_command.cover_fetch
-    data:
-      url: "http://YOUR_HOME_ASSISTANT{{ state_attr('media_player.your_player', 'entity_picture') }}"
-  - delay: "00:00:05"
-  - action: shell_command.cover_fetch
-    data:
-      url: "http://YOUR_HOME_ASSISTANT{{ state_attr('media_player.your_player', 'entity_picture') }}"
-  - delay: "00:00:08"
-  - action: shell_command.cover_fetch
-    data:
-      url: "http://YOUR_HOME_ASSISTANT{{ state_attr('media_player.your_player', 'entity_picture') }}"
-mode: restart
+```
+/api/image_proxy/image.scmt_cover?v={v}
 ```
 
-4. Dans les options de la tuile, saisissez `/local/cover.jpg?v={v}` comme « Adresse de la pochette ».
+   L'ID d'entité doit correspondre exactement à celui de l'entrée (il figure dans les paramètres de l'entrée).
 
 L'adresse est utilisée exactement comme saisie, sauf `{v}` : le plugin le remplace par un nombre qui change à chaque
-titre, pour que l'écran redemande (Home Assistant ignore la partie `?v=...` et envoie le fichier). Trois secondes après
-un nouveau titre, il redemande une fois, au cas où le fichier serait écrit un peu en retard. Une adresse sans `{v}` ne
-change jamais : l'écran garde alors la première image chargée jusqu'à ce que l'adresse change.
+titre, pour que l'écran redemande (Home Assistant ignore la partie `?v=...`). Trois secondes après un nouveau titre, il
+redemande une fois, au cas où l'image serait arrivée un peu tard. Une adresse sans `{v}` ne change jamais, donc l'écran
+montre la première image chargée jusqu'à ce que l'adresse change.
 
-Pour vérifier le fichier, ouvrez `http://YOUR_HOME_ASSISTANT/local/cover.jpg?x=1` dans une fenêtre de navigation privée
-(changez le nombre à chaque fois, car le navigateur garde l'image).
+Pour vérifier, ouvrez l'entrée dans Home Assistant : elle montre la pochette actuelle. Ouvrir
+`http://YOUR_HOME_ASSISTANT/api/image_proxy/image.scmt_cover` dans un navigateur donne « 401: Unauthorized » ; c'est
+normal, car l'adresse demande un jeton (`?token=...`), que l'application Tessera envoie elle-même.
+
+Un fichier dans le dossier `www` (`/local/...`) ne fonctionne pas avec l'application Tessera actuelle (0.4.88) : elle
+récupère `/local/` via le Supervisor, qui le refuse (403), donc la tuile affiche un bloc gris
+([MaxGramser/tessera-plugins#6](https://github.com/MaxGramser/tessera-plugins/issues/6)).
 
 ## Confidentialité
 
-Le plugin ne fait aucune requête réseau. Il lit seulement ce que Home Assistant sait déjà de l'entité choisie, et appelle
-les actions du lecteur citées plus haut quand vous appuyez sur une tuile. L'automatisation de la pochette s'exécute dans
-Home Assistant, pas dans le plugin.
+Le plugin ne fait aucune requête réseau. Il lit seulement ce que Home Assistant sait déjà de l'entité choisie, et
+appelle les actions du lecteur citées plus haut quand vous appuyez sur une tuile. L'image de modèle de la pochette
+s'exécute dans Home Assistant, pas dans le plugin.

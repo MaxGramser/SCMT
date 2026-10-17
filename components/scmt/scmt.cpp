@@ -77,7 +77,7 @@ static const char *service_for(Btn b) {
 // ---------------------------------------------------------------------------------------------------------------------
 class NowPlayingTile : public tessera::Tile {
  public:
-  explicit NowPlayingTile(const tessera::Plugin *plugin) : plugin_(plugin) {}
+  explicit NowPlayingTile(const Scmt *plugin) : plugin_(plugin) {}
 
   void create(const tessera::TileContext &c) override {
     width_ = c.width;
@@ -120,7 +120,8 @@ class NowPlayingTile : public tessera::Tile {
     const std::string ts = (const char *) (c.options["text_size"] | "medium");
     text_size_ = ts == "small" ? 0 : (ts == "large" ? 2 : 1);
     show_album_ = c.options["album"] | false;
-    cover_url_ = (const char *) (c.options["cover_url"] | "");  // fixed address of a cover file, e.g. /local/cover.jpg
+    show_bpm_ = c.options["bpm"] | false;  // the tempo of the screen's BPM sensor, as a line under the artist
+    cover_url_ = (const char *) (c.options["cover_url"] | "");  // fixed address of a cover, e.g. /api/image_proxy/image.scmt_cover?v={v}
     const std::string tpos = (const char *) (c.options["text_pos"] | "middle");
     text_pos_ = tpos == "top" ? 1 : (tpos == "bottom" ? 2 : 0);
 
@@ -206,6 +207,11 @@ class NowPlayingTile : public tessera::Tile {
       album_lbl_ = ui::label(album_box_, Font::BODY_LARGE, theme::MUTED);
       lv_label_set_long_mode(album_lbl_, LV_LABEL_LONG_SCROLL_CIRCULAR);
       lv_obj_set_width(album_lbl_, text_w_);
+    }
+    if (show_bpm_) {
+      bpm_box_ = clip_box_(c.parent);
+      bpm_lbl_ = ui::label(bpm_box_, Font::BODY_LARGE, theme::MUTED);
+      lv_obj_set_width(bpm_lbl_, text_w_);
     }
 
     track_ = ui::block(c.parent, theme::TRACK);
@@ -305,6 +311,14 @@ class NowPlayingTile : public tessera::Tile {
     }
     volume_ = v;
     muted_ = mu;
+    // The tempo sensor follows a new track only after some seconds (BPM2SCMT measures anew, HASS.Agent reads its file
+    // every 10 seconds): until then it still holds the tempo of the track before, so a new track hides it for a while.
+    if (bpm_lbl_ != nullptr && has_entity_ && !title_.empty()) {
+      const std::string track = title_ + "|" + artist_;
+      if (bpm_seen_ && track != bpm_track_) bpm_hold_ = true;
+      bpm_track_ = track;
+      bpm_seen_ = true;
+    }
     if (cover_ != nullptr) {
       if (!cover_url_.empty()) {
         // A fixed address (option "Cover address"): the cover is a file that something else keeps up to date. The
@@ -357,6 +371,22 @@ class NowPlayingTile : public tessera::Tile {
     text_right_ = x0_ + text_w_;  // where the text area ends: the volume display sits at its right edge
     lv_obj_set_width(artist_lbl_, text_w_);
     if (album_lbl_ != nullptr) lv_obj_set_width(album_lbl_, text_w_);
+
+    // The tempo, as a line under the artist (option). After a new track it waits until the sensor was empty once and
+    // has a value again, or at most 12 seconds.
+    std::string bpm_text;
+    if (bpm_lbl_ != nullptr) {
+      const int bpm = plugin_->bpm();
+      if (bpm_hold_) {
+        bpm_hold_until_ = epoch + 12;
+        bpm_cleared_ = false;
+        bpm_hold_ = false;
+      }
+      if (bpm == 0) bpm_cleared_ = true;
+      if (bpm_cleared_) bpm_hold_until_ = 0;
+      if (has_entity_ && active && !title_.empty() && bpm > 0 && epoch >= bpm_hold_until_)
+        bpm_text = std::to_string(bpm) + " BPM";
+    }
 
     std::string title, artist, album;
     if (!has_entity_) {
@@ -413,6 +443,7 @@ class NowPlayingTile : public tessera::Tile {
     const int ah = ui::line_height(sf);
     ui::set_font(artist_lbl_, sf);
     if (album_lbl_ != nullptr) ui::set_font(album_lbl_, sf);
+    if (bpm_lbl_ != nullptr) ui::set_font(bpm_lbl_, sf);
 
     // The title in its font when it fits in width and, with the artist below it, in height, and the font has all its
     // characters. Else in the marquee font, wider than its room; in a smaller one only when the tile is too low.
@@ -426,22 +457,31 @@ class NowPlayingTile : public tessera::Tile {
     ui::set_text(title_lbl_, title);
     ui::set_color(title_lbl_, paused_ ? theme::MUTED : theme::INK);
 
-    // Title, artist and, when it fits, the album, together at the top, in the middle or at the bottom of the space
-    // beside the cover (option). With a cover that space is the cover's height, so "top" and "bottom" line up with its
-    // upper and lower edge. When even the smallest title leaves no room for the artist, the title stands alone.
+    // Title, artist and, when they fit, the tempo and the album, together at the top, in the middle or at the bottom of
+    // the space beside the cover (option). With a cover that space is the cover's height, so "top" and "bottom" line up
+    // with its upper and lower edge. When even the smallest title leaves no room for the artist, the title stands alone.
     const int th = ui::line_height(f);
     const bool with_artist = th + g2 + ah <= space_h;
     ui::set_text(artist_lbl_, with_artist ? artist : std::string());
     int block_h = with_artist ? th + g2 + ah : th;
+    const bool with_bpm = with_artist && !bpm_text.empty() && block_h + g2 + ah <= space_h;
+    if (with_bpm) block_h += g2 + ah;
     const bool with_album = with_artist && album_lbl_ != nullptr && !album.empty() && block_h + g2 + ah <= space_h;
     if (with_album) block_h += g2 + ah;
     int y = text_pos_ == 1 ? 0 : (text_pos_ == 2 ? space_h - block_h : (space_h - block_h) / 2);
     if (y < 0) y = 0;
     place_(title_box_, title_lbl_, x0_, y, title_w, th);
-    place_(artist_box_, artist_lbl_, x0_, y + th + g2, text_w_, ah);
+    int line_y = y + th + g2;
+    place_(artist_box_, artist_lbl_, x0_, line_y, text_w_, ah);
+    line_y += ah + g2;
+    if (bpm_lbl_ != nullptr) {
+      ui::set_text(bpm_lbl_, with_bpm ? bpm_text : std::string());
+      place_(bpm_box_, bpm_lbl_, x0_, line_y, text_w_, ah);
+      if (with_bpm) line_y += ah + g2;
+    }
     if (album_lbl_ != nullptr) {
       ui::set_text(album_lbl_, with_album ? album : std::string());
-      place_(album_box_, album_lbl_, x0_, y + th + g2 + ah + g2, text_w_, ah);
+      place_(album_box_, album_lbl_, x0_, line_y, text_w_, ah);
     }
 
     // The small volume display: a text and the speaker, at the title's right. A tap on it mutes (option).
@@ -568,6 +608,7 @@ class NowPlayingTile : public tessera::Tile {
     ui::set_color(title_lbl_, paused_ ? theme::MUTED : theme::INK);
     ui::set_color(artist_lbl_, theme::INK_SOFT);
     if (album_lbl_ != nullptr) ui::set_color(album_lbl_, theme::MUTED);
+    if (bpm_lbl_ != nullptr) ui::set_color(bpm_lbl_, theme::MUTED);
     if (time_lbl_ != nullptr) ui::set_color(time_lbl_, theme::INK_SOFT);
     if (vol_lbl_ != nullptr) ui::set_color(vol_lbl_, theme::MUTED);
     if (vol_icon_lbl_ != nullptr) ui::set_color(vol_icon_lbl_, theme::MUTED);
@@ -694,11 +735,12 @@ class NowPlayingTile : public tessera::Tile {
     ui::set_picture(cover_, url, tessera::Fit::COVER);
   }
 
-  const tessera::Plugin *plugin_;
+  const Scmt *plugin_;
   lv_obj_t *cover_{nullptr};
   lv_obj_t *title_box_{nullptr}, *title_lbl_{nullptr};
   lv_obj_t *artist_box_{nullptr}, *artist_lbl_{nullptr};
   lv_obj_t *album_box_{nullptr}, *album_lbl_{nullptr};
+  lv_obj_t *bpm_box_{nullptr}, *bpm_lbl_{nullptr};
   lv_obj_t *track_{nullptr};
   lv_obj_t *fill_{nullptr};
   lv_obj_t *time_lbl_{nullptr};
@@ -731,7 +773,10 @@ class NowPlayingTile : public tessera::Tile {
   int vbar_x_{0}, vbar_w_{0}, vbar_fy_{0}, vbar_fh_{1};  // the volume bar, and where its fill may reach
   int btn_w_{0}, btn_gap_{0};
   int vol_hit_x_{0}, vol_hit_w_{0}, vol_hit_y_{0}, vol_hit_h_{0};
-  bool show_bar_{true}, show_time_{false}, show_album_{false};
+  bool show_bar_{true}, show_time_{false}, show_album_{false}, show_bpm_{false};
+  std::string bpm_track_;                        // the track the tempo belongs to
+  bool bpm_seen_{false}, bpm_hold_{false}, bpm_cleared_{false};
+  uint32_t bpm_hold_until_{0};
   bool want_mute_{false};
   int text_size_{1};  // 0 small, 1 medium, 2 large
   int vol_mode_{1};  // 0 never, 1 for three seconds after a change, 2 always
@@ -796,6 +841,15 @@ class MediaButtonTile : public tessera::Tile {
   bool has_entity_{false};
   std::string entity_, action_;
 };
+
+int Scmt::bpm() const {
+#ifdef USE_SENSOR
+  // "unknown" (BPM2SCMT has no tempo yet, or nothing plays) comes as NaN.
+  if (bpm_ != nullptr && bpm_->has_state() && !std::isnan(bpm_->state) && bpm_->state >= 20.0f && bpm_->state <= 400.0f)
+    return static_cast<int>(std::lround(bpm_->state));
+#endif
+  return 0;
+}
 
 void Scmt::setup() {
   add_tile("now_playing", [this]() { return new NowPlayingTile(this); });

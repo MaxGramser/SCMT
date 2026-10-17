@@ -37,8 +37,10 @@ The title in large letters, the artist below it, and an optional progress bar at
 - **Volume bar:** an upright bar along the right edge of the tile; a tap on it sets the volume to that height. Needs two
   columns.
 - **Album name:** the album as a third line, when the tile is high enough.
-- **Cover address:** a fixed address of a cover file in Home Assistant, shown instead of the player's own picture (see
-  "The cover" below).
+- **Tempo:** the tempo of the music (for example "138 BPM") as a line under the artist, when the tile is high
+  enough. It comes from the tempo sensor chosen for the screen (see "Tempo" below).
+- **Cover address:** the address of a picture in Home Assistant, shown instead of the player's own picture, for
+  example a template image with the player's cover (see "The cover" below).
 
 ## Tile "SCMT button"
 
@@ -56,6 +58,20 @@ The buttons use the Home Assistant actions `media_player.media_play_pause`, `med
 `volume_up`, `volume_down`, `media_seek`, `volume_mute` and `volume_set`. A player that does not support one of them
 ignores it.
 
+## Tempo
+
+The option "Tempo" of the "SCMT" tile shows the tempo of the music as a line under the artist. Home Assistant knows no
+tempo of its own, so it comes from a sensor, for example the one HASS.Agent makes from
+[BPM2SCMT](https://github.com/Schumey/BPM2SCMT), which measures what a Windows PC plays.
+
+1. In Tessera (Plugins), choose the sensor as the plugin's "Tempo sensor" for the screen, and build the screen. Its state
+   must be the tempo as a number (`138`); `unknown` or empty hides the line.
+2. Switch on "Tempo" in the tile's options.
+
+The tile shows the tempo while the player plays or is paused. After a new track it waits until the sensor has the new
+tempo (it was empty once and has a value again), at most 12 seconds, so that it does not show the tempo of the track
+before. The sensor is one per screen, not per tile: it belongs to the PC that plays, whichever player the tile shows.
+
 ## The cover
 
 By default the cover is the picture Home Assistant itself has for the media player (its `entity_picture`); the plugin
@@ -65,71 +81,46 @@ A tile may show only pictures from `/api/image/serve/`, `/api/image_proxy/` or `
 48 bytes. The cover of some players (for example the one of HASS.Agent, `/api/media_player_proxy/...`) is refused for
 that reason.
 
-**Note:** the option "Cover address" together with the automation below was meant for these players, but it does not
-work with the current Tessera app (0.4.88). The app fetches an address under `/local/` through the Supervisor
-(`http://supervisor/core/local/...`), which refuses it (403, logged by the app as "no picture from /local/cover.jpg"),
-so the tile shows a grey block instead of the cover, whatever the format of the file. Both stay in the plugin until
-Tessera fetches `/local/` in another way, or allows the player's own cover
-([MaxGramser/tessera-plugins#6](https://github.com/MaxGramser/tessera-plugins/issues/6)).
+For these players there is the option "Cover address" together with a template image in Home Assistant.
 
-### Cover automation (experimental)
+### Cover through a template image
 
-The automation saves the player's current cover as a file in Home Assistant's `www` folder. The tile then shows that
-file. The Home Assistant side works; whether your screen shows the file depends on your Tessera version, so treat it as
-experimental. The same code is in `examples/cover_automation.yaml`.
+A template image is an entity of Home Assistant that holds the player's current cover. The tile shows it through
+`/api/image_proxy/`, an address the Tessera app may fetch. No automation, no file and no change in `configuration.yaml`
+are needed.
 
-1. Create the folder `/config/www/` if it does not exist, and restart Home Assistant once.
-2. Add the command to your `configuration.yaml` (then reload the shell commands or restart). There is no `&&` in it on
-   purpose: Home Assistant runs commands that contain `{{ }}` without a shell.
+1. In Home Assistant, open **Settings → Devices & services → Helpers → Create helper → Template → Image**. Give it a
+   name, for example "SCMT Cover" (the entity is then `image.scmt_cover`), and enter as the URL:
 
-```yaml
-shell_command:
-  cover_fetch: >-
-    curl -sSfkL --connect-timeout 5 --max-time 20 -o /config/www/cover.jpg "{{ url }}"
+```
+http://127.0.0.1{{ state_attr('media_player.your_player', 'entity_picture') }}
 ```
 
-3. Create the automation. Replace `media_player.your_player` with your player and `YOUR_HOME_ASSISTANT` with the
-   address under which you open Home Assistant, as the computer of Home Assistant sees it (for example
-   `http://192.168.0.10:8123`, or `https://ha.example.com` with the option `-k` already in the command). It reacts to a
-   new title, waits two seconds and fetches the cover three times (after 2, 7 and 15 seconds), because the new cover
-   often arrives some seconds after the title.
+   Replace `media_player.your_player` with your player. `http://127.0.0.1` is Home Assistant as it reaches itself;
+   the address of the player's picture already holds its token, so Home Assistant may fetch it without a login.
+2. In the tile's options, enter as the "Cover address":
 
-```yaml
-alias: Cover for Tessera
-triggers:
-  - trigger: state
-    entity_id: media_player.your_player
-    attribute: media_title
-actions:
-  - delay: "00:00:02"
-  - condition: template
-    value_template: "{{ state_attr('media_player.your_player', 'entity_picture') not in [none, ''] }}"
-  - action: shell_command.cover_fetch
-    data:
-      url: "http://YOUR_HOME_ASSISTANT{{ state_attr('media_player.your_player', 'entity_picture') }}"
-  - delay: "00:00:05"
-  - action: shell_command.cover_fetch
-    data:
-      url: "http://YOUR_HOME_ASSISTANT{{ state_attr('media_player.your_player', 'entity_picture') }}"
-  - delay: "00:00:08"
-  - action: shell_command.cover_fetch
-    data:
-      url: "http://YOUR_HOME_ASSISTANT{{ state_attr('media_player.your_player', 'entity_picture') }}"
-mode: restart
+```
+/api/image_proxy/image.scmt_cover?v={v}
 ```
 
-4. In the tile's options, enter `/local/cover.jpg?v={v}` as the "Cover address".
+   The entity ID must match the helper's exactly (you see it in the helper's settings).
 
 The address is used exactly as typed, except for `{v}`: the plugin replaces it with a number that changes with every
-track, so the screen asks again (Home Assistant ignores the `?v=...` part and sends the file). Three seconds after a
-new track it asks once more, in case the file was written a moment late. An address without `{v}` never changes, so
-the screen shows the first picture it loaded until the address changes.
+track, so the screen asks again (Home Assistant ignores the `?v=...` part). Three seconds after a new track it asks once
+more, in case the picture came a moment late. An address without `{v}` never changes, so the screen shows the first
+picture it loaded until the address changes.
 
-To check the file, open `http://YOUR_HOME_ASSISTANT/local/cover.jpg?x=1` in a private browser window (change the number
-each time, because the browser keeps the picture).
+To check, open the helper in Home Assistant: it shows the current cover. Opening
+`http://YOUR_HOME_ASSISTANT/api/image_proxy/image.scmt_cover` in a browser gives "401: Unauthorized"; that is normal,
+because the address needs a token (`?token=...`), which the Tessera app sends by itself.
+
+A file in the `www` folder (`/local/...`) does not work with the current Tessera app (0.4.88): it fetches `/local/`
+through the Supervisor, which refuses it (403), so the tile shows a grey block
+([MaxGramser/tessera-plugins#6](https://github.com/MaxGramser/tessera-plugins/issues/6)).
 
 ## Privacy
 
 The plugin makes no network requests. It only reads what Home Assistant already knows about the chosen entity, and
-calls the media player actions above on it when you tap a tile. The cover automation runs in Home Assistant, not in the
-plugin.
+calls the media player actions above on it when you tap a tile. The template image of the cover runs in Home Assistant,
+not in the plugin.

@@ -1,5 +1,17 @@
 # Journal des modifications
 
+## 0.12.0 - 2026-10-17
+
+- Nouvelle option « Tempo » : le tempo de la musique (par exemple « 138 BPM ») sur une ligne sous l'artiste. Il vient
+  d'un capteur choisi par écran dans Tessera (nouvelle entrée « Capteur de tempo »), par exemple celui que HASS.Agent
+  crée à partir de BPM2SCMT. Après un nouveau morceau, la ligne attend que le capteur ait le nouveau tempo.
+- Le plugin lit maintenant lui-même cette entité (permission `read_entities`) ; Tessera la demande lors de la mise à
+  jour.
+- Le README décrit un nouveau chemin vers la pochette pour les lecteurs dont la pochette est refusée : une image de
+  modèle dans Home Assistant, affichée avec l'« Adresse de la pochette » `/api/image_proxy/image.scmt_cover?v={v}`.
+  Il remplace l'automatisation de la pochette avec un fichier sous `/local/`, qui ne fonctionne pas avec Tessera
+  0.4.88 (403). Le plugin ne change pas pour cela.
+
 ## 0.11.0 - 2026-10-17
 
 - Nouvelle option « Taille du texte » : petite (comme avant 0.10.3), moyenne (par défaut, comme maintenant) ou grande

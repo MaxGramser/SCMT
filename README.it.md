@@ -39,8 +39,10 @@ Il titolo in caratteri grandi, sotto l'artista e in basso una barra di avanzamen
 - **Barra del volume:** una barra verticale sul bordo destro della tessera; un tocco su di essa imposta il volume a
   quell'altezza. Servono due colonne.
 - **Nome dell'album:** l'album su una terza riga, quando la tessera è abbastanza alta.
-- **Indirizzo della copertina:** un indirizzo fisso di un file di copertina in Home Assistant, mostrato al posto
-  dell'immagine del lettore (vedi «La copertina» più sotto).
+- **Tempo:** il tempo della musica (per esempio «138 BPM») su una riga sotto l'artista, quando la tessera è
+  abbastanza alta. Viene dal sensore di tempo scelto per lo schermo (vedi «Tempo» più sotto).
+- **Indirizzo della copertina:** l'indirizzo di un'immagine in Home Assistant, mostrata al posto dell'immagine del
+  lettore, per esempio un'immagine modello con la copertina del lettore (vedi «La copertina» più sotto).
 
 ## Tessera «Tasto SCMT»
 
@@ -57,6 +59,21 @@ opzioni della tessera e metti tutte le tessere che vuoi, accanto alla tessera «
 I tasti usano le azioni di Home Assistant `media_player.media_play_pause`, `media_next_track`, `media_previous_track`,
 `volume_up`, `volume_down`, `media_seek`, `volume_mute` e `volume_set`. Un lettore che non ne supporta una la ignora.
 
+## Tempo
+
+L'opzione «Tempo» della tessera «SCMT» mostra il tempo della musica su una riga sotto l'artista. Home Assistant non
+conosce un tempo proprio, quindi viene da un sensore, per esempio quello che HASS.Agent crea da
+[BPM2SCMT](https://github.com/Schumey/BPM2SCMT), che misura ciò che riproduce un PC Windows.
+
+1. In Tessera (Plugins), scegli il sensore come «Sensore di tempo» del plugin per lo schermo e compila lo schermo. Il
+   suo stato deve essere il tempo come numero (`138`); `unknown` o vuoto nasconde la riga.
+2. Attiva «Tempo» nelle opzioni della tessera.
+
+La tessera mostra il tempo finché il lettore suona o è in pausa. Dopo un nuovo brano aspetta che il sensore abbia il
+nuovo tempo (è stato vuoto una volta e ha di nuovo un valore), al massimo 12 secondi, per non mostrare il tempo del
+brano precedente. Il sensore è uno per schermo, non per tessera: appartiene al PC che suona, qualunque lettore mostri la
+tessera.
+
 ## La copertina
 
 Per impostazione predefinita la copertina è l'immagine che Home Assistant stesso ha per il lettore (il suo
@@ -66,70 +83,48 @@ Una tessera può mostrare solo immagini da `/api/image/serve/`, `/api/image_prox
 testo vengono tagliati a 48 byte. La copertina di alcuni lettori (per esempio quello di HASS.Agent,
 `/api/media_player_proxy/...`) viene rifiutata per questo motivo.
 
-**Nota:** l'opzione «Indirizzo della copertina» insieme all'automazione qui sotto era pensata per questi lettori, ma non
-funziona con l'app Tessera attuale (0.4.88). L'app recupera un indirizzo sotto `/local/` tramite il Supervisor
-(`http://supervisor/core/local/...`), che lo rifiuta (403, nel log dell'app «no picture from /local/cover.jpg»), quindi
-la tessera mostra un blocco grigio al posto della copertina, qualunque sia il formato del file. Entrambe restano nel
-plugin finché Tessera non recupera `/local/` in un altro modo o permette la copertina propria del lettore
+Per questi lettori c'è l'opzione «Indirizzo della copertina» insieme a un'immagine modello (template) in Home
+Assistant.
+
+### La copertina tramite un'immagine modello
+
+Un'immagine modello è un'entità di Home Assistant che contiene la copertina attuale del lettore. La tessera la mostra
+tramite `/api/image_proxy/`, un indirizzo che l'app Tessera può recuperare. Non servono automazioni, file o modifiche a
+`configuration.yaml`.
+
+1. In Home Assistant apri **Impostazioni → Dispositivi e servizi → Aiutanti → Crea aiutante → Modello → Immagine**.
+   Dagli un nome, per esempio «SCMT Cover» (l'entità sarà `image.scmt_cover`), e inserisci come URL:
+
+```
+http://127.0.0.1{{ state_attr('media_player.your_player', 'entity_picture') }}
+```
+
+   Sostituisci `media_player.your_player` con il tuo lettore. `http://127.0.0.1` è Home Assistant come raggiunge se
+   stesso; l'indirizzo dell'immagine del lettore contiene già il suo token, quindi Home Assistant può recuperarla senza
+   accesso.
+2. Nelle opzioni della tessera inserisci come «Indirizzo della copertina»:
+
+```
+/api/image_proxy/image.scmt_cover?v={v}
+```
+
+   L'ID dell'entità deve corrispondere esattamente a quello dell'aiutante (si trova nelle impostazioni dell'aiutante).
+
+L'indirizzo viene usato esattamente come scritto, tranne `{v}`: il plugin lo sostituisce con un numero che cambia a ogni
+brano, così lo schermo lo richiede (Home Assistant ignora la parte `?v=...`). Tre secondi dopo un nuovo brano lo
+richiede ancora una volta, nel caso l'immagine sia arrivata un po' tardi. Un indirizzo senza `{v}` non cambia mai,
+quindi lo schermo mostra la prima immagine caricata finché l'indirizzo non cambia.
+
+Per verificare, apri l'aiutante in Home Assistant: mostra la copertina attuale. Aprire
+`http://YOUR_HOME_ASSISTANT/api/image_proxy/image.scmt_cover` in un browser dà «401: Unauthorized»; è normale, perché
+l'indirizzo richiede un token (`?token=...`), che l'app Tessera invia da sé.
+
+Un file nella cartella `www` (`/local/...`) non funziona con l'app Tessera attuale (0.4.88): recupera `/local/` tramite
+il Supervisor, che lo rifiuta (403), quindi la tessera mostra un blocco grigio
 ([MaxGramser/tessera-plugins#6](https://github.com/MaxGramser/tessera-plugins/issues/6)).
-
-### Automazione della copertina (sperimentale)
-
-L'automazione salva la copertina attuale del lettore come file nella cartella `www` di Home Assistant. La tessera
-mostra poi quel file. Il lato Home Assistant funziona; che il tuo schermo mostri il file dipende dalla tua versione di
-Tessera, quindi è sperimentale. Lo stesso codice è in `examples/cover_automation.yaml`.
-
-1. Crea la cartella `/config/www/` se manca e riavvia Home Assistant una volta.
-2. Aggiungi il comando al tuo `configuration.yaml` (poi ricarica i comandi shell o riavvia). Non c'è `&&` di proposito:
-   Home Assistant esegue i comandi che contengono `{{ }}` senza shell.
-
-```yaml
-shell_command:
-  cover_fetch: >-
-    curl -sSfkL --connect-timeout 5 --max-time 20 -o /config/www/cover.jpg "{{ url }}"
-```
-
-3. Crea l'automazione. Sostituisci `media_player.your_player` con il tuo lettore e `YOUR_HOME_ASSISTANT` con l'indirizzo
-   con cui apri Home Assistant, come lo vede il computer di Home Assistant (per esempio `http://192.168.0.10:8123`, o
-   `https://ha.example.com`, l'opzione `-k` è già nel comando). Reagisce a un nuovo titolo, aspetta due secondi e scarica
-   la copertina tre volte (dopo 2, 7 e 15 secondi), perché la nuova copertina spesso arriva qualche secondo dopo il
-   titolo.
-
-```yaml
-alias: Cover for Tessera
-triggers:
-  - trigger: state
-    entity_id: media_player.your_player
-    attribute: media_title
-actions:
-  - delay: "00:00:02"
-  - condition: template
-    value_template: "{{ state_attr('media_player.your_player', 'entity_picture') not in [none, ''] }}"
-  - action: shell_command.cover_fetch
-    data:
-      url: "http://YOUR_HOME_ASSISTANT{{ state_attr('media_player.your_player', 'entity_picture') }}"
-  - delay: "00:00:05"
-  - action: shell_command.cover_fetch
-    data:
-      url: "http://YOUR_HOME_ASSISTANT{{ state_attr('media_player.your_player', 'entity_picture') }}"
-  - delay: "00:00:08"
-  - action: shell_command.cover_fetch
-    data:
-      url: "http://YOUR_HOME_ASSISTANT{{ state_attr('media_player.your_player', 'entity_picture') }}"
-mode: restart
-```
-
-4. Nelle opzioni della tessera inserisci `/local/cover.jpg?v={v}` come «Indirizzo della copertina».
-
-L'indirizzo viene usato esattamente come scritto, tranne `{v}`: il plugin lo sostituisce con un numero che cambia a
-ogni brano, così lo schermo chiede di nuovo (Home Assistant ignora la parte `?v=...` e invia il file). Tre secondi dopo
-un nuovo brano chiede ancora una volta, nel caso il file sia stato scritto un attimo in ritardo. Un indirizzo senza
-`{v}` non cambia mai, quindi lo schermo mostra la prima immagine caricata finché l'indirizzo non cambia.
-
-Per controllare il file apri `http://YOUR_HOME_ASSISTANT/local/cover.jpg?x=1` in una finestra privata del browser
-(cambia il numero ogni volta, perché il browser conserva l'immagine).
 
 ## Privacy
 
 Il plugin non fa richieste di rete. Legge solo ciò che Home Assistant già sa dell'entità scelta e chiama le azioni del
-lettore citate sopra quando tocchi una tessera. L'automazione della copertina gira in Home Assistant, non nel plugin.
+lettore citate sopra quando tocchi una tessera. L'immagine modello della copertina gira in Home Assistant, non nel
+plugin.

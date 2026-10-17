@@ -1,5 +1,16 @@
 # Registro delle modifiche
 
+## 0.12.0 - 2026-10-17
+
+- Nuova opzione «Tempo»: il tempo della musica (per esempio «138 BPM») su una riga sotto l'artista. Viene da un sensore
+  scelto per schermo in Tessera (nuovo campo «Sensore di tempo»), per esempio quello che HASS.Agent crea da BPM2SCMT.
+  Dopo un nuovo brano la riga aspetta che il sensore abbia il nuovo tempo.
+- Il plugin ora legge da sé questa entità (permesso `read_entities`); Tessera lo chiede all'aggiornamento.
+- Il README descrive una nuova via per la copertina dei lettori la cui copertina viene rifiutata: un'immagine modello
+  in Home Assistant, mostrata con l'«Indirizzo della copertina» `/api/image_proxy/image.scmt_cover?v={v}`. Sostituisce
+  l'automazione della copertina con un file sotto `/local/`, che non funziona con Tessera 0.4.88 (403). Il plugin non
+  cambia per questo.
+
 ## 0.11.0 - 2026-10-17
 
 - Nuova opzione «Dimensione del testo»: piccola (come prima di 0.10.3), media (predefinita, come ora) o grande (artista

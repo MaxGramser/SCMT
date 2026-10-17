@@ -1,3 +1,16 @@
 # What a screen gets when it takes this plugin: the component, configured. Tessera includes this file from the screen's
-# <name>.plugins.yaml and adds this plugin's components/ folder as an ESPHome external component.
+# <name>.plugins.yaml with BPM filled in (the input chosen when the plugin was added), and adds this plugin's
+# components/ folder as an ESPHome external component.
+defaults:
+  BPM: sensor.bpm
+
+# The tempo of the music, straight from Home Assistant, for the tile's option "Tempo" (for example the sensor that
+# HASS.Agent makes from BPM2SCMT). An entity that does not exist only leaves the tempo empty.
+sensor:
+  - platform: homeassistant
+    id: scmt_bpm
+    entity_id: ${BPM}
+    internal: true
+
 scmt:
+  bpm: scmt_bpm

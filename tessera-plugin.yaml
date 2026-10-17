@@ -1,6 +1,6 @@
 # Manifest for SCMT (Simple Customizable Media Tile): an info tile and a button tile for a media_player entity.
 id: scmt
-version: 0.11.0
+version: 0.12.0
 api: "0.10"
 icon: music
 maintainer: Schumey
@@ -10,8 +10,10 @@ topics: [media]
 requires:
   esphome: 2026.6.2
 boards: any
-flash_kb: 4
+flash_kb: 5
 permissions:
+  # The tempo sensor chosen when the plugin was added (plugin.yaml reads it, for the tile's option "Tempo").
+  read_entities: ["{bpm}"]
   home_assistant_actions:
     - media_player.media_play_pause
     - media_player.media_next_track
@@ -21,12 +23,14 @@ permissions:
     - media_player.media_seek
     - media_player.volume_mute
     - media_player.volume_set
+inputs:
+  - { id: bpm, kind: entity, domains: [sensor], scope: screen, label: input_bpm, hint: input_bpm_hint }
 tiles:
   - id: now_playing
     name: tile_name
     icon: music
     sizes: { min: 1x1, max: 4x4 }
-    memory: 4600
+    memory: 4700
     domains: [media_player]
     attributes: [media_title, media_artist, media_duration, media_position, media_position_updated_at, entity_picture, volume_level, is_volume_muted, media_album_name]
     pictures: 1
@@ -74,6 +78,7 @@ tiles:
           - { value: "large", label: ts_large }
       - { id: volume_bar, kind: toggle, default: false, label: opt_volbar, hint: opt_volbar_hint }
       - { id: album, kind: toggle, default: false, label: opt_album, hint: opt_album_hint }
+      - { id: bpm, kind: toggle, default: false, label: opt_bpm, hint: opt_bpm_hint }
       - id: cover
         kind: choice
         default: left

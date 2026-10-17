@@ -37,8 +37,10 @@ De titel in grote letters, daaronder de artiest en onderaan een optionele voortg
 - **Volumebalk:** een staande balk langs de rechterrand van de tegel; een tik erop stelt het volume op die hoogte in.
   Vraagt twee kolommen.
 - **Albumnaam:** het album op een derde regel, als de tegel hoog genoeg is.
-- **Adres van de hoes:** een vast adres van een hoesbestand in Home Assistant, getoond in plaats van de afbeelding van
-  de speler (zie „De hoes” hieronder).
+- **Tempo:** het tempo van de muziek (bijvoorbeeld „138 BPM”) als regel onder de artiest, als de tegel hoog genoeg
+  is. Het komt van de temposensor die voor het scherm is gekozen (zie „Tempo” hieronder).
+- **Adres van de hoes:** het adres van een afbeelding in Home Assistant, getoond in plaats van de afbeelding van de
+  speler, bijvoorbeeld een sjabloonafbeelding met de hoes van de speler (zie „De hoes” hieronder).
 
 ## Tegel „SCMT-knop”
 
@@ -56,6 +58,21 @@ De knoppen gebruiken de Home Assistant-acties `media_player.media_play_pause`, `
 `media_previous_track`, `volume_up`, `volume_down`, `media_seek`, `volume_mute` en `volume_set`. Een speler die er een
 niet ondersteunt, negeert die.
 
+## Tempo
+
+De optie „Tempo” van de tegel „SCMT” toont het tempo van de muziek als regel onder de artiest. Home Assistant kent zelf
+geen tempo, dus het komt van een sensor, bijvoorbeeld die welke HASS.Agent maakt van
+[BPM2SCMT](https://github.com/Schumey/BPM2SCMT), dat meet wat een Windows-pc afspeelt.
+
+1. Kies in Tessera (Plugins) de sensor als „Temposensor” van de plug-in voor het scherm en bouw het scherm. Zijn status
+   moet het tempo als getal zijn (`138`); `unknown` of leeg verbergt de regel.
+2. Zet „Tempo” aan in de opties van de tegel.
+
+De tegel toont het tempo zolang de speler speelt of gepauzeerd is. Na een nieuw nummer wacht hij tot de sensor het
+nieuwe tempo heeft (hij was een keer leeg en heeft weer een waarde), hooguit 12 seconden, zodat hij niet het tempo van
+het vorige nummer toont. De sensor is er één per scherm, niet per tegel: hij hoort bij de pc die speelt, welke speler de
+tegel ook toont.
+
 ## De hoes
 
 Standaard is de hoes de afbeelding die Home Assistant zelf voor de speler heeft (zijn `entity_picture`); de plugin haalt
@@ -65,71 +82,47 @@ Een tegel mag alleen afbeeldingen van `/api/image/serve/`, `/api/image_proxy/` o
 worden bij 48 bytes afgekapt. De hoes van sommige spelers (bijvoorbeeld die van HASS.Agent,
 `/api/media_player_proxy/...`) wordt daarom geweigerd.
 
-**Let op:** de optie „Adres van de hoes” samen met de automatisering hieronder was voor deze spelers bedoeld, maar werkt
-niet met de huidige Tessera-app (0.4.88). De app haalt een adres onder `/local/` op via de Supervisor
-(`http://supervisor/core/local/...`), en die weigert het (403, in het log van de app „no picture from /local/cover.jpg”),
-dus de tegel toont een grijs blok in plaats van de hoes, ongeacht het formaat van het bestand. Beide blijven in de
-plugin tot Tessera `/local/` op een andere manier ophaalt of de eigen hoes van de speler toestaat
+Voor deze spelers is er de optie „Adres van de hoes” samen met een sjabloonafbeelding (template) in Home Assistant.
+
+### De hoes via een sjabloonafbeelding
+
+Een sjabloonafbeelding is een entiteit in Home Assistant die de huidige hoes van de speler bevat. De tegel toont die via
+`/api/image_proxy/`, een adres dat de Tessera-app mag ophalen. Er is geen automatisering, geen bestand en geen wijziging
+in `configuration.yaml` nodig.
+
+1. Open in Home Assistant **Instellingen → Apparaten & diensten → Helpers → Helper aanmaken → Sjabloon → Afbeelding**.
+   Geef hem een naam, bijvoorbeeld „SCMT Cover” (de entiteit heet dan `image.scmt_cover`), en vul als URL in:
+
+```
+http://127.0.0.1{{ state_attr('media_player.your_player', 'entity_picture') }}
+```
+
+   Vervang `media_player.your_player` door je speler. `http://127.0.0.1` is Home Assistant zoals het zichzelf
+   bereikt; het adres van de afbeelding van de speler bevat zijn token al, dus Home Assistant mag het zonder inloggen
+   ophalen.
+2. Vul in de opties van de tegel als „Adres van de hoes” in:
+
+```
+/api/image_proxy/image.scmt_cover?v={v}
+```
+
+   De entiteit-ID moet precies overeenkomen met die van de helper (die staat in de instellingen van de helper).
+
+Het adres wordt precies zo gebruikt als het is ingevuld, behalve `{v}`: de plugin vervangt dat door een getal dat bij
+elk nummer verandert, zodat het scherm opnieuw vraagt (Home Assistant negeert het deel `?v=...`). Drie seconden na een
+nieuw nummer vraagt het nog een keer, voor het geval de afbeelding iets later kwam. Een adres zonder `{v}` verandert
+nooit, dus het scherm toont de eerste geladen afbeelding tot het adres verandert.
+
+Open om te controleren de helper in Home Assistant: die toont de huidige hoes. Wie
+`http://YOUR_HOME_ASSISTANT/api/image_proxy/image.scmt_cover` in een browser opent, krijgt „401: Unauthorized”; dat is
+normaal, want het adres vraagt een token (`?token=...`), dat de Tessera-app zelf meestuurt.
+
+Een bestand in de map `www` (`/local/...`) werkt niet met de huidige Tessera-app (0.4.88): die haalt `/local/` op via de
+Supervisor, en die weigert het (403), dus de tegel toont een grijs blok
 ([MaxGramser/tessera-plugins#6](https://github.com/MaxGramser/tessera-plugins/issues/6)).
-
-### Hoesautomatisering (experimenteel)
-
-De automatisering slaat de huidige hoes van de speler op als bestand in de map `www` van Home Assistant. De tegel toont
-dan dat bestand. De kant van Home Assistant werkt; of je scherm het bestand toont, hangt af van je Tessera-versie, dus
-het is experimenteel. Dezelfde code staat in `examples/cover_automation.yaml`.
-
-1. Maak de map `/config/www/` aan als die ontbreekt en start Home Assistant één keer opnieuw.
-2. Voeg het commando toe aan je `configuration.yaml` (laad daarna de shell-commando's opnieuw of herstart). Er staat
-   bewust geen `&&` in: Home Assistant voert commando's met `{{ }}` zonder shell uit.
-
-```yaml
-shell_command:
-  cover_fetch: >-
-    curl -sSfkL --connect-timeout 5 --max-time 20 -o /config/www/cover.jpg "{{ url }}"
-```
-
-3. Maak de automatisering. Vervang `media_player.your_player` door je speler en `YOUR_HOME_ASSISTANT` door het adres
-   waarmee je Home Assistant opent, zoals de computer van Home Assistant het ziet (bijvoorbeeld
-   `http://192.168.0.10:8123`, of `https://ha.example.com`, de optie `-k` staat al in het commando). Ze reageert op een
-   nieuwe titel, wacht twee seconden en haalt de hoes driemaal op (na 2, 7 en 15 seconden), omdat de nieuwe hoes vaak
-   enkele seconden na de titel aankomt.
-
-```yaml
-alias: Cover for Tessera
-triggers:
-  - trigger: state
-    entity_id: media_player.your_player
-    attribute: media_title
-actions:
-  - delay: "00:00:02"
-  - condition: template
-    value_template: "{{ state_attr('media_player.your_player', 'entity_picture') not in [none, ''] }}"
-  - action: shell_command.cover_fetch
-    data:
-      url: "http://YOUR_HOME_ASSISTANT{{ state_attr('media_player.your_player', 'entity_picture') }}"
-  - delay: "00:00:05"
-  - action: shell_command.cover_fetch
-    data:
-      url: "http://YOUR_HOME_ASSISTANT{{ state_attr('media_player.your_player', 'entity_picture') }}"
-  - delay: "00:00:08"
-  - action: shell_command.cover_fetch
-    data:
-      url: "http://YOUR_HOME_ASSISTANT{{ state_attr('media_player.your_player', 'entity_picture') }}"
-mode: restart
-```
-
-4. Voer in de opties van de tegel `/local/cover.jpg?v={v}` in als „Adres van de hoes”.
-
-Het adres wordt precies zo gebruikt als het is ingevoerd, behalve `{v}`: de plugin vervangt dat door een getal dat bij
-elk nummer verandert, zodat het scherm opnieuw vraagt (Home Assistant negeert het deel `?v=...` en stuurt het bestand).
-Drie seconden na een nieuw nummer vraagt het nog een keer, voor het geval het bestand iets te laat is geschreven. Een
-adres zonder `{v}` verandert nooit, dus het scherm toont dan de eerste geladen afbeelding totdat het adres verandert.
-
-Open om het bestand te controleren `http://YOUR_HOME_ASSISTANT/local/cover.jpg?x=1` in een privévenster van de browser
-(verander het getal elke keer, want de browser onthoudt de afbeelding).
 
 ## Privacy
 
 De plugin doet geen netwerkverzoeken. Ze leest alleen wat Home Assistant al weet over de gekozen entiteit en roept de
-hierboven genoemde mediaspeleracties aan als je op een tegel tikt. De hoesautomatisering draait in Home Assistant, niet
-in de plugin.
+hierboven genoemde mediaspeleracties aan als je op een tegel tikt. De sjabloonafbeelding van de hoes draait in Home
+Assistant, niet in de plugin.

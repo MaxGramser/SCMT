@@ -39,8 +39,10 @@ El título en letras grandes, debajo el artista y, abajo, una barra de progreso 
 - **Barra de volumen:** una barra vertical en el borde derecho de la tarjeta; un toque en ella ajusta el volumen a esa
   altura. Necesita dos columnas.
 - **Nombre del álbum:** el álbum en una tercera línea, cuando la tarjeta es lo bastante alta.
-- **Dirección de la carátula:** una dirección fija de un archivo de carátula en Home Assistant, que se muestra en lugar
-  de la imagen del reproductor (véase «La carátula» más abajo).
+- **Tempo:** el tempo de la música (por ejemplo «138 BPM») en una línea bajo el artista, cuando la tarjeta es lo
+  bastante alta. Viene del sensor de tempo elegido para la pantalla (ver «Tempo» más abajo).
+- **Dirección de la carátula:** la dirección de una imagen en Home Assistant, que se muestra en lugar de la imagen
+  del reproductor, por ejemplo una imagen de plantilla con la carátula del reproductor (véase «La carátula» más abajo).
 
 ## Tarjeta «Botón SCMT»
 
@@ -58,6 +60,21 @@ Los botones usan las acciones de Home Assistant `media_player.media_play_pause`,
 `media_previous_track`, `volume_up`, `volume_down`, `media_seek`, `volume_mute` y `volume_set`. Un reproductor que no
 admita alguna de ellas la ignora.
 
+## Tempo
+
+La opción «Tempo» de la tarjeta «SCMT» muestra el tempo de la música en una línea bajo el artista. Home Assistant no
+conoce un tempo propio, así que viene de un sensor, por ejemplo el que HASS.Agent crea a partir de
+[BPM2SCMT](https://github.com/Schumey/BPM2SCMT), que mide lo que reproduce un PC con Windows.
+
+1. En Tessera (Plugins), elige el sensor como «Sensor de tempo» del plugin para la pantalla y compila la pantalla. Su
+   estado debe ser el tempo como número (`138`); `unknown` o vacío oculta la línea.
+2. Activa «Tempo» en las opciones de la tarjeta.
+
+La tarjeta muestra el tempo mientras el reproductor suena o está en pausa. Tras una pista nueva espera a que el sensor
+tenga el nuevo tempo (estuvo vacío una vez y vuelve a tener un valor), como mucho 12 segundos, para no mostrar el tempo
+de la pista anterior. El sensor es uno por pantalla, no por tarjeta: pertenece al PC que reproduce, sea cual sea el
+reproductor que muestra la tarjeta.
+
 ## La carátula
 
 Por defecto, la carátula es la imagen que Home Assistant mismo tiene para el reproductor (su `entity_picture`); el
@@ -67,71 +84,48 @@ Una tarjeta solo puede mostrar imágenes de `/api/image/serve/`, `/api/image_pro
 texto se cortan a los 48 bytes. La carátula de algunos reproductores (por ejemplo la de HASS.Agent,
 `/api/media_player_proxy/...`) se rechaza por esa razón.
 
-**Nota:** la opción «Dirección de la carátula» junto con la automatización de abajo estaba pensada para estos
-reproductores, pero no funciona con la aplicación Tessera actual (0.4.88). La aplicación obtiene una dirección bajo
-`/local/` a través del Supervisor (`http://supervisor/core/local/...`), que la rechaza (403, en el registro de la
-aplicación «no picture from /local/cover.jpg»), así que la tarjeta muestra un bloque gris en lugar de la carátula, sea
-cual sea el formato del archivo. Ambas siguen en el plugin hasta que Tessera obtenga `/local/` de otra forma o permita
-la carátula propia del reproductor ([MaxGramser/tessera-plugins#6](https://github.com/MaxGramser/tessera-plugins/issues/6)).
+Para estos reproductores existe la opción «Dirección de la carátula» junto con una imagen de plantilla en Home
+Assistant.
 
-### Automatización de la carátula (experimental)
+### La carátula mediante una imagen de plantilla
 
-La automatización guarda la carátula actual del reproductor como archivo en la carpeta `www` de Home Assistant. La
-tarjeta muestra entonces ese archivo. La parte de Home Assistant funciona; que tu pantalla muestre el archivo depende
-de tu versión de Tessera, así que es experimental. El mismo código está en `examples/cover_automation.yaml`.
+Una imagen de plantilla es una entidad de Home Assistant que contiene la carátula actual del reproductor. La tarjeta la
+muestra a través de `/api/image_proxy/`, una dirección que la aplicación Tessera puede obtener. No hace falta ninguna
+automatización, ningún archivo ni ningún cambio en `configuration.yaml`.
 
-1. Crea la carpeta `/config/www/` si no existe y reinicia Home Assistant una vez.
-2. Añade el comando a tu `configuration.yaml` (después recarga los comandos de shell o reinicia). No lleva `&&` a
-   propósito: Home Assistant ejecuta los comandos que contienen `{{ }}` sin shell.
+1. En Home Assistant, abre **Ajustes → Dispositivos y servicios → Ayudantes → Crear ayudante → Plantilla → Imagen**.
+   Ponle un nombre, por ejemplo «SCMT Cover» (la entidad será `image.scmt_cover`), e introduce como URL:
 
-```yaml
-shell_command:
-  cover_fetch: >-
-    curl -sSfkL --connect-timeout 5 --max-time 20 -o /config/www/cover.jpg "{{ url }}"
+```
+http://127.0.0.1{{ state_attr('media_player.your_player', 'entity_picture') }}
 ```
 
-3. Crea la automatización. Sustituye `media_player.your_player` por tu reproductor y `YOUR_HOME_ASSISTANT` por la
-   dirección con la que abres Home Assistant, tal como la ve el ordenador de Home Assistant (por ejemplo
-   `http://192.168.0.10:8123`, o `https://ha.example.com`, la opción `-k` ya está en el comando). Reacciona a un título
-   nuevo, espera dos segundos y descarga la carátula tres veces (a los 2, 7 y 15 segundos), porque la carátula nueva
-   suele llegar unos segundos después del título.
+   Sustituye `media_player.your_player` por tu reproductor. `http://127.0.0.1` es Home Assistant tal como se
+   alcanza a sí mismo; la dirección de la imagen del reproductor ya lleva su token, así que Home Assistant puede
+   obtenerla sin iniciar sesión.
+2. En las opciones de la tarjeta, introduce como «Dirección de la carátula»:
 
-```yaml
-alias: Cover for Tessera
-triggers:
-  - trigger: state
-    entity_id: media_player.your_player
-    attribute: media_title
-actions:
-  - delay: "00:00:02"
-  - condition: template
-    value_template: "{{ state_attr('media_player.your_player', 'entity_picture') not in [none, ''] }}"
-  - action: shell_command.cover_fetch
-    data:
-      url: "http://YOUR_HOME_ASSISTANT{{ state_attr('media_player.your_player', 'entity_picture') }}"
-  - delay: "00:00:05"
-  - action: shell_command.cover_fetch
-    data:
-      url: "http://YOUR_HOME_ASSISTANT{{ state_attr('media_player.your_player', 'entity_picture') }}"
-  - delay: "00:00:08"
-  - action: shell_command.cover_fetch
-    data:
-      url: "http://YOUR_HOME_ASSISTANT{{ state_attr('media_player.your_player', 'entity_picture') }}"
-mode: restart
+```
+/api/image_proxy/image.scmt_cover?v={v}
 ```
 
-4. En las opciones de la tarjeta, escribe `/local/cover.jpg?v={v}` como «Dirección de la carátula».
+   El ID de la entidad debe coincidir exactamente con el del ayudante (aparece en los ajustes del ayudante).
 
-La dirección se usa exactamente como se escribe, salvo `{v}`: el plugin lo sustituye por un número que cambia con
-cada tema, para que la pantalla vuelva a pedirla (Home Assistant ignora la parte `?v=...` y envía el archivo). Tres
-segundos después de un tema nuevo vuelve a pedirla una vez, por si el archivo se escribió con algo de retraso. Una
-dirección sin `{v}` nunca cambia, así que la pantalla muestra la primera imagen cargada hasta que cambie la dirección.
+La dirección se usa exactamente como se escribe, salvo `{v}`: el plugin lo sustituye por un número que cambia con cada
+tema, para que la pantalla vuelva a pedirla (Home Assistant ignora la parte `?v=...`). Tres segundos después de un tema
+nuevo la pide una vez más, por si la imagen llegó un poco tarde. Una dirección sin `{v}` no cambia nunca, así que la
+pantalla muestra la primera imagen que cargó hasta que cambie la dirección.
 
-Para comprobar el archivo, abre `http://YOUR_HOME_ASSISTANT/local/cover.jpg?x=1` en una ventana privada del navegador
-(cambia el número cada vez, porque el navegador conserva la imagen).
+Para comprobarlo, abre el ayudante en Home Assistant: muestra la carátula actual. Abrir
+`http://YOUR_HOME_ASSISTANT/api/image_proxy/image.scmt_cover` en un navegador da «401: Unauthorized»; es normal, porque
+la dirección necesita un token (`?token=...`), que la aplicación Tessera envía por sí misma.
+
+Un archivo en la carpeta `www` (`/local/...`) no funciona con la aplicación Tessera actual (0.4.88): obtiene `/local/` a
+través del Supervisor, que lo rechaza (403), así que la tarjeta muestra un bloque gris
+([MaxGramser/tessera-plugins#6](https://github.com/MaxGramser/tessera-plugins/issues/6)).
 
 ## Privacidad
 
 El plugin no hace peticiones de red. Solo lee lo que Home Assistant ya sabe de la entidad elegida y llama a las acciones
-del reproductor mencionadas arriba cuando tocas una tarjeta. La automatización de la carátula se ejecuta en Home
+del reproductor mencionadas arriba cuando tocas una tarjeta. La imagen de plantilla de la carátula se ejecuta en Home
 Assistant, no en el plugin.
