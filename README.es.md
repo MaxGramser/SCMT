@@ -22,7 +22,9 @@ El título en letras grandes, debajo el artista y, abajo, una barra de progreso 
   mostrar imágenes (las placas pequeñas no pueden). La opción «Carátula del álbum» la pone a la izquierda (por defecto)
   o a la derecha del texto, o la desactiva.
 - La opción «Botones» añade botones bajo el título: reproducción (anterior, reproducir/pausa, siguiente), volumen (más
-  bajo, más alto) o ambos. Necesitan una tarjeta de dos filas o más.
+  bajo, silencio, más alto) o ambos. Necesitan una tarjeta de dos filas o más. Con los botones de volumen, un toque en
+  un indicador de volumen también silencia.
+- Un toque en la barra de progreso salta a ese punto del tema.
 
 ### Más opciones de esta tarjeta
 
@@ -30,11 +32,10 @@ El título en letras grandes, debajo el artista y, abajo, una barra de progreso 
   Arriba o abajo, el texto se alinea con el borde superior o inferior de la carátula.
 - **Indicador grande:** un indicador semitransparente sobre toda la tarjeta, para el volumen, para la pausa o para
   ambos. Desactivado por defecto.
-  - Volumen: durante tres segundos tras un cambio de volumen, el número y un altavoz. Con la opción «Silencio», un
+  - Volumen: durante tres segundos tras un cambio de volumen, el número y un altavoz. Con los botones de volumen, un
     toque en él silencia.
   - Pausa: mientras el reproductor está en pausa, el símbolo de pausa.
-- **Avanzar tocando la barra:** un toque en la barra de progreso salta a ese punto del tema. Activado por defecto.
-- **Silencio:** un botón de silencio entre los botones; un toque en el indicador de volumen silencia o reactiva el sonido.
+- **Tamaño del texto:** pequeño, mediano (por defecto) o grande, para el título, el artista y el álbum.
 - **Barra de volumen:** una barra vertical en el borde derecho de la tarjeta; un toque en ella ajusta el volumen a esa
   altura. Necesita dos columnas.
 - **Nombre del álbum:** el álbum en una tercera línea, cuando la tarjeta es lo bastante alta.

@@ -20,7 +20,9 @@ De titel in grote letters, daaronder de artiest en onderaan een optionele voortg
 - De albumhoes staat naast de titel als de tegel minstens twee cellen breed is en het scherm afbeeldingen kan tonen (de
   kleine borden kunnen dat niet). De optie „Albumhoes” zet hem links (standaard) of rechts van de tekst, of zet hem uit.
 - De optie „Knoppen” voegt knoppen onder de titel toe: afspelen (vorige, afspelen/pauze, volgende), volume (zachter,
-  harder) of allebei. Ze vragen een tegel van twee rijen of meer.
+  dempen, harder) of allebei. Ze vragen een tegel van twee rijen of meer. Met de volumeknoppen dempt ook een tik op een
+  volumeweergave.
+- Een tik op de voortgangsbalk springt naar die plek in het nummer.
 
 ### Meer opties van deze tegel
 
@@ -28,12 +30,10 @@ De titel in grote letters, daaronder de artiest en onderaan een optionele voortg
   of onderaan sluit de tekst gelijk met de boven- of onderrand van de hoes.
 - **Grote weergave:** een half doorzichtige weergave over de hele tegel, voor het volume, voor de pauze of voor allebei.
   Standaard uit.
-  - Volume: drie seconden nadat het volume is veranderd, het getal en een luidspreker. Met de optie „Dempen” dempt een
+  - Volume: drie seconden nadat het volume is veranderd, het getal en een luidspreker. Met de volumeknoppen dempt een
     tik erop.
   - Pauze: zolang de speler gepauzeerd is, het pauzeteken.
-- **Spoelen door op de balk te tikken:** een tik op de voortgangsbalk springt naar die plek in het nummer. Standaard
-  aan.
-- **Dempen:** een dempknop tussen de knoppen; een tik op de volumeweergave dempt of heft het dempen op.
+- **Tekstgrootte:** klein, middel (standaard) of groot, voor titel, artiest en album.
 - **Volumebalk:** een staande balk langs de rechterrand van de tegel; een tik erop stelt het volume op die hoogte in.
   Vraagt twee kolommen.
 - **Albumnaam:** het album op een derde regel, als de tegel hoog genoeg is.

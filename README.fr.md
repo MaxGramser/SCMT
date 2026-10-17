@@ -21,7 +21,9 @@ Le titre en grandes lettres, l'artiste dessous, et en bas une barre de progressi
   peut afficher des images (les petites cartes ne le peuvent pas). L'option « Pochette de l'album » la place à gauche
   (par défaut) ou à droite du texte, ou la désactive.
 - L'option « Boutons » ajoute des boutons sous le titre : lecture (précédent, lecture/pause, suivant), volume (moins
-  fort, plus fort) ou les deux. Ils demandent une tuile d'au moins deux lignes.
+  fort, muet, plus fort) ou les deux. Ils demandent une tuile d'au moins deux lignes. Avec les boutons de volume, un
+  appui sur un affichage du volume coupe aussi le son.
+- Un appui sur la barre de progression saute à cet endroit du morceau.
 
 ### Autres options de cette tuile
 
@@ -29,12 +31,10 @@ Le titre en grandes lettres, l'artiste dessous, et en bas une barre de progressi
   haut ou en bas, le texte s'aligne sur le bord supérieur ou inférieur de la pochette.
 - **Grand affichage :** un affichage semi-transparent sur toute la tuile, pour le volume, pour la pause ou pour les
   deux. Désactivé par défaut.
-  - Volume : pendant trois secondes après un changement de volume, le nombre et un haut-parleur. Avec l'option « Muet »,
+  - Volume : pendant trois secondes après un changement de volume, le nombre et un haut-parleur. Avec les boutons de volume,
     un appui dessus coupe le son.
   - Pause : tant que le lecteur est en pause, le symbole de pause.
-- **Avancer en touchant la barre :** un appui sur la barre de progression saute à cet endroit du morceau. Activé par
-  défaut.
-- **Muet :** un bouton muet parmi les boutons ; un appui sur l'affichage du volume active ou coupe le muet.
+- **Taille du texte :** petite, moyenne (par défaut) ou grande, pour le titre, l'artiste et l'album.
 - **Barre de volume :** une barre verticale au bord droit de la tuile ; un appui dessus règle le volume à cette
   hauteur. Demande deux colonnes.
 - **Nom de l'album :** l'album sur une troisième ligne, quand la tuile est assez haute.

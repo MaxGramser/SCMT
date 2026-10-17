@@ -22,7 +22,9 @@ Il titolo in caratteri grandi, sotto l'artista e in basso una barra di avanzamen
   immagini (le schede piccole non possono). L'opzione «Copertina dell'album» la mette a sinistra (predefinito) o a
   destra del testo, oppure la disattiva.
 - L'opzione «Tasti» aggiunge tasti sotto il titolo: riproduzione (precedente, riproduci/pausa, successivo), volume (più
-  piano, più forte) o entrambi. Servono una tessera di almeno due righe.
+  piano, muto, più forte) o entrambi. Serve una tessera di almeno due righe. Con i tasti del volume, anche un tocco su un
+  indicatore del volume attiva il muto.
+- Un tocco sulla barra di avanzamento salta a quel punto del brano.
 
 ### Altre opzioni di questa tessera
 
@@ -30,12 +32,10 @@ Il titolo in caratteri grandi, sotto l'artista e in basso una barra di avanzamen
   In alto o in basso, il testo si allinea al bordo superiore o inferiore della copertina.
 - **Indicatore grande:** un indicatore semitrasparente su tutta la tessera, per il volume, per la pausa o per entrambi.
   Disattivato per impostazione predefinita.
-  - Volume: per tre secondi dopo una modifica del volume, il numero e un altoparlante. Con l'opzione «Muto», un tocco
+  - Volume: per tre secondi dopo una modifica del volume, il numero e un altoparlante. Con i tasti del volume, un tocco
     su di esso attiva il muto.
   - Pausa: finché il lettore è in pausa, il simbolo di pausa.
-- **Cerca toccando la barra:** un tocco sulla barra di avanzamento salta a quel punto del brano. Attivo per
-  impostazione predefinita.
-- **Muto:** un tasto muto tra i tasti; un tocco sull'indicatore del volume attiva o toglie il muto.
+- **Dimensione del testo:** piccola, media (predefinita) o grande, per titolo, artista e album.
 - **Barra del volume:** una barra verticale sul bordo destro della tessera; un tocco su di essa imposta il volume a
   quell'altezza. Servono due colonne.
 - **Nome dell'album:** l'album su una terza riga, quando la tessera è abbastanza alta.

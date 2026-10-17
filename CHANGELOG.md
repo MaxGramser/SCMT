@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.11.0 - 2026-10-17
+
+- New option "Text size": small (as before 0.10.3), medium (default, as now) or large (artist and album one step
+  larger, a long title runs in the large font).
+- A tap on the progress bar always seeks; the option "Seek by tapping the bar" is gone.
+- Mute comes with the volume buttons, between quieter and louder; the option "Mute" is gone. With the volume buttons,
+  a tap on a volume display mutes too.
+
 ## 0.10.3 - 2026-10-17
 
 - Larger text: the title in the large font of a card's value, artist and album in the font of a key's words. A long

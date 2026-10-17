@@ -1,5 +1,13 @@
 # Journal des modifications
 
+## 0.11.0 - 2026-10-17
+
+- Nouvelle option « Taille du texte » : petite (comme avant 0.10.3), moyenne (par défaut, comme maintenant) ou grande
+  (artiste et album d'un cran plus grands, un titre long défile dans la grande police).
+- Un appui sur la barre de progression avance toujours ; l'option « Avancer en touchant la barre » disparaît.
+- Muet fait partie des boutons de volume, entre moins fort et plus fort ; l'option « Muet » disparaît. Avec les boutons
+  de volume, un appui sur un affichage du volume coupe aussi le son.
+
 ## 0.10.3 - 2026-10-17
 
 - Texte plus grand : le titre dans la grande police de la valeur d'une carte, l'artiste et l'album dans la police des

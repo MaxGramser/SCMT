@@ -1,5 +1,13 @@
 # Registro delle modifiche
 
+## 0.11.0 - 2026-10-17
+
+- Nuova opzione «Dimensione del testo»: piccola (come prima di 0.10.3), media (predefinita, come ora) o grande (artista
+  e album un gradino più grandi, un titolo lungo scorre nel carattere grande).
+- Un tocco sulla barra di avanzamento cerca sempre; l'opzione «Cerca toccando la barra» non c'è più.
+- Muto fa parte dei tasti del volume, tra più piano e più forte; l'opzione «Muto» non c'è più. Con i tasti del volume,
+  anche un tocco su un indicatore del volume attiva il muto.
+
 ## 0.10.3 - 2026-10-17
 
 - Testo più grande: il titolo nel carattere grande del valore di una scheda, artista e album nel carattere delle parole

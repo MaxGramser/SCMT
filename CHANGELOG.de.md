@@ -1,5 +1,13 @@
 # Änderungsprotokoll
 
+## 0.11.0 - 2026-10-17
+
+- Neue Option „Schriftgröße“: klein (wie vor 0.10.3), mittel (Standard, wie jetzt) oder groß (Interpret und Album eine
+  Stufe größer, ein langer Titel läuft in der großen Schrift).
+- Ein Tipp auf den Fortschrittsbalken spult immer; die Option „Spulen per Tipp auf den Balken“ entfällt.
+- Stumm gehört zu den Lautstärke-Tasten, zwischen Leiser und Lauter; die Option „Stumm“ entfällt. Mit den
+  Lautstärke-Tasten schaltet auch ein Tipp auf eine Lautstärkeanzeige stumm.
+
 ## 0.10.3 - 2026-10-17
 
 - Größerer Text: der Titel in der großen Schrift eines Kartenwerts, Interpret und Album in der Schrift einer

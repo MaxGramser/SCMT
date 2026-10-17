@@ -113,8 +113,12 @@ class NowPlayingTile : public tessera::Tile {
     const bool want_overlay = overlay == "volume" || overlay == "both";
     const bool want_pause_overlay = overlay == "pause" || overlay == "both";
     const bool want_vbar = c.options["volume_bar"] | false;
-    want_mute_ = c.options["mute"] | false;
-    want_seek_ = c.options["seek"] | true;
+    // Muting comes with the volume buttons (a key between quieter and louder, and a tap on a volume display); a tap on
+    // the progress bar always seeks. Both were options before 0.11.0.
+    want_mute_ = want_volume;
+    // The text size: small (the look before 0.10.3), medium, large.
+    const std::string ts = (const char *) (c.options["text_size"] | "medium");
+    text_size_ = ts == "small" ? 0 : (ts == "large" ? 2 : 1);
     show_album_ = c.options["album"] | false;
     cover_url_ = (const char *) (c.options["cover_url"] | "");  // fixed address of a cover file, e.g. /local/cover.jpg
     const std::string tpos = (const char *) (c.options["text_pos"] | "middle");
@@ -130,9 +134,9 @@ class NowPlayingTile : public tessera::Tile {
       }
       if (want_volume) {
         kinds_[n_++] = VOL_DOWN;
+        kinds_[n_++] = MUTE;
         kinds_[n_++] = VOL_UP;
       }
-      if (want_mute_) kinds_[n_++] = MUTE;
     }
     ctrl_h_ = n_ > 0 ? ui::mm(8) : 0;
     if (ctrl_h_ * 2 > height_) {
@@ -389,20 +393,34 @@ class NowPlayingTile : public tessera::Tile {
     const int title_w = text_w_ - (vol_total > 0 ? vol_total + ui::px(6) : 0);
     lv_obj_set_width(title_lbl_, title_w);
 
-    // Artist and album in BODY_LARGE, or in BODY when the tile is too low for it next to the smallest title.
+    // The fonts of the text size (option). VALUE is the largest font with letters (DIGITS has digits only), so "large"
+    // keeps the title of "medium" and makes artist and album larger, and scrolls a long title in VALUE.
+    struct Faces {
+      Font title, scroll, low;  // the title: when it fits; as a marquee when it is wider; on a tile too low for it
+      Font sub, sub_low;        // artist and album: when there is room; on a low tile
+    };
+    static const Faces FACES[3] = {
+        {Font::HEADLINE, Font::HEADLINE, Font::BODY_LARGE, Font::BODY, Font::BODY},              // small
+        {Font::VALUE, Font::HEADLINE, Font::BODY_LARGE, Font::BODY_LARGE, Font::BODY},           // medium
+        {Font::VALUE, Font::VALUE, Font::HEADLINE, Font::HEADLINE, Font::BODY_LARGE},            // large
+    };
+    const Faces &fc = FACES[text_size_];
+
+    // Artist and album in their font, or one step smaller when the tile is too low for it next to the smallest title.
     const int space_h = cover_on_ ? cover_size_ : content_h_;
     const int g2 = ui::px(2);
-    const Font sf = ui::line_height(Font::BODY_LARGE) * 2 + g2 <= space_h ? Font::BODY_LARGE : Font::BODY;
+    const Font sf = ui::line_height(fc.sub) * 2 + g2 <= space_h ? fc.sub : fc.sub_low;
     const int ah = ui::line_height(sf);
     ui::set_font(artist_lbl_, sf);
     if (album_lbl_ != nullptr) ui::set_font(album_lbl_, sf);
 
-    // The title in VALUE (a font with letters too) when it fits in width and, with the artist below it, in height, and
-    // has no character VALUE lacks. Else in HEADLINE, as a marquee when it is wider still; in BODY_LARGE only when the
-    // tile is too low for HEADLINE.
+    // The title in its font when it fits in width and, with the artist below it, in height, and the font has all its
+    // characters. Else in the marquee font, wider than its room; in a smaller one only when the tile is too low.
     auto high_ok = [&](Font ff) { return ui::line_height(ff) + g2 + ah <= space_h; };
-    Font f = Font::VALUE;
-    if (!(ui::covers(title, f) && ui::text_width(title, f) <= title_w && high_ok(f))) f = Font::HEADLINE;
+    Font f = fc.title;
+    if (!(ui::covers(title, f) && ui::text_width(title, f) <= title_w && high_ok(f))) f = fc.scroll;
+    if (!ui::covers(title, f)) f = Font::HEADLINE;  // a character VALUE lacks (a Japanese title)
+    if (!high_ok(f)) f = fc.low;
     if (!high_ok(f)) f = Font::BODY_LARGE;
     ui::set_font(title_lbl_, f);
     ui::set_text(title_lbl_, title);
@@ -620,7 +638,7 @@ class NowPlayingTile : public tessera::Tile {
       return;
     }
     // 5. The progress bar: a tap seeks to where it hit (option).
-    if (known && want_seek_ && show_bar_ && duration_ > 0.5f && y >= bar_y_ - ui::mm(3) &&
+    if (known && show_bar_ && duration_ > 0.5f && y >= bar_y_ - ui::mm(3) &&
         y <= bar_y_ + bar_h_ + ui::mm(2)) {
       float frac = static_cast<float>(x - area_x_) / static_cast<float>(area_w_);
       if (frac < 0.0f) frac = 0.0f;
@@ -714,7 +732,8 @@ class NowPlayingTile : public tessera::Tile {
   int btn_w_{0}, btn_gap_{0};
   int vol_hit_x_{0}, vol_hit_w_{0}, vol_hit_y_{0}, vol_hit_h_{0};
   bool show_bar_{true}, show_time_{false}, show_album_{false};
-  bool want_mute_{false}, want_seek_{false};
+  bool want_mute_{false};
+  int text_size_{1};  // 0 small, 1 medium, 2 large
   int vol_mode_{1};  // 0 never, 1 for three seconds after a change, 2 always
   float volume_{-1.0f}, last_volume_{-1.0f};
   bool muted_{false}, vol_flag_{false}, ov_on_{false};

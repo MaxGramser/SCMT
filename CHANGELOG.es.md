@@ -1,5 +1,13 @@
 # Registro de cambios
 
+## 0.11.0 - 2026-10-17
+
+- Nueva opción «Tamaño del texto»: pequeño (como antes de 0.10.3), mediano (por defecto, como ahora) o grande (artista
+  y álbum un paso más grandes, un título largo se desplaza en la letra grande).
+- Un toque en la barra de progreso siempre avanza; la opción «Avanzar tocando la barra» desaparece.
+- Silencio forma parte de los botones de volumen, entre más bajo y más alto; la opción «Silencio» desaparece. Con los
+  botones de volumen, un toque en un indicador de volumen también silencia.
+
 ## 0.10.3 - 2026-10-17
 
 - Texto más grande: el título en la letra grande del valor de una tarjeta, el artista y el álbum en la letra de las

@@ -22,7 +22,9 @@ Der Titel in großen Buchstaben, darunter der Interpret und unten optional ein F
   zeigen kann (die kleinen Boards können das nicht). Die Option „Albumcover“ setzt es links (Standard) oder rechts vom
   Text, oder schaltet es ab.
 - Die Option „Tasten“ fügt Tasten unter dem Titel hinzu: Wiedergabe (zurück, Play/Pause, weiter), Lautstärke (leiser,
-  lauter) oder beides. Sie brauchen eine Kachel mit zwei Zeilen oder mehr.
+  stumm, lauter) oder beides. Sie brauchen eine Kachel mit zwei Zeilen oder mehr. Mit den Lautstärke-Tasten schaltet
+  auch ein Tipp auf eine Lautstärkeanzeige stumm.
+- Ein Tipp auf den Fortschrittsbalken springt an diese Stelle im Titel.
 
 ### Weitere Optionen dieser Kachel
 
@@ -30,12 +32,10 @@ Der Titel in großen Buchstaben, darunter der Interpret und unten optional ein F
   oder unten schließt der Text bündig mit der Ober- oder Unterkante des Covers ab.
 - **Große Anzeige:** eine halb durchsichtige Anzeige über der ganzen Kachel, für die Lautstärke, für die Pause oder für
   beides. Standardmäßig aus.
-  - Lautstärke: drei Sekunden nach einer Änderung der Lautstärke, mit der Zahl und einem Lautsprecher. Mit der Option
-    „Stumm“ schaltet ein Tipp darauf stumm.
+  - Lautstärke: drei Sekunden nach einer Änderung der Lautstärke, mit der Zahl und einem Lautsprecher. Mit den
+    Lautstärke-Tasten schaltet ein Tipp darauf stumm.
   - Pause: solange der Player pausiert ist, das Pause-Zeichen.
-- **Spulen per Tipp auf den Balken:** Ein Tipp auf den Fortschrittsbalken springt an diese Stelle im Titel.
-  Standardmäßig an.
-- **Stumm:** eine Stumm-Taste bei den Tasten; ein Tipp auf die Lautstärkeanzeige schaltet stumm oder wieder laut.
+- **Schriftgröße:** klein, mittel (Standard) oder groß, für Titel, Interpret und Album.
 - **Lautstärkeleiste:** eine aufrechte Leiste am rechten Rand der Kachel; ein Tipp darauf stellt die Lautstärke auf
   diese Höhe. Braucht zwei Spalten.
 - **Albumname:** das Album als dritte Zeile, wenn die Kachel hoch genug ist.

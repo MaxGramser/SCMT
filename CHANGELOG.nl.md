@@ -1,5 +1,13 @@
 # Wijzigingenlogboek
 
+## 0.11.0 - 2026-10-17
+
+- Nieuwe optie „Tekstgrootte”: klein (zoals vóór 0.10.3), middel (standaard, zoals nu) of groot (artiest en album een
+  stap groter, een lange titel loopt in het grote lettertype).
+- Een tik op de voortgangsbalk spoelt altijd; de optie „Spoelen door op de balk te tikken” vervalt.
+- Dempen hoort bij de volumeknoppen, tussen zachter en harder; de optie „Dempen” vervalt. Met de volumeknoppen dempt
+  ook een tik op een volumeweergave.
+
 ## 0.10.3 - 2026-10-17
 
 - Grotere tekst: de titel in het grote lettertype van de waarde van een kaart, artiest en album in het lettertype van de

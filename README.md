@@ -20,8 +20,9 @@ The title in large letters, the artist below it, and an optional progress bar at
 - The album cover stands beside the title, when the tile is at least two cells wide and the screen can show pictures
   (the small boards cannot). The option "Album cover" puts it at the left (default) or at the right of the text, or
   switches it off.
-- The option "Buttons" adds buttons under the title: playback (previous, play/pause, next), volume (quieter, louder),
-  or both. They need a tile of two rows or more.
+- The option "Buttons" adds buttons under the title: playback (previous, play/pause, next), volume (quieter, mute,
+  louder), or both. They need a tile of two rows or more. With the volume buttons, a tap on a volume display mutes too.
+- A tap on the progress bar jumps to that place in the song.
 
 ### More options of this tile
 
@@ -29,11 +30,10 @@ The title in large letters, the artist below it, and an optional progress bar at
   cover. At the top or the bottom, the text lines up with the cover's upper or lower edge.
 - **Big display:** a half see-through display over the whole tile, for the volume, for the pause, or both. Off by
   default.
-  - Volume: for three seconds after the volume changes, the number and a speaker. With the option "Mute", a tap on it
+  - Volume: for three seconds after the volume changes, the number and a speaker. With the volume buttons, a tap on it
     mutes.
   - Pause: while the player is paused, the pause sign.
-- **Seek by tapping the bar:** a tap on the progress bar jumps to that place in the song. On by default.
-- **Mute:** a mute button among the buttons; a tap on the volume display mutes or unmutes.
+- **Text size:** small, medium (default) or large, for title, artist and album.
 - **Volume bar:** an upright bar along the right edge of the tile; a tap on it sets the volume to that height. Needs two
   columns.
 - **Album name:** the album as a third line, when the tile is high enough.

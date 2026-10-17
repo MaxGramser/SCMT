@@ -5,7 +5,7 @@
 # The first example is the one the store picture shows (tools/store_image.py), so it is the one that shows SCMT best.
 
 tiles:
-  # 1. Playing, everything on: cover, album, progress (bar + time), volume display, buttons, seek, mute, volume bar
+  # 1. Playing, everything on: cover, album, progress (bar + time), volume display, buttons (with mute), volume bar
   - tile: now_playing
     name: Everything on
     entity: media_player.pc_spotify
@@ -14,8 +14,6 @@ tiles:
       bar_height: 6
       volume_display: always
       overlay: both
-      seek: true
-      mute: true
       volume_bar: true
       album: true
       cover: left
@@ -26,6 +24,18 @@ tiles:
   - tile: now_playing
     name: Defaults
     entity: media_player.pc_spotify
+
+  # 2b. The text sizes: small (the look before 0.10.3) and large (medium is the default above)
+  - tile: now_playing
+    name: Text small
+    entity: media_player.pc_spotify
+    options: { text_size: small, album: true }
+    sizes: [2x1, 2x2]
+  - tile: now_playing
+    name: Text large
+    entity: media_player.pc_spotify
+    options: { text_size: large, album: true }
+    sizes: [2x1, 2x2]
 
   # 3. Progress variants: bar only (higher), time only, nothing
   - tile: now_playing
@@ -80,7 +90,7 @@ tiles:
   - tile: now_playing
     name: Big volume display
     entity: media_player.pc_spotify
-    options: { overlay: volume, mute: true }
+    options: { overlay: volume, buttons: volume }
     sizes: [2x2, 3x2]
 
   # 6. Without the cover: the text takes the whole width
@@ -151,7 +161,7 @@ tiles:
   - tile: now_playing
     name: Muted
     entity: media_player.pc_muted
-    options: { volume_display: always, mute: true }
+    options: { volume_display: always }
     sizes: [2x1, 2x2]
 
   # 11. A player that reports no duration and no position: neither bar nor time
