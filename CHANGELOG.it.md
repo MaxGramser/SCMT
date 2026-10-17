@@ -1,5 +1,12 @@
 # Registro delle modifiche
 
+## 0.10.3 - 2026-10-17
+
+- Testo più grande: il titolo nel carattere grande del valore di una scheda, artista e album nel carattere delle parole
+  di un tasto. Un titolo lungo si rimpicciolisce solo fino alla dimensione precedente e poi scorre; su una tessera bassa
+  tutto si rimpicciolisce come prima.
+- Correzione: il testo scorrevole non passa più sopra la copertina o il bordo della scheda.
+
 ## 0.10.2 - 2026-10-17
 
 - La barra del volume sta sempre sul bordo destro, anche quando la copertina è a destra, ed è più stretta di un terzo.

@@ -188,13 +188,18 @@ class NowPlayingTile : public tessera::Tile {
     text_right_ = area_x_ + area_w_;
 
     // Title, artist and album run as a marquee when they are wider than their room.
-    title_lbl_ = ui::label(c.parent, Font::HEADLINE, theme::INK);
+    // Each lies in a box of its own size that cuts off what scrolls past its edges (the label alone draws a little
+    // beyond them, over the cover).
+    title_box_ = clip_box_(c.parent);
+    title_lbl_ = ui::label(title_box_, Font::HEADLINE, theme::INK);
     lv_label_set_long_mode(title_lbl_, LV_LABEL_LONG_SCROLL_CIRCULAR);
-    artist_lbl_ = ui::label(c.parent, Font::BODY, theme::INK_SOFT);
+    artist_box_ = clip_box_(c.parent);
+    artist_lbl_ = ui::label(artist_box_, Font::BODY_LARGE, theme::INK_SOFT);
     lv_label_set_long_mode(artist_lbl_, LV_LABEL_LONG_SCROLL_CIRCULAR);
     lv_obj_set_width(artist_lbl_, text_w_);
     if (show_album_) {
-      album_lbl_ = ui::label(c.parent, Font::BODY, theme::MUTED);
+      album_box_ = clip_box_(c.parent);
+      album_lbl_ = ui::label(album_box_, Font::BODY_LARGE, theme::MUTED);
       lv_label_set_long_mode(album_lbl_, LV_LABEL_LONG_SCROLL_CIRCULAR);
       lv_obj_set_width(album_lbl_, text_w_);
     }
@@ -384,15 +389,21 @@ class NowPlayingTile : public tessera::Tile {
     const int title_w = text_w_ - (vol_total > 0 ? vol_total + ui::px(6) : 0);
     lv_obj_set_width(title_lbl_, title_w);
 
-    // The largest font the title fits in, in width and, with the artist below it, in height; a title wider still runs
-    // as a marquee.
+    // Artist and album in BODY_LARGE, or in BODY when the tile is too low for it next to the smallest title.
     const int space_h = cover_on_ ? cover_size_ : content_h_;
-    const int ah = ui::line_height(Font::BODY);
     const int g2 = ui::px(2);
-    auto fits = [&](Font ff) { return ui::text_width(title, ff) <= title_w && ui::line_height(ff) + g2 + ah <= space_h; };
-    Font f = Font::HEADLINE;
-    if (!fits(f)) f = Font::TITLE;
-    if (!fits(f)) f = Font::BODY_LARGE;
+    const Font sf = ui::line_height(Font::BODY_LARGE) * 2 + g2 <= space_h ? Font::BODY_LARGE : Font::BODY;
+    const int ah = ui::line_height(sf);
+    ui::set_font(artist_lbl_, sf);
+    if (album_lbl_ != nullptr) ui::set_font(album_lbl_, sf);
+
+    // The title in VALUE (a font with letters too) when it fits in width and, with the artist below it, in height, and
+    // has no character VALUE lacks. Else in HEADLINE, as a marquee when it is wider still; in BODY_LARGE only when the
+    // tile is too low for HEADLINE.
+    auto high_ok = [&](Font ff) { return ui::line_height(ff) + g2 + ah <= space_h; };
+    Font f = Font::VALUE;
+    if (!(ui::covers(title, f) && ui::text_width(title, f) <= title_w && high_ok(f))) f = Font::HEADLINE;
+    if (!high_ok(f)) f = Font::BODY_LARGE;
     ui::set_font(title_lbl_, f);
     ui::set_text(title_lbl_, title);
     ui::set_color(title_lbl_, paused_ ? theme::MUTED : theme::INK);
@@ -408,11 +419,11 @@ class NowPlayingTile : public tessera::Tile {
     if (with_album) block_h += g2 + ah;
     int y = text_pos_ == 1 ? 0 : (text_pos_ == 2 ? space_h - block_h : (space_h - block_h) / 2);
     if (y < 0) y = 0;
-    lv_obj_set_pos(title_lbl_, x0_, y);
-    lv_obj_set_pos(artist_lbl_, x0_, y + th + g2);
+    place_(title_box_, title_lbl_, x0_, y, title_w, th);
+    place_(artist_box_, artist_lbl_, x0_, y + th + g2, text_w_, ah);
     if (album_lbl_ != nullptr) {
       ui::set_text(album_lbl_, with_album ? album : std::string());
-      lv_obj_set_pos(album_lbl_, x0_, y + th + g2 + ah + g2);
+      place_(album_box_, album_lbl_, x0_, y + th + g2 + ah + g2, text_w_, ah);
     }
 
     // The small volume display: a text and the speaker, at the title's right. A tap on it mutes (option).
@@ -624,6 +635,23 @@ class NowPlayingTile : public tessera::Tile {
   }
 
  private:
+  // A bare object without the theme's look that cuts off its children at its edges, for a label that scrolls.
+  static lv_obj_t *clip_box_(lv_obj_t *parent) {
+    lv_obj_t *box = lv_obj_create(parent);
+    lv_obj_remove_style_all(box);
+    lv_obj_remove_flag(box, LV_OBJ_FLAG_CLICKABLE);
+    lv_obj_remove_flag(box, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_size(box, 0, 0);
+    return box;
+  }
+
+  // Puts a label's box at x, y with the label's width and height; the label stays at the box's corner.
+  static void place_(lv_obj_t *box, lv_obj_t *label, int x, int y, int w, int h) {
+    lv_obj_set_pos(box, x, y);
+    lv_obj_set_size(box, w, h);
+    lv_obj_set_width(label, w);
+  }
+
   void mute_() {
     tessera::action("media_player.volume_mute", entity_.c_str(), "is_volume_muted", muted_ ? "false" : "true");
   }
@@ -650,9 +678,9 @@ class NowPlayingTile : public tessera::Tile {
 
   const tessera::Plugin *plugin_;
   lv_obj_t *cover_{nullptr};
-  lv_obj_t *title_lbl_{nullptr};
-  lv_obj_t *artist_lbl_{nullptr};
-  lv_obj_t *album_lbl_{nullptr};
+  lv_obj_t *title_box_{nullptr}, *title_lbl_{nullptr};
+  lv_obj_t *artist_box_{nullptr}, *artist_lbl_{nullptr};
+  lv_obj_t *album_box_{nullptr}, *album_lbl_{nullptr};
   lv_obj_t *track_{nullptr};
   lv_obj_t *fill_{nullptr};
   lv_obj_t *time_lbl_{nullptr};

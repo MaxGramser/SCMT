@@ -1,5 +1,12 @@
 # Wijzigingenlogboek
 
+## 0.10.3 - 2026-10-17
+
+- Grotere tekst: de titel in het grote lettertype van de waarde van een kaart, artiest en album in het lettertype van de
+  woorden op een knop. Een lange titel wordt alleen tot de vroegere grootte kleiner en loopt daarna als lichtkrant; op
+  een lage tegel wordt alles kleiner zoals voorheen.
+- Reparatie: lichtkranttekst loopt niet meer over de hoes of de rand van de kaart.
+
 ## 0.10.2 - 2026-10-17
 
 - De volumebalk staat altijd aan de rechterrand, ook als de hoes rechts staat, en is een derde smaller.

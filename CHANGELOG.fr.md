@@ -1,5 +1,12 @@
 # Journal des modifications
 
+## 0.10.3 - 2026-10-17
+
+- Texte plus grand : le titre dans la grande police de la valeur d'une carte, l'artiste et l'album dans la police des
+  mots d'un bouton. Un titre long ne rapetisse que jusqu'à l'ancienne taille, puis défile ; sur une tuile basse, tout
+  rapetisse comme avant.
+- Correction : le texte déroulant ne passe plus sur la pochette ni sur le bord de la carte.
+
 ## 0.10.2 - 2026-10-17
 
 - La barre de volume se trouve toujours au bord droit, même quand la pochette est à droite, et est plus étroite d'un

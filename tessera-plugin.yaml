@@ -1,6 +1,6 @@
 # Manifest for SCMT (Simple Customizable Media Tile): an info tile and a button tile for a media_player entity.
 id: scmt
-version: 0.10.2
+version: 0.10.3
 api: "0.10"
 icon: music
 maintainer: Schumey
@@ -26,7 +26,7 @@ tiles:
     name: tile_name
     icon: music
     sizes: { min: 1x1, max: 4x4 }
-    memory: 4300
+    memory: 4600
     domains: [media_player]
     attributes: [media_title, media_artist, media_duration, media_position, media_position_updated_at, entity_picture, volume_level, is_volume_muted, media_album_name]
     pictures: 1

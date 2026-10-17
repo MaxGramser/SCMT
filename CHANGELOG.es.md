@@ -1,5 +1,12 @@
 # Registro de cambios
 
+## 0.10.3 - 2026-10-17
+
+- Texto más grande: el título en la letra grande del valor de una tarjeta, el artista y el álbum en la letra de las
+  palabras de un botón. Un título largo solo se reduce hasta el tamaño anterior y después se desplaza; en una tarjeta
+  baja todo se reduce como antes.
+- Corrección: el texto corrido ya no pasa sobre la carátula ni sobre el borde de la tarjeta.
+
 ## 0.10.2 - 2026-10-17
 
 - La barra de volumen está siempre en el borde derecho, también cuando la carátula está a la derecha, y es un tercio

@@ -1,5 +1,12 @@
 # Änderungsprotokoll
 
+## 0.10.3 - 2026-10-17
+
+- Größerer Text: der Titel in der großen Schrift eines Kartenwerts, Interpret und Album in der Schrift einer
+  Tastenbeschriftung. Ein langer Titel wird nur bis zur bisherigen Größe kleiner und läuft dann als Laufschrift; auf
+  einer niedrigen Kachel wird wie bisher alles kleiner.
+- Fehlerbehebung: Laufschrift läuft nicht mehr über das Cover oder den Rand der Karte.
+
 ## 0.10.2 - 2026-10-17
 
 - Die Lautstärkeleiste steht immer am rechten Rand, auch wenn das Cover rechts ist, und ist ein Drittel schmaler.

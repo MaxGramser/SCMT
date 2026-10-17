@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.10.3 - 2026-10-17
+
+- Larger text: the title in the large font of a card's value, artist and album in the font of a key's words. A long
+  title gets smaller only down to the former size and then runs as a marquee; on a low tile everything steps down as
+  before.
+- Fix: text that runs as a marquee no longer runs over the cover or the card's edge.
+
 ## 0.10.2 - 2026-10-17
 
 - The volume bar always stands at the right edge, also when the cover is at the right, and is a third narrower.
