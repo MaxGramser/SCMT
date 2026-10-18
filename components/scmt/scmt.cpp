@@ -120,8 +120,27 @@ class NowPlayingTile : public tessera::Tile {
     // The text size: small (the look before 0.10.3), medium, large.
     const std::string ts = (const char *) (c.options["text_size"] | "medium");
     text_size_ = ts == "small" ? 0 : (ts == "large" ? 2 : 1);
-    show_album_ = c.options["album"] | false;
-    show_bpm_ = c.options["bpm"] | false;  // the tempo of the screen's BPM sensor, as a line under the artist
+    // "album" is a choice of the extra lines under the artist since 0.13.0: the album, the tempo of the screen's BPM
+    // sensor, or both. Before, "album" and "bpm" were two toggles; tiles that still carry them are read as they are.
+    if (c.options["album"].is<const char *>()) {
+      const std::string extra = (const char *) c.options["album"];
+      show_album_ = extra == "album" || extra == "both";
+      show_bpm_ = extra == "bpm" || extra == "both";
+    } else {
+      show_album_ = c.options["album"] | false;
+      show_bpm_ = c.options["bpm"] | false;
+    }
+    // The colour of the progress bar and the volume bar: the look's accent or a colour of the core, both readable in
+    // light and dark (a plugin may not use a colour as a number).
+    const std::string bc = (const char *) (c.options["bar_color"] | "accent");
+    bar_tone_ = tessera::Tone::NORMAL;
+    if (bc == "green") bar_tone_ = tessera::Tone::GOOD;
+    else if (bc == "amber") bar_tone_ = tessera::Tone::BUSY;
+    else if (bc == "red") bar_tone_ = tessera::Tone::ALERT;
+    else if (bc == "blue") bar_role_ = theme::MARK_BLUE;
+    else if (bc == "purple") bar_role_ = theme::MARK_PURPLE;
+    else if (bc == "ink") bar_role_ = theme::INK;
+    else bar_tone_ = tessera::Tone::ACCENT;
     cover_url_ = (const char *) (c.options["cover_url"] | "");  // fixed address of a cover, e.g. /api/image_proxy/image.scmt_cover?v={v}
     const std::string tpos = (const char *) (c.options["text_pos"] | "middle");
     text_pos_ = tpos == "top" ? 1 : (tpos == "bottom" ? 2 : 0);
@@ -221,6 +240,7 @@ class NowPlayingTile : public tessera::Tile {
     lv_obj_set_pos(fill_, area_x_, bar_y_);
     lv_obj_set_size(track_, 0, bar_h_);  // width 0 = not shown; on_tick gives it its width
     lv_obj_set_size(fill_, 0, bar_h_);
+    ui::set_fill(fill_, bar_tone_, bar_role_);
 
     if (show_time_) {
       time_lbl_ = ui::label(c.parent, Font::BODY, theme::INK_SOFT);
@@ -247,6 +267,7 @@ class NowPlayingTile : public tessera::Tile {
       vbar_fill_ = ui::block(c.parent, theme::ACCENT);
       lv_obj_set_size(vbar_fill_, vbar_w_ - 2 * (bw + pad), 0);
       lv_obj_set_pos(vbar_fill_, vbar_x_ + bw + pad, vbar_fy_ + vbar_fh_);
+      ui::set_fill(vbar_fill_, bar_tone_, bar_role_);
     }
 
     // The buttons, each with a light frame: a block in the line colour with a smaller one in the card's colour on it.
@@ -630,11 +651,11 @@ class NowPlayingTile : public tessera::Tile {
     if (vol_lbl_ != nullptr) ui::set_color(vol_lbl_, theme::MUTED);
     if (vol_icon_lbl_ != nullptr) ui::set_color(vol_icon_lbl_, theme::MUTED);
     ui::set_fill(track_, tessera::Tone::NORMAL, theme::TRACK);
-    ui::set_fill(fill_, tessera::Tone::ACCENT, theme::ACCENT);
+    ui::set_fill(fill_, bar_tone_, bar_role_);
     if (vbar_frame_ != nullptr) {
       ui::set_fill(vbar_frame_, tessera::Tone::NORMAL, theme::LINE);
       ui::set_fill(vbar_inner_, tessera::Tone::NORMAL, theme::CARD);
-      ui::set_fill(vbar_fill_, tessera::Tone::ACCENT, theme::ACCENT);
+      ui::set_fill(vbar_fill_, bar_tone_, bar_role_);
     }
     for (int i = 0; i < n_; ++i) {
       ui::set_color(btn_[i], theme::INK);
@@ -791,6 +812,8 @@ class NowPlayingTile : public tessera::Tile {
   int btn_w_{0}, btn_gap_{0};
   int vol_hit_x_{0}, vol_hit_w_{0}, vol_hit_y_{0}, vol_hit_h_{0};
   bool show_bar_{true}, show_time_{false}, show_album_{false}, show_bpm_{false};
+  tessera::Tone bar_tone_{tessera::Tone::ACCENT};  // colour of both bars (option "bar_color")
+  theme::Role bar_role_{theme::ACCENT};
   std::string bpm_track_;                        // the track the tempo belongs to
   bool bpm_seen_{false}, bpm_hold_{false}, bpm_cleared_{false};
   uint32_t bpm_hold_until_{0};

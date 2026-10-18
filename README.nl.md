@@ -36,9 +36,11 @@ De titel in grote letters, daaronder de artiest en onderaan een optionele voortg
 - **Tekstgrootte:** klein, middel (standaard) of groot, voor titel, artiest en album.
 - **Volumebalk:** een staande balk langs de rechterrand van de tegel; een tik erop stelt het volume op die hoogte in.
   Vraagt twee kolommen.
-- **Albumnaam:** het album op een derde regel, als de tegel hoog genoeg is.
-- **Tempo:** het tempo van de muziek (bijvoorbeeld „138 BPM”) als regel onder de artiest, als de tegel hoog genoeg
-  is. Het komt van de temposensor die voor het scherm is gekozen (zie „Tempo” hieronder).
+- **Kleur van de balken:** de vulling van de voortgangsbalk en de volumebalk: de accentkleur van het scherm
+  (standaard), groen, amber, rood, blauw, paars of zoals de tekst. Het zijn de kleuren van de kern, leesbaar in licht en
+  donker; eigen kleuren staat Tessera niet toe.
+- **Extra regels:** onder de artiest het album, het tempo van de muziek (bijvoorbeeld „138 BPM”) of beide, als de
+  tegel hoog genoeg is. Het tempo komt van de temposensor die voor het scherm is gekozen (zie „Tempo” hieronder).
 - **Adres van de hoes:** het adres van een afbeelding in Home Assistant, getoond in plaats van de afbeelding van de
   speler, bijvoorbeeld een sjabloonafbeelding met de hoes van de speler (zie „De hoes” hieronder).
 
@@ -60,13 +62,13 @@ niet ondersteunt, negeert die.
 
 ## Tempo
 
-De optie „Tempo” van de tegel „SCMT” toont het tempo van de muziek als regel onder de artiest. Home Assistant kent zelf
-geen tempo, dus het komt van een sensor, bijvoorbeeld die welke HASS.Agent maakt van
+De keuze „Tempo” van de optie „Extra regels” van de tegel „SCMT” toont het tempo van de muziek als regel onder de
+artiest. Home Assistant kent zelf geen tempo, dus het komt van een sensor, bijvoorbeeld die welke HASS.Agent maakt van
 [BPM2SCMT](https://github.com/Schumey/BPM2SCMT), dat meet wat een Windows-pc afspeelt.
 
 1. Kies in Tessera (Plugins) de sensor als „Temposensor” van de plug-in voor het scherm en bouw het scherm. Zijn status
    moet het tempo als getal zijn (`138`); `unknown` of leeg verbergt de regel.
-2. Zet „Tempo” aan in de opties van de tegel.
+2. Kies in de opties van de tegel „Tempo” of „Album en tempo” onder „Extra regels”.
 
 De tegel toont het tempo zolang de speler speelt of gepauzeerd is. Na een nieuw nummer wacht hij tot de sensor het
 nieuwe tempo heeft (hij was een keer leeg en heeft weer een waarde), hooguit 12 seconden, zodat hij niet het tempo van

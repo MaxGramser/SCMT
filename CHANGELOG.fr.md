@@ -1,5 +1,14 @@
 # Journal des modifications
 
+## 0.13.0 - 2026-10-18
+
+- Nouvelle option « Couleur des barres » pour la barre de progression et la barre de volume : la couleur d'accent de
+  l'écran (par défaut, comme avant), vert, ambre, rouge, bleu, violet ou comme le texte. Ce sont les couleurs du cœur,
+  lisibles en clair et en sombre ; Tessera n'autorise pas de couleur personnalisée.
+- « Nom de l'album » et « Tempo » sont maintenant une seule option, « Lignes en plus » (aucune, album, tempo ou les
+  deux), pour faire de la place à la couleur (une tuile a au plus 12 options). Les tuiles qui avaient les deux
+  interrupteurs gardent ce qu'elles affichaient.
+
 ## 0.12.1 - 2026-10-18
 
 - La barre de progression et le temps ne sautent plus en avant et en arrière lorsqu'un lecteur signale comme nouvelle

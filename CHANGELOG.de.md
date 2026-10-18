@@ -1,5 +1,13 @@
 # Änderungsprotokoll
 
+## 0.13.0 - 2026-10-18
+
+- Neue Option „Farbe der Balken“ für den Fortschrittsbalken und die Lautstärkeleiste: die Akzentfarbe des Bildschirms
+  (Standard, wie bisher), Grün, Gelb, Rot, Blau, Lila oder wie der Text. Es sind die Farben des Kerns, hell und dunkel
+  gut lesbar; eigene Farben erlaubt Tessera nicht.
+- „Albumname“ und „Tempo“ sind jetzt eine Option, „Zusatzzeilen“ (keine, Album, Tempo oder beides), damit die Farbe
+  Platz hat (eine Kachel hat höchstens 12 Optionen). Kacheln mit den beiden Schaltern zeigen weiter dasselbe.
+
 ## 0.12.1 - 2026-10-18
 
 - Fortschrittsleiste und Zeit springen nicht mehr hin und her, wenn ein Player eine einige Sekunden alte Position als

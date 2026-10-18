@@ -1,5 +1,14 @@
 # Registro de cambios
 
+## 0.13.0 - 2026-10-18
+
+- Nueva opción «Color de las barras» para la barra de progreso y la barra de volumen: el color de acento de la pantalla
+  (por defecto, como antes), verde, ámbar, rojo, azul, morado o como el texto. Son los colores del núcleo, legibles en
+  claro y en oscuro; Tessera no permite colores propios.
+- «Nombre del álbum» y «Tempo» son ahora una sola opción, «Líneas extra» (ninguna, álbum, tempo o ambos), para dejar
+  sitio al color (una tarjeta tiene como mucho 12 opciones). Las tarjetas que tenían los dos interruptores siguen
+  mostrando lo mismo.
+
 ## 0.12.1 - 2026-10-18
 
 - La barra de progreso y el tiempo ya no saltan adelante y atrás cuando un reproductor informa como nueva una posición

@@ -38,9 +38,11 @@ Il titolo in caratteri grandi, sotto l'artista e in basso una barra di avanzamen
 - **Dimensione del testo:** piccola, media (predefinita) o grande, per titolo, artista e album.
 - **Barra del volume:** una barra verticale sul bordo destro della tessera; un tocco su di essa imposta il volume a
   quell'altezza. Servono due colonne.
-- **Nome dell'album:** l'album su una terza riga, quando la tessera è abbastanza alta.
-- **Tempo:** il tempo della musica (per esempio «138 BPM») su una riga sotto l'artista, quando la tessera è
-  abbastanza alta. Viene dal sensore di tempo scelto per lo schermo (vedi «Tempo» più sotto).
+- **Colore delle barre:** il riempimento della barra di avanzamento e della barra del volume: il colore d'accento dello
+  schermo (predefinito), verde, ambra, rosso, blu, viola o come il testo. Sono i colori del nucleo, leggibili in chiaro
+  e in scuro; Tessera non permette colori propri.
+- **Righe extra:** sotto l'artista, l'album, il tempo della musica (per esempio «138 BPM») o entrambi, quando la
+  tessera è abbastanza alta. Il tempo viene dal sensore di tempo scelto per lo schermo (vedi «Tempo» più sotto).
 - **Indirizzo della copertina:** l'indirizzo di un'immagine in Home Assistant, mostrata al posto dell'immagine del
   lettore, per esempio un'immagine modello con la copertina del lettore (vedi «La copertina» più sotto).
 
@@ -61,13 +63,13 @@ I tasti usano le azioni di Home Assistant `media_player.media_play_pause`, `medi
 
 ## Tempo
 
-L'opzione «Tempo» della tessera «SCMT» mostra il tempo della musica su una riga sotto l'artista. Home Assistant non
-conosce un tempo proprio, quindi viene da un sensore, per esempio quello che HASS.Agent crea da
-[BPM2SCMT](https://github.com/Schumey/BPM2SCMT), che misura ciò che riproduce un PC Windows.
+La scelta «Tempo» dell'opzione «Righe extra» della tessera «SCMT» mostra il tempo della musica su una riga sotto
+l'artista. Home Assistant non conosce un tempo proprio, quindi viene da un sensore, per esempio quello che HASS.Agent
+crea da [BPM2SCMT](https://github.com/Schumey/BPM2SCMT), che misura ciò che riproduce un PC Windows.
 
 1. In Tessera (Plugins), scegli il sensore come «Sensore di tempo» del plugin per lo schermo e compila lo schermo. Il
    suo stato deve essere il tempo come numero (`138`); `unknown` o vuoto nasconde la riga.
-2. Attiva «Tempo» nelle opzioni della tessera.
+2. Nelle opzioni della tessera, scegli «Tempo» o «Album e tempo» in «Righe extra».
 
 La tessera mostra il tempo finché il lettore suona o è in pausa. Dopo un nuovo brano aspetta che il sensore abbia il
 nuovo tempo (è stato vuoto una volta e ha di nuovo un valore), al massimo 12 secondi, per non mostrare il tempo del

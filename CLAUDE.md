@@ -46,9 +46,14 @@ Weitere Fakten aus dem Tessera-Code, falls das Thema wiederkommt:
   und bekommt 403 (MaxGramser/tessera-plugins#6).
 
 - Tempo (0.12.0): Eine Kachel bekommt nur ihre eine Entität. Deshalb liest `plugin.yaml` den BPM-Sensor als
-  `homeassistant`-Sensor (Eingabe `bpm` pro Bildschirm, `read_entities: ["{bpm}"]`), und die Kachel-Option `bpm`
-  schaltet nur die Zeile unter dem Interpreten ein. Sensor beim Nutzer: `sensor.wohnzimmer_heimrechner_bpm` (HASS.Agent
-  liest ihn aus BPM2SCMT, Repo Schumey/BPM2SCMT). Damit hat `now_playing` 12 Optionen, das Maximum.
+  `homeassistant`-Sensor (Eingabe `bpm` pro Bildschirm, `read_entities: ["{bpm}"]`), und die Kachel-Option schaltet
+  nur die Zeile unter dem Interpreten ein. Sensor beim Nutzer: `sensor.wohnzimmer_heimrechner_bpm` (HASS.Agent liest
+  ihn aus BPM2SCMT, Repo Schumey/BPM2SCMT).
+- Balkenfarbe (0.13.0): Option `bar_color` für Fortschritts- und Lautstärkebalken, feste Palette (Akzent, Tones
+  GOOD/BUSY/ALERT, `theme::MARK_BLUE`/`MARK_PURPLE`, `theme::INK`). Freie Farben gehen nicht: `tools/check.py` von
+  tessera-plugins verbietet Farben als Zahl. Platz dafür: die Toggles `album` und `bpm` sind zur Auswahl `album`
+  (`none`/`album`/`bpm`/`both`) zusammengelegt; alte Kacheln mit Bool-Werten werden weiter gelesen. `now_playing` hat
+  weiter 12 Optionen, das Maximum: Für eine neue Option muss wieder etwas zusammengelegt werden.
 
 ## Offene Punkte
 

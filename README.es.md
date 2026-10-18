@@ -38,9 +38,11 @@ El título en letras grandes, debajo el artista y, abajo, una barra de progreso 
 - **Tamaño del texto:** pequeño, mediano (por defecto) o grande, para el título, el artista y el álbum.
 - **Barra de volumen:** una barra vertical en el borde derecho de la tarjeta; un toque en ella ajusta el volumen a esa
   altura. Necesita dos columnas.
-- **Nombre del álbum:** el álbum en una tercera línea, cuando la tarjeta es lo bastante alta.
-- **Tempo:** el tempo de la música (por ejemplo «138 BPM») en una línea bajo el artista, cuando la tarjeta es lo
-  bastante alta. Viene del sensor de tempo elegido para la pantalla (ver «Tempo» más abajo).
+- **Color de las barras:** el relleno de la barra de progreso y de la barra de volumen: el color de acento de la
+  pantalla (por defecto), verde, ámbar, rojo, azul, morado o como el texto. Son los colores del núcleo, legibles en
+  claro y en oscuro; Tessera no permite colores propios.
+- **Líneas extra:** bajo el artista, el álbum, el tempo de la música (por ejemplo «138 BPM») o ambos, cuando la
+  tarjeta es lo bastante alta. El tempo viene del sensor de tempo elegido para la pantalla (ver «Tempo» más abajo).
 - **Dirección de la carátula:** la dirección de una imagen en Home Assistant, que se muestra en lugar de la imagen
   del reproductor, por ejemplo una imagen de plantilla con la carátula del reproductor (véase «La carátula» más abajo).
 
@@ -62,13 +64,13 @@ admita alguna de ellas la ignora.
 
 ## Tempo
 
-La opción «Tempo» de la tarjeta «SCMT» muestra el tempo de la música en una línea bajo el artista. Home Assistant no
-conoce un tempo propio, así que viene de un sensor, por ejemplo el que HASS.Agent crea a partir de
-[BPM2SCMT](https://github.com/Schumey/BPM2SCMT), que mide lo que reproduce un PC con Windows.
+La elección «Tempo» de la opción «Líneas extra» de la tarjeta «SCMT» muestra el tempo de la música en una línea bajo el
+artista. Home Assistant no conoce un tempo propio, así que viene de un sensor, por ejemplo el que HASS.Agent crea a
+partir de [BPM2SCMT](https://github.com/Schumey/BPM2SCMT), que mide lo que reproduce un PC con Windows.
 
 1. En Tessera (Plugins), elige el sensor como «Sensor de tempo» del plugin para la pantalla y compila la pantalla. Su
    estado debe ser el tempo como número (`138`); `unknown` o vacío oculta la línea.
-2. Activa «Tempo» en las opciones de la tarjeta.
+2. En las opciones de la tarjeta, elige «Tempo» o «Álbum y tempo» en «Líneas extra».
 
 La tarjeta muestra el tempo mientras el reproductor suena o está en pausa. Tras una pista nueva espera a que el sensor
 tenga el nuevo tempo (estuvo vacío una vez y vuelve a tener un valor), como mucho 12 segundos, para no mostrar el tempo

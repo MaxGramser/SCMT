@@ -36,9 +36,11 @@ The title in large letters, the artist below it, and an optional progress bar at
 - **Text size:** small, medium (default) or large, for title, artist and album.
 - **Volume bar:** an upright bar along the right edge of the tile; a tap on it sets the volume to that height. Needs two
   columns.
-- **Album name:** the album as a third line, when the tile is high enough.
-- **Tempo:** the tempo of the music (for example "138 BPM") as a line under the artist, when the tile is high
-  enough. It comes from the tempo sensor chosen for the screen (see "Tempo" below).
+- **Colour of the bars:** the fill of the progress bar and the volume bar: the screen's accent (default), green,
+  amber, red, blue, purple, or like the text. They are the core's colours, readable in light and dark; Tessera allows
+  no colour of your own.
+- **Extra lines:** under the artist, the album, the tempo of the music (for example "138 BPM"), or both, when the tile
+  is high enough. The tempo comes from the tempo sensor chosen for the screen (see "Tempo" below).
 - **Cover address:** the address of a picture in Home Assistant, shown instead of the player's own picture, for
   example a template image with the player's cover (see "The cover" below).
 
@@ -60,13 +62,13 @@ ignores it.
 
 ## Tempo
 
-The option "Tempo" of the "SCMT" tile shows the tempo of the music as a line under the artist. Home Assistant knows no
-tempo of its own, so it comes from a sensor, for example the one HASS.Agent makes from
+The choice "Tempo" of the option "Extra lines" of the "SCMT" tile shows the tempo of the music as a line under the
+artist. Home Assistant knows no tempo of its own, so it comes from a sensor, for example the one HASS.Agent makes from
 [BPM2SCMT](https://github.com/Schumey/BPM2SCMT), which measures what a Windows PC plays.
 
 1. In Tessera (Plugins), choose the sensor as the plugin's "Tempo sensor" for the screen, and build the screen. Its state
    must be the tempo as a number (`138`); `unknown` or empty hides the line.
-2. Switch on "Tempo" in the tile's options.
+2. In the tile's options, choose "Tempo" or "Album and tempo" under "Extra lines".
 
 The tile shows the tempo while the player plays or is paused. After a new track it waits until the sensor has the new
 tempo (it was empty once and has a value again), at most 12 seconds, so that it does not show the tempo of the track

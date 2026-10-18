@@ -38,9 +38,12 @@ Der Titel in großen Buchstaben, darunter der Interpret und unten optional ein F
 - **Schriftgröße:** klein, mittel (Standard) oder groß, für Titel, Interpret und Album.
 - **Lautstärkeleiste:** eine aufrechte Leiste am rechten Rand der Kachel; ein Tipp darauf stellt die Lautstärke auf
   diese Höhe. Braucht zwei Spalten.
-- **Albumname:** das Album als dritte Zeile, wenn die Kachel hoch genug ist.
-- **Tempo:** das Tempo der Musik (zum Beispiel „138 BPM“) als Zeile unter dem Interpreten, wenn die Kachel hoch
-  genug ist. Es kommt vom Tempo-Sensor, der für den Bildschirm gewählt ist (siehe „Tempo“ unten).
+- **Farbe der Balken:** die Füllung des Fortschrittsbalkens und der Lautstärkeleiste: die Akzentfarbe des Bildschirms
+  (Standard), Grün, Gelb, Rot, Blau, Lila oder wie der Text. Es sind die Farben des Kerns, hell und dunkel gut lesbar;
+  eigene Farben erlaubt Tessera nicht.
+- **Zusatzzeilen:** unter dem Interpreten das Album, das Tempo der Musik (zum Beispiel „138 BPM“) oder beides, wenn
+  die Kachel hoch genug ist. Das Tempo kommt vom Tempo-Sensor, der für den Bildschirm gewählt ist (siehe „Tempo“
+  unten).
 - **Cover-Adresse:** die Adresse eines Bildes in Home Assistant, das statt des eigenen Bildes des Players angezeigt
   wird, zum Beispiel ein Template-Bild mit dem Cover des Players (siehe „Das Cover“ unten).
 
@@ -62,13 +65,13 @@ davon nicht unterstützt, ignoriert sie.
 
 ## Tempo
 
-Die Option „Tempo“ der Kachel „SCMT“ zeigt das Tempo der Musik als Zeile unter dem Interpreten. Home Assistant kennt
-kein eigenes Tempo, deshalb kommt es von einem Sensor, zum Beispiel dem, den HASS.Agent aus
-[BPM2SCMT](https://github.com/Schumey/BPM2SCMT) macht; das misst, was ein Windows-PC abspielt.
+Die Auswahl „Tempo“ der Option „Zusatzzeilen“ der Kachel „SCMT“ zeigt das Tempo der Musik als Zeile unter dem
+Interpreten. Home Assistant kennt kein eigenes Tempo, deshalb kommt es von einem Sensor, zum Beispiel dem, den
+HASS.Agent aus [BPM2SCMT](https://github.com/Schumey/BPM2SCMT) macht; das misst, was ein Windows-PC abspielt.
 
 1. In Tessera (Plugins) den Sensor als „Tempo-Sensor“ des Plugins für den Bildschirm wählen und den Bildschirm bauen.
    Sein Zustand muss das Tempo als Zahl sein (`138`); `unknown` oder leer blendet die Zeile aus.
-2. In den Optionen der Kachel „Tempo“ einschalten.
+2. In den Optionen der Kachel unter „Zusatzzeilen“ „Tempo“ oder „Album und Tempo“ wählen.
 
 Die Kachel zeigt das Tempo, solange der Player spielt oder pausiert ist. Nach einem neuen Titel wartet sie, bis der
 Sensor das neue Tempo hat (er war einmal leer und hat wieder einen Wert), höchstens 12 Sekunden, damit sie nicht das

@@ -1,5 +1,13 @@
 # Wijzigingenlogboek
 
+## 0.13.0 - 2026-10-18
+
+- Nieuwe optie „Kleur van de balken” voor de voortgangsbalk en de volumebalk: de accentkleur van het scherm
+  (standaard, zoals eerder), groen, amber, rood, blauw, paars of zoals de tekst. Het zijn de kleuren van de kern,
+  leesbaar in licht en donker; eigen kleuren staat Tessera niet toe.
+- „Albumnaam” en „Tempo” zijn nu één optie, „Extra regels” (geen, album, tempo of beide), zodat de kleur erbij past
+  (een tegel heeft hooguit 12 opties). Tegels met de twee schakelaars tonen hetzelfde als voorheen.
+
 ## 0.12.1 - 2026-10-18
 
 - De voortgangsbalk en de tijd springen niet meer heen en weer wanneer een speler een positie van enkele seconden oud

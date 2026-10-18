@@ -37,9 +37,11 @@ Le titre en grandes lettres, l'artiste dessous, et en bas une barre de progressi
 - **Taille du texte :** petite, moyenne (par défaut) ou grande, pour le titre, l'artiste et l'album.
 - **Barre de volume :** une barre verticale au bord droit de la tuile ; un appui dessus règle le volume à cette
   hauteur. Demande deux colonnes.
-- **Nom de l'album :** l'album sur une troisième ligne, quand la tuile est assez haute.
-- **Tempo :** le tempo de la musique (par exemple « 138 BPM ») sur une ligne sous l'artiste, quand la tuile est
-  assez haute. Il vient du capteur de tempo choisi pour l'écran (voir « Tempo » plus bas).
+- **Couleur des barres :** le remplissage de la barre de progression et de la barre de volume : la couleur d'accent de
+  l'écran (par défaut), vert, ambre, rouge, bleu, violet ou comme le texte. Ce sont les couleurs du cœur, lisibles en
+  clair et en sombre ; Tessera n'autorise pas de couleur personnalisée.
+- **Lignes en plus :** sous l'artiste, l'album, le tempo de la musique (par exemple « 138 BPM ») ou les deux, quand la
+  tuile est assez haute. Le tempo vient du capteur de tempo choisi pour l'écran (voir « Tempo » plus bas).
 - **Adresse de la pochette :** l'adresse d'une image dans Home Assistant, affichée à la place de l'image du lecteur,
   par exemple une image de modèle avec la pochette du lecteur (voir « La pochette » plus bas).
 
@@ -61,13 +63,13 @@ prend pas l'une d'elles en charge l'ignore.
 
 ## Tempo
 
-L'option « Tempo » de la tuile « SCMT » affiche le tempo de la musique sur une ligne sous l'artiste. Home Assistant ne
-connaît pas de tempo par lui-même : il vient donc d'un capteur, par exemple celui que HASS.Agent crée à partir de
-[BPM2SCMT](https://github.com/Schumey/BPM2SCMT), qui mesure ce que joue un PC Windows.
+Le choix « Tempo » de l'option « Lignes en plus » de la tuile « SCMT » affiche le tempo de la musique sur une ligne sous
+l'artiste. Home Assistant ne connaît pas de tempo par lui-même : il vient donc d'un capteur, par exemple celui que
+HASS.Agent crée à partir de [BPM2SCMT](https://github.com/Schumey/BPM2SCMT), qui mesure ce que joue un PC Windows.
 
 1. Dans Tessera (Plugins), choisissez le capteur comme « Capteur de tempo » du plugin pour l'écran, puis construisez
    l'écran. Son état doit être le tempo sous forme de nombre (`138`) ; `unknown` ou vide masque la ligne.
-2. Activez « Tempo » dans les options de la tuile.
+2. Dans les options de la tuile, choisissez « Tempo » ou « Album et tempo » sous « Lignes en plus ».
 
 La tuile affiche le tempo tant que le lecteur joue ou est en pause. Après un nouveau morceau, elle attend que le capteur
 ait le nouveau tempo (il a été vide une fois et a de nouveau une valeur), au plus 12 secondes, pour ne pas afficher le

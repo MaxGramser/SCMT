@@ -15,7 +15,7 @@ tiles:
       volume_display: always
       overlay: both
       volume_bar: true
-      album: true
+      album: album
       cover: left
       buttons: both
     sizes: [2x2, 3x2, 4x2, 4x3, 4x4]
@@ -29,12 +29,12 @@ tiles:
   - tile: now_playing
     name: Text small
     entity: media_player.pc_spotify
-    options: { text_size: small, album: true }
+    options: { text_size: small, album: album }
     sizes: [2x1, 2x2]
   - tile: now_playing
     name: Text large
     entity: media_player.pc_spotify
-    options: { text_size: large, album: true }
+    options: { text_size: large, album: album }
     sizes: [2x1, 2x2]
 
   # 3. Progress variants: bar only (higher), time only, nothing
@@ -43,6 +43,11 @@ tiles:
     entity: media_player.pc_spotify
     options: { timeline: bar, bar_height: 12 }
     sizes: [2x1, 3x1]
+  - tile: now_playing
+    name: Bars in colour
+    entity: media_player.pc_spotify
+    options: { timeline: bar, bar_height: 8, volume_bar: true, bar_color: purple }
+    sizes: [2x1, 3x2]
   - tile: now_playing
     name: Time only
     entity: media_player.pc_spotify
@@ -85,12 +90,12 @@ tiles:
   - tile: now_playing
     name: Album name
     entity: media_player.pc_spotify
-    options: { album: true }
+    options: { album: album }
     sizes: [2x2, 3x2]
   - tile: now_playing
     name: Tempo
     entity: media_player.pc_spotify
-    options: { bpm: true, album: true }
+    options: { album: both }
     sizes: [2x2, 3x2]
   - tile: now_playing
     name: Big volume display
@@ -129,12 +134,12 @@ tiles:
   - tile: now_playing
     name: Text top
     entity: media_player.pc_spotify
-    options: { text_pos: top, album: true }
+    options: { text_pos: top, album: album }
     sizes: [2x2, 3x2]
   - tile: now_playing
     name: Text bottom
     entity: media_player.pc_spotify
-    options: { text_pos: bottom, album: true }
+    options: { text_pos: bottom, album: album }
     sizes: [2x2, 3x2]
 
   # 6e. The pause display: the pause sign over the whole tile while the player is paused

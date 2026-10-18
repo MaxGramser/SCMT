@@ -1,6 +1,6 @@
 # Manifest for SCMT (Simple Customizable Media Tile): an info tile and a button tile for a media_player entity.
 id: scmt
-version: 0.12.1
+version: 0.13.0
 api: "0.10"
 icon: music
 maintainer: Schumey
@@ -12,7 +12,7 @@ requires:
 boards: any
 flash_kb: 5
 permissions:
-  # The tempo sensor chosen when the plugin was added (plugin.yaml reads it, for the tile's option "Tempo").
+  # The tempo sensor chosen when the plugin was added (plugin.yaml reads it, for the tile's option "Extra lines").
   read_entities: ["{bpm}"]
   home_assistant_actions:
     - media_player.media_play_pause
@@ -48,6 +48,19 @@ tiles:
           - { value: "both", label: tl_both }
           - { value: "none", label: tl_none }
       - { id: bar_height, kind: number, min: 2, max: 16, step: 1, unit: px, default: 4, label: opt_barh, hint: opt_barh_hint }
+      - id: bar_color
+        kind: choice
+        default: accent
+        label: opt_bar_color
+        hint: opt_bar_color_hint
+        choices:
+          - { value: "accent", label: bc_accent }
+          - { value: "green", label: bc_green }
+          - { value: "amber", label: bc_amber }
+          - { value: "red", label: bc_red }
+          - { value: "blue", label: bc_blue }
+          - { value: "purple", label: bc_purple }
+          - { value: "ink", label: bc_ink }
       - id: volume_display
         kind: choice
         default: change
@@ -77,8 +90,17 @@ tiles:
           - { value: "medium", label: ts_medium }
           - { value: "large", label: ts_large }
       - { id: volume_bar, kind: toggle, default: false, label: opt_volbar, hint: opt_volbar_hint }
-      - { id: album, kind: toggle, default: false, label: opt_album, hint: opt_album_hint }
-      - { id: bpm, kind: toggle, default: false, label: opt_bpm, hint: opt_bpm_hint }
+      # The extra lines under the artist; before 0.13.0 the toggles "album" and "bpm" (at most 12 options per tile).
+      - id: album
+        kind: choice
+        default: none
+        label: opt_extra
+        hint: opt_extra_hint
+        choices:
+          - { value: "none", label: ex_none }
+          - { value: "album", label: ex_album }
+          - { value: "bpm", label: ex_bpm }
+          - { value: "both", label: ex_both }
       - id: cover
         kind: choice
         default: left

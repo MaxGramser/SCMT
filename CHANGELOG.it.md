@@ -1,5 +1,14 @@
 # Registro delle modifiche
 
+## 0.13.0 - 2026-10-18
+
+- Nuova opzione «Colore delle barre» per la barra di avanzamento e la barra del volume: il colore d'accento dello
+  schermo (predefinito, come prima), verde, ambra, rosso, blu, viola o come il testo. Sono i colori del nucleo,
+  leggibili in chiaro e in scuro; Tessera non permette colori propri.
+- «Nome dell'album» e «Tempo» sono ora un'unica opzione, «Righe extra» (nessuna, album, tempo o entrambi), per fare
+  posto al colore (una tessera ha al massimo 12 opzioni). Le tessere che avevano i due interruttori mostrano lo stesso
+  di prima.
+
 ## 0.12.1 - 2026-10-18
 
 - La barra di avanzamento e il tempo non saltano più avanti e indietro quando un lettore riporta come nuova una

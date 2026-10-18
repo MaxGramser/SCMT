@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.13.0 - 2026-10-18
+
+- New option "Colour of the bars" for the progress bar and the volume bar: the screen's accent (default, as before),
+  green, amber, red, blue, purple, or like the text. These are the core's colours, readable in light and dark; Tessera
+  allows no colour of your own.
+- "Album name" and "Tempo" are now one option, "Extra lines" (none, album, tempo, or both), to make room for the colour
+  (a tile has at most 12 options). Tiles that had the two switches keep what they showed.
+
 ## 0.12.1 - 2026-10-18
 
 - The progress bar and the time no longer jump back and forth when a player reports a position a few seconds old as if
