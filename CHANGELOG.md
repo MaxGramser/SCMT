@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.12.1 - 2026-10-18
+
+- The progress bar and the time no longer jump back and forth when a player reports a position a few seconds old as if
+  it were new (HASS.Agent with Spotify). While the same track plays on, the tile keeps its own clock and follows a
+  report only when it differs by more than 3 seconds (a seek); a new track, a pause or a start sets the clock anew.
+
 ## 0.12.0 - 2026-10-17
 
 - New option "Tempo": the tempo of the music (for example "138 BPM") as a line under the artist. It comes from a sensor

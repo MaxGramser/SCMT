@@ -1,5 +1,12 @@
 # Registro delle modifiche
 
+## 0.12.1 - 2026-10-18
+
+- La barra di avanzamento e il tempo non saltano più avanti e indietro quando un lettore riporta come nuova una
+  posizione vecchia di alcuni secondi (HASS.Agent con Spotify). Finché continua lo stesso brano, il riquadro tiene un
+  proprio orologio e segue una segnalazione solo se differisce di più di 3 secondi (uno spostamento); un nuovo brano,
+  una pausa o un avvio reimpostano l'orologio.
+
 ## 0.12.0 - 2026-10-17
 
 - Nuova opzione «Tempo»: il tempo della musica (per esempio «138 BPM») su una riga sotto l'artista. Viene da un sensore

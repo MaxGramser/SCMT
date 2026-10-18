@@ -1,5 +1,12 @@
 # Änderungsprotokoll
 
+## 0.12.1 - 2026-10-18
+
+- Fortschrittsleiste und Zeit springen nicht mehr hin und her, wenn ein Player eine einige Sekunden alte Position als
+  neu meldet (HASS.Agent mit Spotify). Solange derselbe Titel weiterläuft, führt die Kachel eine eigene Uhr und folgt
+  einer Meldung nur, wenn sie um mehr als 3 Sekunden abweicht (Spulen); ein neuer Titel, Pause oder Start stellt die Uhr
+  neu.
+
 ## 0.12.0 - 2026-10-17
 
 - Neue Option „Tempo“: das Tempo der Musik (zum Beispiel „138 BPM“) als Zeile unter dem Interpreten. Es kommt von einem

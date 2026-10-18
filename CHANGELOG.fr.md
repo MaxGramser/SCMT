@@ -1,5 +1,12 @@
 # Journal des modifications
 
+## 0.12.1 - 2026-10-18
+
+- La barre de progression et le temps ne sautent plus en avant et en arrière lorsqu'un lecteur signale comme nouvelle
+  une position vieille de quelques secondes (HASS.Agent avec Spotify). Tant que le même morceau continue, la tuile garde
+  sa propre horloge et ne suit un signalement que s'il s'en écarte de plus de 3 secondes (un déplacement) ; un nouveau
+  morceau, une pause ou un démarrage remet l'horloge à l'heure.
+
 ## 0.12.0 - 2026-10-17
 
 - Nouvelle option « Tempo » : le tempo de la musique (par exemple « 138 BPM ») sur une ligne sous l'artiste. Il vient

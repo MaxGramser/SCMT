@@ -1,4 +1,5 @@
 #include "scmt.h"
+#include "esphome/core/hal.h"
 
 #include <cmath>
 #include <cstdio>
@@ -498,13 +499,29 @@ class NowPlayingTile : public tessera::Tile {
     vol_hit_y_ = y;
     vol_hit_h_ = th;
 
-    // The position: that of the last update plus the time that has passed since while it plays.
+    // The position: that of the last update plus the time that has passed since while it plays. Some players (HASS.Agent
+    // with Spotify) report a position a few seconds old as if it were new, so the bar would jump back and forth. While
+    // the same track plays on, the tile therefore keeps its own clock and follows a report only when it differs by
+    // more than CLOCK_SLACK seconds (a seek); a new track, a pause or a start sets the clock anew.
     const bool timeline = active && duration_ > 0.5f;
     float pos = position_;
     if (timeline) {
       if (playing && updated_ > 0 && epoch > updated_) pos += static_cast<float>(epoch - updated_);
+      const uint32_t now = millis();
+      const std::string track = title_ + "|" + artist_;
+      const float own = clock_pos_ + static_cast<float>(now - clock_ms_) / 1000.0f;
+      if (playing && clock_run_ && track == clock_track_ && std::fabs(pos - own) <= CLOCK_SLACK) {
+        pos = own;
+      } else {
+        clock_pos_ = pos;
+        clock_ms_ = now;
+        clock_track_ = track;
+      }
+      clock_run_ = playing;
       if (pos < 0.0f) pos = 0.0f;
       if (pos > duration_) pos = duration_;
+    } else {
+      clock_run_ = false;
     }
     int track_w = 0, fill_w = 0;
     if (show_bar_ && timeline) {
@@ -788,6 +805,12 @@ class NowPlayingTile : public tessera::Tile {
   std::string entity_, state_, title_, artist_, album_;
   float duration_{0.0f}, position_{0.0f};
   uint32_t updated_{0};
+  // The tile's own clock for the position (see on_tick): the position at clock_ms_ (millis) and the track it belongs to.
+  static constexpr float CLOCK_SLACK = 3.0f;
+  float clock_pos_{0.0f};
+  uint32_t clock_ms_{0};
+  bool clock_run_{false};
+  std::string clock_track_;
 };
 
 // ---------------------------------------------------------------------------------------------------------------------

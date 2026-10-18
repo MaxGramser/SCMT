@@ -1,5 +1,12 @@
 # Wijzigingenlogboek
 
+## 0.12.1 - 2026-10-18
+
+- De voortgangsbalk en de tijd springen niet meer heen en weer wanneer een speler een positie van enkele seconden oud
+  als nieuw meldt (HASS.Agent met Spotify). Zolang hetzelfde nummer doorspeelt, houdt de tegel een eigen klok bij en
+  volgt een melding alleen als die meer dan 3 seconden afwijkt (spoelen); een nieuw nummer, een pauze of een start zet
+  de klok opnieuw.
+
 ## 0.12.0 - 2026-10-17
 
 - Nieuwe optie „Tempo”: het tempo van de muziek (bijvoorbeeld „138 BPM”) als regel onder de artiest. Het komt van een

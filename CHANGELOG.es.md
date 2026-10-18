@@ -1,5 +1,12 @@
 # Registro de cambios
 
+## 0.12.1 - 2026-10-18
+
+- La barra de progreso y el tiempo ya no saltan adelante y atrás cuando un reproductor informa como nueva una posición
+  de hace unos segundos (HASS.Agent con Spotify). Mientras sigue la misma pista, el mosaico lleva su propio reloj y solo
+  sigue un informe si difiere en más de 3 segundos (un salto); una pista nueva, una pausa o un inicio ajustan el reloj
+  de nuevo.
+
 ## 0.12.0 - 2026-10-17
 
 - Nueva opción «Tempo»: el tempo de la música (por ejemplo «138 BPM») en una línea bajo el artista. Viene de un sensor
