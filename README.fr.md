@@ -10,8 +10,8 @@ Le titre en grandes lettres, l'artiste dessous, et en bas une barre de progressi
 
 - Pendant la lecture : le titre et l'artiste. En pause : la même chose, avec le titre atténué.
 - Quand rien ne joue : « Aucune lecture » ; tant qu'aucun lecteur n'est choisi : « Choisir un lecteur ».
-- Un titre trop large pour la tuile reçoit d'abord une police plus petite, puis défile comme un texte déroulant. De
-  même pour un artiste et un album trop larges.
+- Un titre trop large pour la tuile reçoit d'abord une police plus petite, puis se termine par des points de
+  suspension, comme chaque texte de l'écran. De même pour un artiste et un album trop larges.
 - L'option « Progression » affiche une barre (sa hauteur est aussi une option, de 2 à 16 pixels), le temps (écoulé /
   durée), les deux, ou rien. Le lecteur doit indiquer `media_duration` et `media_position` ; sinon rien ne s'affiche.
 - L'option « Affichage du volume » montre le volume à droite du titre : pendant trois secondes après un changement,
@@ -56,6 +56,9 @@ les options de la tuile et placez autant de ces tuiles que vous voulez, à côt�
 2. Placez les tuiles dans la mise en page.
 3. Dans l'inspecteur de chaque tuile, choisissez le lecteur. Toute entité `media_player` convient, par exemple celle que
    HASS.Agent crée à partir de la session multimédia de Windows, ou l'intégration Spotify.
+
+Essayé sur un Guition ESP32-S3 avec un écran de 4 pouces (480 × 480). Les autres cartes ne sont pas encore testées ;
+dites-moi dans un ticket comment il fonctionne sur la vôtre.
 
 Les boutons utilisent les actions Home Assistant `media_player.media_play_pause`, `media_next_track`,
 `media_previous_track`, `volume_up`, `volume_down`, `media_seek`, `volume_mute` et `volume_set`. Un lecteur qui ne

@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.14.0 - 2026-10-19
+
+- The buttons show Tessera's icons (previous, play, pause, next, quieter, louder, speaker) instead of signs such as
+  "<<" and "||".
+- The speaker of the volume display shows volume-high, or volume-off while muted. The icons for a low and a medium
+  volume are not in Tessera's set, so below 67 % the speaker showed nothing.
+- A title, an artist or an album that is too wide now ends in dots instead of running as a marquee, as every label of
+  the screen. The tile no longer keeps the screen drawing while it is on the glass.
+- The tempo line ("138 BPM") comes from the translations.
+- The tile keeps its texts in the memory beside the chip (PSRAM) where the board has it, not inside the chip.
+- The README says which board SCMT was tried on.
+
 ## 0.13.0 - 2026-10-18
 
 - New option "Colour of the bars" for the progress bar and the volume bar: the screen's accent (default, as before),

@@ -10,7 +10,8 @@
     "btn_next": "Siguiente",
     "btn_volume_up": "Más alto",
     "btn_volume_down": "Más bajo",
-    "muted": "Silenciado"
+    "muted": "Silenciado",
+    "bpm": "{n} BPM"
   },
   "app": {
     "name": "SCMT",
@@ -54,7 +55,7 @@
     "ov_pause": "Pausa",
     "ov_both": "Volumen y pausa",
     "opt_text_size": "Tamaño del texto",
-    "opt_text_size_hint": "El tamaño del título, el artista y el álbum. Un título demasiado ancho se desplaza; en una tarjeta baja el texto se reduce.",
+    "opt_text_size_hint": "El tamaño del título, el artista y el álbum. Un título demasiado ancho recibe una letra más pequeña y luego termina en puntos suspensivos; en una tarjeta baja el texto se reduce.",
     "ts_small": "Pequeño",
     "ts_medium": "Mediano",
     "ts_large": "Grande",

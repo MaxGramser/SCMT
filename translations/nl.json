@@ -10,7 +10,8 @@
     "btn_next": "Volgende",
     "btn_volume_up": "Harder",
     "btn_volume_down": "Zachter",
-    "muted": "Gedempt"
+    "muted": "Gedempt",
+    "bpm": "{n} BPM"
   },
   "app": {
     "name": "SCMT",
@@ -54,7 +55,7 @@
     "ov_pause": "Pauze",
     "ov_both": "Volume en pauze",
     "opt_text_size": "Tekstgrootte",
-    "opt_text_size_hint": "Hoe groot titel, artiest en album zijn. Een te brede titel loopt als lichtkrant; op een lage tegel wordt de tekst kleiner.",
+    "opt_text_size_hint": "Hoe groot titel, artiest en album zijn. Een te brede titel krijgt een kleiner lettertype en eindigt dan op puntjes; op een lage tegel wordt de tekst kleiner.",
     "ts_small": "Klein",
     "ts_medium": "Middel",
     "ts_large": "Groot",

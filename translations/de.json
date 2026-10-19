@@ -10,7 +10,8 @@
     "btn_next": "Weiter",
     "btn_volume_up": "Lauter",
     "btn_volume_down": "Leiser",
-    "muted": "Stumm"
+    "muted": "Stumm",
+    "bpm": "{n} BPM"
   },
   "app": {
     "name": "SCMT",
@@ -54,7 +55,7 @@
     "ov_pause": "Pause",
     "ov_both": "Lautstärke und Pause",
     "opt_text_size": "Schriftgröße",
-    "opt_text_size_hint": "Wie groß Titel, Interpret und Album sind. Ein zu breiter Titel läuft als Laufschrift; auf einer niedrigen Kachel wird der Text kleiner.",
+    "opt_text_size_hint": "Wie groß Titel, Interpret und Album sind. Ein zu breiter Titel bekommt eine kleinere Schrift und endet dann mit Punkten; auf einer niedrigen Kachel wird der Text kleiner.",
     "ts_small": "Klein",
     "ts_medium": "Mittel",
     "ts_large": "Groß",

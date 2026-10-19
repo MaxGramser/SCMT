@@ -1,5 +1,17 @@
 # Journal des modifications
 
+## 0.14.0 - 2026-10-19
+
+- Les boutons affichent les icônes de Tessera (précédent, lecture, pause, suivant, moins fort, plus fort,
+  haut-parleur) au lieu de signes comme « << » et « || ».
+- Le haut-parleur de l'affichage du volume montre volume-high, ou volume-off en sourdine. Les icônes d'un volume faible
+  et moyen ne sont pas dans le jeu de Tessera ; sous 67 %, le haut-parleur n'affichait rien.
+- Un titre, un artiste ou un album trop large se termine maintenant par des points de suspension au lieu de défiler,
+  comme chaque texte de l'écran. La tuile ne fait plus dessiner l'écran sans arrêt tant qu'elle est visible.
+- La ligne du tempo (« 138 BPM ») vient des traductions.
+- La tuile garde ses textes dans la mémoire à côté de la puce (PSRAM) quand la carte en a, pas dans la puce.
+- Le README indique sur quelle carte SCMT a été essayé.
+
 ## 0.13.0 - 2026-10-18
 
 - Nouvelle option « Couleur des barres » pour la barre de progression et la barre de volume : la couleur d'accent de

@@ -1,5 +1,17 @@
 # Wijzigingenlogboek
 
+## 0.14.0 - 2026-10-19
+
+- De knoppen tonen de iconen van Tessera (vorige, afspelen, pauze, volgende, zachter, harder, luidspreker) in plaats van
+  tekens als „<<” en „||”.
+- De luidspreker van de volumeweergave toont volume-high, of volume-off als het gedempt is. De iconen voor een laag en
+  een middelmatig volume zitten niet in de set van Tessera, dus onder 67 % toonde de luidspreker niets.
+- Een te brede titel, artiest of album eindigt nu op puntjes in plaats van als lichtkrant te lopen, zoals elke tekst
+  van het scherm. De tegel laat het scherm niet meer steeds tekenen zolang hij te zien is.
+- De temporegel („138 BPM”) komt uit de vertalingen.
+- De tegel bewaart zijn teksten in het geheugen naast de chip (PSRAM) als het bord dat heeft, niet in de chip.
+- De README zegt op welk bord SCMT is geprobeerd.
+
 ## 0.13.0 - 2026-10-18
 
 - Nieuwe optie „Kleur van de balken” voor de voortgangsbalk en de volumebalk: de accentkleur van het scherm

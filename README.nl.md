@@ -10,8 +10,8 @@ De titel in grote letters, daaronder de artiest en onderaan een optionele voortg
 
 - Zolang er iets speelt: titel en artiest. Bij pauze hetzelfde, met een gedempte titel.
 - Als er niets speelt: „Er wordt niets afgespeeld”; zolang er nog geen speler is gekozen: „Kies een speler”.
-- Een titel die te breed is voor de tegel krijgt eerst een kleiner lettertype en loopt daarna als lichtkrant door.
-  Net zo een artiest en een album die te breed zijn.
+- Een titel die te breed is voor de tegel krijgt eerst een kleiner lettertype en eindigt daarna op puntjes, zoals
+  elke tekst van het scherm. Net zo een artiest en een album die te breed zijn.
 - De optie „Voortgang” toont een balk (de hoogte is ook een optie, 2 tot 16 pixels), de tijd (gespeeld / duur), beide of
   niets. De speler moet `media_duration` en `media_position` doorgeven; anders verschijnt geen van beide.
 - De optie „Volumeweergave” toont het volume rechts van de titel: drie seconden na een wijziging, altijd of nooit. Ze
@@ -55,6 +55,9 @@ tegel en plaats zoveel van deze tegels als je wilt, naast de tegel „SCMT”.
 2. Plaats de tegels in de indeling.
 3. Kies in de inspecteur van elke tegel de speler. Elke `media_player`-entiteit werkt, bijvoorbeeld die welke
    HASS.Agent maakt van de Windows-mediasessie, of de Spotify-integratie.
+
+Geprobeerd op een Guition ESP32-S3 met een scherm van 4 inch (480 × 480). Andere borden zijn nog niet getest; laat
+in een issue weten hoe het op het jouwe werkt.
 
 De knoppen gebruiken de Home Assistant-acties `media_player.media_play_pause`, `media_next_track`,
 `media_previous_track`, `volume_up`, `volume_down`, `media_seek`, `volume_mute` en `volume_set`. Een speler die er een

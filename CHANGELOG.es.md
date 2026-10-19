@@ -1,5 +1,17 @@
 # Registro de cambios
 
+## 0.14.0 - 2026-10-19
+
+- Los botones muestran los iconos de Tessera (anterior, reproducir, pausa, siguiente, más bajo, más alto, altavoz) en
+  lugar de signos como «<<» y «||».
+- El altavoz del indicador de volumen muestra volume-high, o volume-off en silencio. Los iconos de volumen bajo y medio
+  no están en el conjunto de Tessera, así que por debajo del 67 % el altavoz no mostraba nada.
+- Un título, un artista o un álbum demasiado ancho termina ahora en puntos suspensivos en lugar de desplazarse, como
+  cada texto de la pantalla. La tarjeta ya no hace que la pantalla dibuje sin parar mientras se ve.
+- La línea del tempo («138 BPM») viene de las traducciones.
+- La tarjeta guarda sus textos en la memoria junto al chip (PSRAM) cuando la placa la tiene, no dentro del chip.
+- El README dice en qué placa se ha probado SCMT.
+
 ## 0.13.0 - 2026-10-18
 
 - Nueva opción «Color de las barras» para la barra de progreso y la barra de volumen: el color de acento de la pantalla

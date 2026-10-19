@@ -10,7 +10,8 @@
     "btn_next": "Suivant",
     "btn_volume_up": "Plus fort",
     "btn_volume_down": "Moins fort",
-    "muted": "Muet"
+    "muted": "Muet",
+    "bpm": "{n} BPM"
   },
   "app": {
     "name": "SCMT",
@@ -54,7 +55,7 @@
     "ov_pause": "Pause",
     "ov_both": "Volume et pause",
     "opt_text_size": "Taille du texte",
-    "opt_text_size_hint": "La taille du titre, de l'artiste et de l'album. Un titre trop large défile ; sur une tuile basse, le texte rapetisse.",
+    "opt_text_size_hint": "La taille du titre, de l'artiste et de l'album. Un titre trop large prend une police plus petite, puis se termine par des points de suspension ; sur une tuile basse, le texte rapetisse.",
     "ts_small": "Petite",
     "ts_medium": "Moyenne",
     "ts_large": "Grande",

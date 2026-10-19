@@ -1,5 +1,17 @@
 # Änderungsprotokoll
 
+## 0.14.0 - 2026-10-19
+
+- Die Tasten zeigen Tesseras Icons (zurück, Play, Pause, weiter, leiser, lauter, Lautsprecher) statt Zeichen wie
+  „<<“ und „||“.
+- Der Lautsprecher der Lautstärkeanzeige zeigt volume-high, oder volume-off bei stumm. Die Icons für leise und mittlere
+  Lautstärke sind nicht in Tesseras Set, darum zeigte der Lautsprecher unter 67 % nichts.
+- Ein zu breiter Titel, Interpret oder Albumname endet jetzt mit Punkten statt als Laufschrift zu laufen, wie jede
+  Beschriftung des Bildschirms. Die Kachel lässt den Bildschirm nicht mehr dauernd zeichnen, solange sie zu sehen ist.
+- Die Tempozeile („138 BPM“) kommt aus den Übersetzungen.
+- Die Kachel hält ihre Texte im Speicher neben dem Chip (PSRAM), wo das Board ihn hat, nicht im Chip.
+- Die README sagt, auf welchem Board SCMT ausprobiert ist.
+
 ## 0.13.0 - 2026-10-18
 
 - Neue Option „Farbe der Balken“ für den Fortschrittsbalken und die Lautstärkeleiste: die Akzentfarbe des Bildschirms

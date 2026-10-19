@@ -55,19 +55,15 @@ Weitere Fakten aus dem Tessera-Code, falls das Thema wiederkommt:
   (`none`/`album`/`bpm`/`both`) zusammengelegt; alte Kacheln mit Bool-Werten werden weiter gelesen. `now_playing` hat
   weiter 12 Optionen, das Maximum: Für eine neue Option muss wieder etwas zusammengelegt werden.
 
+- Plugin-API-Regeln (0.14.0, nach Max' Review von MaxGramser/tessera-plugins#12): nur Icons aus Tesseras Set
+  (Liste in `packages/core.yaml` von homeassistant_espscreen; volume-low/-medium fehlen, volume-plus/-minus sind da),
+  keine Wörter oder ASCII-Zeichen als Tasten im Code, Texte in Membern als `tessera::Text`, Labels mit Punkten statt
+  Laufschrift (`ui::label`).
+
 ## Offene Punkte
 
-- Issue bei MaxGramser/homeassistant_espscreen ist entworfen, aber **noch nicht eingereicht** (Text liegt im Chat
-  vom 2026-10-17; Vorschlag: in `entry_for()` für `link` auf `self.links` zurückfallen oder `keep_snapshot` vor
-  `sidecar` aufrufen).
-- Nicht verifiziert: ob im 08:22-Log `Building CXX object …/scmt/scmt.cpp.obj` fehlt (wäre ein Beleg fürs Issue).
-- Analyse beruht auf `main`, nicht exakt auf App 0.4.88, und wurde nicht nachgestellt.
-
-## Nächste Schritte
-
-1. Im vollständigen Build-Log nach `scmt` suchen und das Ergebnis im Issue ergänzen.
-2. Issue bei MaxGramser/homeassistant_espscreen einreichen.
-3. SCMT in den Plugin-Index aufnehmen lassen (PR mit einer dreizeiligen Datei in `community/` bei
-   MaxGramser/tessera-plugins, siehe dort `docs/PUBLISHING.md`). Damit findet Tessera neue Versionen über den Index
-   und das Problem tritt nicht mehr auf.
-4. Bis dahin: nach jedem SCMT-Update prüfen, ob SCMT in `dsp-desktop.plugins.yaml` steht, sonst einmal neu bauen.
+- Der plugins.yaml-Fehler ist laut Max auf Tesseras dev behoben (homeassistant_espscreen #260) und kommt mit dem
+  nächsten Release. Das Issue muss nicht mehr eingereicht werden. Bis zum Release: nach jedem SCMT-Update prüfen, ob
+  SCMT in `dsp-desktop.plugins.yaml` steht, sonst einmal neu bauen.
+- PR MaxGramser/tessera-plugins#12 (SCMT in `community/`): Max merged, sobald ein Release seine fünf Punkte erfüllt
+  (in 0.14.0 umgesetzt). Max gefragt, ob volume-low/-medium ins Icon-Set kommen.

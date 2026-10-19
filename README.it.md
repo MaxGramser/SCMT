@@ -10,8 +10,8 @@ Il titolo in caratteri grandi, sotto l'artista e in basso una barra di avanzamen
 
 - Mentre qualcosa suona: titolo e artista. In pausa: lo stesso, con il titolo attenuato.
 - Quando non suona nulla: «Nessuna riproduzione»; finché non è scelto un lettore: «Scegli un lettore».
-- Un titolo troppo largo per la tessera riceve prima un carattere più piccolo, poi scorre come testo scorrevole. Lo
-  stesso vale per un artista e un album troppo larghi.
+- Un titolo troppo largo per la tessera riceve prima un carattere più piccolo, poi finisce con i puntini, come ogni
+  testo dello schermo. Lo stesso vale per un artista e un album troppo larghi.
 - L'opzione «Avanzamento» mostra una barra (anche la sua altezza è un'opzione, da 2 a 16 pixel), il tempo (trascorso /
   durata), entrambi o niente. Il lettore deve indicare `media_duration` e `media_position`; altrimenti non compare né
   l'una né l'altro.
@@ -57,6 +57,9 @@ opzioni della tessera e metti tutte le tessere che vuoi, accanto alla tessera «
 2. Posiziona le tessere nel layout.
 3. Nell'ispettore di ogni tessera scegli il lettore. Va bene qualsiasi entità `media_player`, per esempio quella che
    HASS.Agent crea dalla sessione multimediale di Windows, o l'integrazione Spotify.
+
+Provato su una Guition ESP32-S3 con schermo da 4 pollici (480 × 480). Altre schede non sono ancora state provate;
+scrivimi in una issue come funziona sulla tua.
 
 I tasti usano le azioni di Home Assistant `media_player.media_play_pause`, `media_next_track`, `media_previous_track`,
 `volume_up`, `volume_down`, `media_seek`, `volume_mute` e `volume_set`. Un lettore che non ne supporta una la ignora.

@@ -10,8 +10,8 @@ The title in large letters, the artist below it, and an optional progress bar at
 
 - While something plays, the title and the artist. While paused, the same, with the title dimmed.
 - When nothing plays, "Nothing playing"; before a player is chosen, "Choose a player".
-- A title that is too wide for the tile gets a smaller font first, then runs as a marquee. So do an artist and an
-  album that are too wide.
+- A title that is too wide for the tile gets a smaller font first, then ends in dots, as every label of the screen.
+  So do an artist and an album that are too wide.
 - The option "Progress" shows a bar (its height is an option too, 2 to 16 pixels), the time (played / length), both, or
   nothing. It needs the player to report `media_duration` and `media_position`; a player that does not shows neither.
 - The option "Volume display" shows the volume at the title's right: for three seconds after it changed, always, or
@@ -55,6 +55,9 @@ options and place as many of these tiles as you like, next to the "SCMT" tile.
 2. Place the tiles in the layout.
 3. In each tile's inspector, choose the media player. Any `media_player` entity works, for example the one that
    HASS.Agent makes from the Windows media session, or the Spotify integration.
+
+Tried on a Guition ESP32-S3 with a 4-inch screen (480 × 480). Other boards are untested so far; tell me in an
+issue how it works on yours.
 
 The buttons use the Home Assistant actions `media_player.media_play_pause`, `media_next_track`, `media_previous_track`,
 `volume_up`, `volume_down`, `media_seek`, `volume_mute` and `volume_set`. A player that does not support one of them

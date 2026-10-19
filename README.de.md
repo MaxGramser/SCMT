@@ -10,8 +10,8 @@ Der Titel in großen Buchstaben, darunter der Interpret und unten optional ein F
 
 - Solange etwas läuft: Titel und Interpret. Bei Pause dasselbe, mit gedämpftem Titel.
 - Wenn nichts läuft: „Nichts läuft“; solange noch kein Player gewählt ist: „Player wählen“.
-- Ein Titel, der zu breit für die Kachel ist, bekommt zuerst eine kleinere Schrift und läuft dann als Laufschrift durch.
-  Ebenso ein Interpret und ein Album, die zu breit sind.
+- Ein Titel, der zu breit für die Kachel ist, bekommt zuerst eine kleinere Schrift und endet dann mit Punkten, wie
+  jede Beschriftung des Bildschirms. Ebenso ein Interpret und ein Album, die zu breit sind.
 - Die Option „Fortschritt“ zeigt einen Balken (seine Höhe ist auch eine Option, 2 bis 16 Pixel), die Zeit (gespielt /
   Länge), beides oder nichts. Dafür muss der Player `media_duration` und `media_position` melden; sonst erscheint
   weder das eine noch das andere.
@@ -58,6 +58,9 @@ Optionen der Kachel, und du kannst beliebig viele dieser Kacheln neben der Kache
 2. Die Kacheln im Layout platzieren.
 3. Im Inspektor jeder Kachel den Media Player wählen. Jede `media_player`-Entity funktioniert, zum Beispiel die, die
    HASS.Agent aus der Windows-Mediensitzung macht, oder die Spotify-Integration.
+
+Ausprobiert auf einem Guition ESP32-S3 mit 4-Zoll-Bildschirm (480 × 480). Andere Boards sind bisher nicht getestet;
+schreib in einem Issue, wie es auf deinem läuft.
 
 Die Tasten nutzen die Home-Assistant-Aktionen `media_player.media_play_pause`, `media_next_track`,
 `media_previous_track`, `volume_up`, `volume_down`, `media_seek`, `volume_mute` und `volume_set`. Ein Player, der eine

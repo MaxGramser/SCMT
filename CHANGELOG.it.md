@@ -1,5 +1,17 @@
 # Registro delle modifiche
 
+## 0.14.0 - 2026-10-19
+
+- I tasti mostrano le icone di Tessera (precedente, riproduci, pausa, successivo, più piano, più forte, altoparlante)
+  invece di segni come «<<» e «||».
+- L'altoparlante dell'indicatore del volume mostra volume-high, o volume-off in muto. Le icone di un volume basso e
+  medio non sono nel set di Tessera, quindi sotto il 67 % l'altoparlante non mostrava nulla.
+- Un titolo, un artista o un album troppo largo ora finisce con i puntini invece di scorrere, come ogni testo dello
+  schermo. La tessera non fa più disegnare lo schermo di continuo mentre è visibile.
+- La riga del tempo («138 BPM») viene dalle traduzioni.
+- La tessera tiene i suoi testi nella memoria accanto al chip (PSRAM) quando la scheda ce l'ha, non nel chip.
+- Il README dice su quale scheda è stato provato SCMT.
+
 ## 0.13.0 - 2026-10-18
 
 - Nuova opzione «Colore delle barre» per la barra di avanzamento e la barra del volume: il colore d'accento dello

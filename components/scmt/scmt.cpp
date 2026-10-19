@@ -48,14 +48,12 @@ static std::string fmt_time_(int sec) {
   return b;
 }
 
-// Material Design Icons of the speaker. Tessera's icon set may not hold all of them: the code asks ui::covers first
-// and shows nothing for one that is missing.
-static const char *volume_icon_(float level, bool muted) {
-  if (muted) return "\U000F0581";      // volume-off
-  if (level < 0.34f) return "\U000F057F";  // volume-low
-  if (level < 0.67f) return "\U000F0580";  // volume-medium
-  return "\U000F057E";                 // volume-high
-}
+// Material Design Icons from Tessera's set (another codepoint shows as nothing).
+constexpr uint32_t ICON_PREV = 0xF04AE, ICON_NEXT = 0xF04AD, ICON_PLAY = 0xF040A, ICON_PAUSE = 0xF03E4,
+                   ICON_VOLUME_DOWN = 0xF075E, ICON_VOLUME_UP = 0xF075D, ICON_VOLUME = 0xF057E, ICON_MUTED = 0xF0581;
+
+// The speaker: volume-high, or volume-off while muted (the set has no volume-low or volume-medium).
+static std::string volume_icon_(bool muted) { return ui::icon(muted ? ICON_MUTED : ICON_VOLUME); }
 
 enum Btn : uint8_t { PREV, PLAY_PAUSE, NEXT, VOL_DOWN, VOL_UP, MUTE };
 
@@ -212,25 +210,16 @@ class NowPlayingTile : public tessera::Tile {
     text_w_ = area_w_;
     text_right_ = area_x_ + area_w_;
 
-    // Title, artist and album run as a marquee when they are wider than their room.
-    // Each lies in a box of its own size that cuts off what scrolls past its edges (the label alone draws a little
-    // beyond them, over the cover).
-    title_box_ = clip_box_(c.parent);
-    title_lbl_ = ui::label(title_box_, Font::HEADLINE, theme::INK);
-    lv_label_set_long_mode(title_lbl_, LV_LABEL_LONG_SCROLL_CIRCULAR);
-    artist_box_ = clip_box_(c.parent);
-    artist_lbl_ = ui::label(artist_box_, Font::BODY_LARGE, theme::INK_SOFT);
-    lv_label_set_long_mode(artist_lbl_, LV_LABEL_LONG_SCROLL_CIRCULAR);
+    // Title, artist and album end in dots when they are wider than their room, as every label of the screen.
+    title_lbl_ = ui::label(c.parent, Font::HEADLINE, theme::INK);
+    artist_lbl_ = ui::label(c.parent, Font::BODY_LARGE, theme::INK_SOFT);
     lv_obj_set_width(artist_lbl_, text_w_);
     if (show_album_) {
-      album_box_ = clip_box_(c.parent);
-      album_lbl_ = ui::label(album_box_, Font::BODY_LARGE, theme::MUTED);
-      lv_label_set_long_mode(album_lbl_, LV_LABEL_LONG_SCROLL_CIRCULAR);
+      album_lbl_ = ui::label(c.parent, Font::BODY_LARGE, theme::MUTED);
       lv_obj_set_width(album_lbl_, text_w_);
     }
     if (show_bpm_) {
-      bpm_box_ = clip_box_(c.parent);
-      bpm_lbl_ = ui::label(bpm_box_, Font::BODY_LARGE, theme::MUTED);
+      bpm_lbl_ = ui::label(c.parent, Font::BODY_LARGE, theme::MUTED);
       lv_obj_set_width(bpm_lbl_, text_w_);
     }
 
@@ -281,15 +270,17 @@ class NowPlayingTile : public tessera::Tile {
         frame_[i] = ui::block(c.parent, theme::LINE);
         lv_obj_set_size(frame_[i], btn_w_, ctrl_h_);
         lv_obj_set_pos(frame_[i], x, top);
-        inner_[i] = ui::block(c.parent, theme::CARD);
+        inner_[i] = ui::block(frame_[i], theme::CARD);
         lv_obj_set_size(inner_[i], btn_w_ - 2 * bw, ctrl_h_ - 2 * bw);
-        lv_obj_set_pos(inner_[i], x + bw, top + bw);
+        lv_obj_set_pos(inner_[i], bw, bw);
       }
+      // The icon lies inside the inner block, centred.
+      const int inner_w = btn_w_ - 2 * bw, inner_h = ctrl_h_ - 2 * bw;
       for (int i = 0; i < n_; ++i) {
-        btn_[i] = ui::label(c.parent, Font::TITLE, theme::INK);
-        lv_obj_set_width(btn_[i], btn_w_);
+        btn_[i] = ui::label(inner_[i], Font::ICON, theme::INK);
+        lv_obj_set_width(btn_[i], inner_w);
         lv_obj_set_style_text_align(btn_[i], LV_TEXT_ALIGN_CENTER, 0);
-        lv_obj_set_pos(btn_[i], area_x_ + i * (btn_w_ + btn_gap_), top + (ctrl_h_ - ui::line_height(Font::TITLE)) / 2);
+        lv_obj_set_pos(btn_[i], 0, (inner_h - ui::line_height(Font::ICON)) / 2);
       }
     }
 
@@ -336,7 +327,7 @@ class NowPlayingTile : public tessera::Tile {
     // The tempo sensor follows a new track only after some seconds (BPM2SCMT measures anew, HASS.Agent reads its file
     // every 10 seconds): until then it still holds the tempo of the track before, so a new track hides it for a while.
     if (bpm_lbl_ != nullptr && has_entity_ && !title_.empty()) {
-      const std::string track = title_ + "|" + artist_;
+      const tessera::Text track = title_ + "|" + artist_;
       if (bpm_seen_ && track != bpm_track_) bpm_hold_ = true;
       bpm_track_ = track;
       bpm_seen_ = true;
@@ -346,7 +337,7 @@ class NowPlayingTile : public tessera::Tile {
         // A fixed address (option "Cover address"): the cover is a file that something else keeps up to date. The
         // address gets a new number for every track, because the same address again does nothing.
         const bool active = has_entity_ && !title_.empty() && (state_ == "playing" || state_ == "paused");
-        const std::string track = title_ + "|" + artist_ + "|" + album_;
+        const tessera::Text track = title_ + "|" + artist_ + "|" + album_;
         if (track != cover_track_) {
           cover_track_ = track;
           uint32_t h = 2166136261u;  // FNV-1a
@@ -407,16 +398,16 @@ class NowPlayingTile : public tessera::Tile {
       if (bpm == 0) bpm_cleared_ = true;
       if (bpm_cleared_) bpm_hold_until_ = 0;
       if (has_entity_ && active && !title_.empty() && bpm > 0 && epoch >= bpm_hold_until_)
-        bpm_text = std::to_string(bpm) + " BPM";
+        bpm_text = tessera::format(plugin_->text("bpm"), bpm);
     }
 
     std::string title, artist, album;
     if (!has_entity_) {
       title = plugin_->text("choose");
     } else if (active && !title_.empty()) {
-      title = title_;
-      artist = artist_;
-      album = album_;
+      title = roomy::plain(title_);
+      artist = roomy::plain(artist_);
+      album = roomy::plain(album_);
     } else {
       title = plugin_->text("idle");
     }
@@ -434,21 +425,20 @@ class NowPlayingTile : public tessera::Tile {
     std::string vtext;
     if (vol_lbl_ != nullptr && vol_known && !ov_on_ && (vol_mode_ == 2 || recent))
       vtext = muted_ ? plugin_->text("muted") : std::to_string(pct) + " %";
-    const char *vic = volume_icon_(volume_, muted_);
+    const std::string vic = volume_icon_(muted_);
     int vol_tw = 0, vol_iw = 0, vol_total = 0;
     if (!vtext.empty()) {
       vol_tw = ui::text_width(vtext, Font::BODY) + ui::px(4);
-      if (vol_icon_lbl_ != nullptr && ui::covers(vic, Font::ICON_SMALL))
-        vol_iw = ui::text_width(vic, Font::ICON_SMALL) + ui::px(2);
+      if (vol_icon_lbl_ != nullptr) vol_iw = ui::text_width(vic, Font::ICON_SMALL) + ui::px(2);
       vol_total = vol_tw + (vol_iw > 0 ? ui::px(4) + vol_iw : 0);
     }
     const int title_w = text_w_ - (vol_total > 0 ? vol_total + ui::px(6) : 0);
     lv_obj_set_width(title_lbl_, title_w);
 
     // The fonts of the text size (option). VALUE is the largest font with letters (DIGITS has digits only), so "large"
-    // keeps the title of "medium" and makes artist and album larger, and scrolls a long title in VALUE.
+    // keeps the title of "medium" and makes artist and album larger, and cuts a long title in VALUE.
     struct Faces {
-      Font title, scroll, low;  // the title: when it fits; as a marquee when it is wider; on a tile too low for it
+      Font title, wide, low;    // the title: when it fits; when it is wider (cut with dots); on a tile too low for it
       Font sub, sub_low;        // artist and album: when there is room; on a low tile
     };
     static const Faces FACES[3] = {
@@ -468,10 +458,10 @@ class NowPlayingTile : public tessera::Tile {
     if (bpm_lbl_ != nullptr) ui::set_font(bpm_lbl_, sf);
 
     // The title in its font when it fits in width and, with the artist below it, in height, and the font has all its
-    // characters. Else in the marquee font, wider than its room; in a smaller one only when the tile is too low.
+    // characters. Else in the font for a wide title, cut with dots; in a smaller one only when the tile is too low.
     auto high_ok = [&](Font ff) { return ui::line_height(ff) + g2 + ah <= space_h; };
     Font f = fc.title;
-    if (!(ui::covers(title, f) && ui::text_width(title, f) <= title_w && high_ok(f))) f = fc.scroll;
+    if (!(ui::covers(title, f) && ui::text_width(title, f) <= title_w && high_ok(f))) f = fc.wide;
     if (!ui::covers(title, f)) f = Font::HEADLINE;  // a character VALUE lacks (a Japanese title)
     if (!high_ok(f)) f = fc.low;
     if (!high_ok(f)) f = Font::BODY_LARGE;
@@ -492,18 +482,18 @@ class NowPlayingTile : public tessera::Tile {
     if (with_album) block_h += g2 + ah;
     int y = text_pos_ == 1 ? 0 : (text_pos_ == 2 ? space_h - block_h : (space_h - block_h) / 2);
     if (y < 0) y = 0;
-    place_(title_box_, title_lbl_, x0_, y, title_w, th);
+    place_(title_lbl_, x0_, y, title_w);
     int line_y = y + th + g2;
-    place_(artist_box_, artist_lbl_, x0_, line_y, text_w_, ah);
+    place_(artist_lbl_, x0_, line_y, text_w_);
     line_y += ah + g2;
     if (bpm_lbl_ != nullptr) {
       ui::set_text(bpm_lbl_, with_bpm ? bpm_text : std::string());
-      place_(bpm_box_, bpm_lbl_, x0_, line_y, text_w_, ah);
+      place_(bpm_lbl_, x0_, line_y, text_w_);
       if (with_bpm) line_y += ah + g2;
     }
     if (album_lbl_ != nullptr) {
       ui::set_text(album_lbl_, with_album ? album : std::string());
-      place_(album_box_, album_lbl_, x0_, line_y, text_w_, ah);
+      place_(album_lbl_, x0_, line_y, text_w_);
     }
 
     // The small volume display: a text and the speaker, at the title's right. A tap on it mutes (option).
@@ -511,7 +501,7 @@ class NowPlayingTile : public tessera::Tile {
       ui::set_text(vol_lbl_, vtext);
       lv_obj_set_width(vol_lbl_, vol_tw);
       lv_obj_set_pos(vol_lbl_, text_right_ - vol_total, y + (th - ui::line_height(Font::BODY)) / 2);
-      ui::set_text(vol_icon_lbl_, vol_iw > 0 ? vic : "");
+      ui::set_text(vol_icon_lbl_, vol_iw > 0 ? vic : std::string());
       lv_obj_set_width(vol_icon_lbl_, vol_iw);
       lv_obj_set_pos(vol_icon_lbl_, text_right_ - vol_iw, y + (th - ui::line_height(Font::ICON_SMALL)) / 2);
     }
@@ -529,7 +519,7 @@ class NowPlayingTile : public tessera::Tile {
     if (timeline) {
       if (playing && updated_ > 0 && epoch > updated_) pos += static_cast<float>(epoch - updated_);
       const uint32_t now = millis();
-      const std::string track = title_ + "|" + artist_;
+      const tessera::Text track = title_ + "|" + artist_;
       const float own = clock_pos_ + static_cast<float>(now - clock_ms_) / 1000.0f;
       if (playing && clock_run_ && track == clock_track_ && std::fabs(pos - own) <= CLOCK_SLACK) {
         pos = own;
@@ -564,39 +554,26 @@ class NowPlayingTile : public tessera::Tile {
       lv_obj_set_y(vbar_fill_, vbar_fy_ + vbar_fh_ - fh);
     }
 
-    // The buttons: plain signs, and the speaker for muting when the icon set has it.
+    // The buttons: an icon each; the speaker for muting shows whether it is muted.
     for (int i = 0; i < n_; ++i) {
-      const char *s = "";
-      Font bf = Font::TITLE;
+      uint32_t ic = ICON_PLAY;
       switch (kinds_[i]) {
-        case PREV: s = "<<"; break;
-        case PLAY_PAUSE: s = playing ? "||" : ">"; break;
-        case NEXT: s = ">>"; break;
-        case VOL_DOWN: s = "-"; break;
-        case VOL_UP: s = "+"; break;
-        case MUTE: {
-          const char *ic = muted_ ? "\U000F0581" : "\U000F057E";
-          if (ui::covers(ic, Font::ICON)) {
-            s = ic;
-            bf = Font::ICON;
-          } else {
-            s = "M";
-          }
-          break;
-        }
+        case PREV: ic = ICON_PREV; break;
+        case PLAY_PAUSE: ic = playing ? ICON_PAUSE : ICON_PLAY; break;
+        case NEXT: ic = ICON_NEXT; break;
+        case VOL_DOWN: ic = ICON_VOLUME_DOWN; break;
+        case VOL_UP: ic = ICON_VOLUME_UP; break;
+        case MUTE: ic = muted_ ? ICON_MUTED : ICON_VOLUME; break;
       }
-      ui::set_font(btn_[i], bf);
-      ui::set_text(btn_[i], s);
-      lv_obj_set_pos(btn_[i], area_x_ + i * (btn_w_ + btn_gap_), height_ - ctrl_h_ + (ctrl_h_ - ui::line_height(bf)) / 2);
+      ui::set_text(btn_[i], ui::icon(ic));
     }
 
     // The big volume display: the number in the largest font that fits, and the speaker after it.
     if (ov_bg_ != nullptr) {
       if (ov_on_) {
         const std::string num = muted_ ? plugin_->text("muted") : std::to_string(pct) + "%";
-        const char *ic = volume_icon_(volume_, muted_);
-        const bool icon_ok = ui::covers(ic, Font::ICON);
-        const int iw = icon_ok ? ui::text_width(ic, Font::ICON) : 0;
+        const std::string ic = volume_icon_(muted_);
+        const int iw = ui::text_width(ic, Font::ICON);
         const int gap = ui::px(8);
         Font nf = Font::DIGITS;
         if (muted_ || !ui::covers(num, nf)) nf = Font::VALUE;
@@ -611,7 +588,7 @@ class NowPlayingTile : public tessera::Tile {
         ui::set_text(ov_num_, num);
         lv_obj_set_width(ov_num_, nw + ui::px(4));
         lv_obj_set_pos(ov_num_, x, (height_ - ui::line_height(nf)) / 2);
-        ui::set_text(ov_icon_, icon_ok ? ic : "");
+        ui::set_text(ov_icon_, ic);
         lv_obj_set_width(ov_icon_, iw + ui::px(2));
         lv_obj_set_pos(ov_icon_, x + nw + gap, (height_ - ui::line_height(Font::ICON)) / 2);
       } else {
@@ -625,16 +602,12 @@ class NowPlayingTile : public tessera::Tile {
     // display is there).
     if (pz_bg_ != nullptr) {
       if (has_entity_ && paused_ && !title_.empty() && !ov_on_) {
-        const char *ic = "\U000F03E4";  // pause (Material Design Icons)
-        const bool icon_ok = ui::covers(ic, Font::ICON);
-        const char *sign = icon_ok ? ic : "||";
-        const Font pf = icon_ok ? Font::ICON : Font::HEADLINE;
-        const int pw = ui::text_width(sign, pf);
+        const std::string sign = ui::icon(ICON_PAUSE);
+        const int pw = ui::text_width(sign, Font::ICON);
         lv_obj_set_size(pz_bg_, width_, height_);
-        ui::set_font(pz_icon_, pf);
         ui::set_text(pz_icon_, sign);
         lv_obj_set_width(pz_icon_, pw + ui::px(4));
-        lv_obj_set_pos(pz_icon_, (width_ - pw) / 2, (height_ - ui::line_height(pf)) / 2);
+        lv_obj_set_pos(pz_icon_, (width_ - pw) / 2, (height_ - ui::line_height(Font::ICON)) / 2);
       } else {
         lv_obj_set_size(pz_bg_, 0, 0);
         ui::set_text(pz_icon_, "");
@@ -732,20 +705,9 @@ class NowPlayingTile : public tessera::Tile {
   }
 
  private:
-  // A bare object without the theme's look that cuts off its children at its edges, for a label that scrolls.
-  static lv_obj_t *clip_box_(lv_obj_t *parent) {
-    lv_obj_t *box = lv_obj_create(parent);
-    lv_obj_remove_style_all(box);
-    lv_obj_remove_flag(box, LV_OBJ_FLAG_CLICKABLE);
-    lv_obj_remove_flag(box, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_size(box, 0, 0);
-    return box;
-  }
-
-  // Puts a label's box at x, y with the label's width and height; the label stays at the box's corner.
-  static void place_(lv_obj_t *box, lv_obj_t *label, int x, int y, int w, int h) {
-    lv_obj_set_pos(box, x, y);
-    lv_obj_set_size(box, w, h);
+  // Puts a label at x, y with the width w; it keeps the height of one line of its font.
+  static void place_(lv_obj_t *label, int x, int y, int w) {
+    lv_obj_set_pos(label, x, y);
     lv_obj_set_width(label, w);
   }
 
@@ -756,7 +718,7 @@ class NowPlayingTile : public tessera::Tile {
   // Shows the cover file of the option "Cover address"; a "{v}" in it becomes a number that changes with the track.
   void apply_cover_url_(bool active) {
     // "{v}" in the address is replaced by the number of the track; an address without it is used as it is.
-    std::string addr = cover_url_;
+    std::string addr = roomy::plain(cover_url_);
     const size_t pos = addr.find("{v}");
     if (pos != std::string::npos)
       addr.replace(pos, 3, std::to_string(cover_key_ + cover_gen_));
@@ -775,10 +737,10 @@ class NowPlayingTile : public tessera::Tile {
 
   const Scmt *plugin_;
   lv_obj_t *cover_{nullptr};
-  lv_obj_t *title_box_{nullptr}, *title_lbl_{nullptr};
-  lv_obj_t *artist_box_{nullptr}, *artist_lbl_{nullptr};
-  lv_obj_t *album_box_{nullptr}, *album_lbl_{nullptr};
-  lv_obj_t *bpm_box_{nullptr}, *bpm_lbl_{nullptr};
+  lv_obj_t *title_lbl_{nullptr};
+  lv_obj_t *artist_lbl_{nullptr};
+  lv_obj_t *album_lbl_{nullptr};
+  lv_obj_t *bpm_lbl_{nullptr};
   lv_obj_t *track_{nullptr};
   lv_obj_t *fill_{nullptr};
   lv_obj_t *time_lbl_{nullptr};
@@ -802,7 +764,7 @@ class NowPlayingTile : public tessera::Tile {
   int text_pos_{0};  // 0 middle, 1 top, 2 bottom
   int cover_size_{0};
   bool cover_on_{false};
-  std::string cover_url_, cover_track_;
+  tessera::Text cover_url_, cover_track_;
   uint32_t cover_key_{0}, cover_gen_{0}, cover_retry_at_{0};
   bool cover_retry_{false};
   int bar_h_{0}, bar_y_{0}, time_y_{0}, ctrl_h_{0}, content_h_{0};
@@ -814,7 +776,7 @@ class NowPlayingTile : public tessera::Tile {
   bool show_bar_{true}, show_time_{false}, show_album_{false}, show_bpm_{false};
   tessera::Tone bar_tone_{tessera::Tone::ACCENT};  // colour of both bars (option "bar_color")
   theme::Role bar_role_{theme::ACCENT};
-  std::string bpm_track_;                        // the track the tempo belongs to
+  tessera::Text bpm_track_;                      // the track the tempo belongs to
   bool bpm_seen_{false}, bpm_hold_{false}, bpm_cleared_{false};
   uint32_t bpm_hold_until_{0};
   bool want_mute_{false};
@@ -825,7 +787,7 @@ class NowPlayingTile : public tessera::Tile {
   uint32_t vol_until_{0};
   bool has_entity_{false};
   bool paused_{false};
-  std::string entity_, state_, title_, artist_, album_;
+  tessera::Text entity_, state_, title_, artist_, album_;
   float duration_{0.0f}, position_{0.0f};
   uint32_t updated_{0};
   // The tile's own clock for the position (see on_tick): the position at clock_ms_ (millis) and the track it belongs to.
@@ -833,7 +795,7 @@ class NowPlayingTile : public tessera::Tile {
   float clock_pos_{0.0f};
   uint32_t clock_ms_{0};
   bool clock_run_{false};
-  std::string clock_track_;
+  tessera::Text clock_track_;
 };
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -858,7 +820,7 @@ class MediaButtonTile : public tessera::Tile {
   void on_state(JsonObjectConst data) override { has_entity_ = data["state"].is<const char *>(); }
 
   void on_tick(uint32_t) override {
-    const std::string key = "btn_" + action_;
+    const tessera::Text key = "btn_" + action_;
     const std::string text = has_entity_ ? plugin_->text(key.c_str()) : plugin_->text("choose");
     Font f = Font::TITLE;
     if (ui::text_width(text, f) > width_) f = Font::BODY_LARGE;
@@ -885,7 +847,7 @@ class MediaButtonTile : public tessera::Tile {
   lv_obj_t *label_{nullptr};
   int width_{0}, height_{0};
   bool has_entity_{false};
-  std::string entity_, action_;
+  tessera::Text entity_, action_;
 };
 
 int Scmt::bpm() const {

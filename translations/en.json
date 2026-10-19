@@ -10,7 +10,8 @@
     "btn_next": "Next",
     "btn_volume_up": "Louder",
     "btn_volume_down": "Quieter",
-    "muted": "Muted"
+    "muted": "Muted",
+    "bpm": "{n} BPM"
   },
   "app": {
     "name": "SCMT",
@@ -54,7 +55,7 @@
     "ov_pause": "Pause",
     "ov_both": "Volume and pause",
     "opt_text_size": "Text size",
-    "opt_text_size_hint": "How large title, artist and album are. A title that is too wide runs as a marquee; on a low tile the text gets smaller.",
+    "opt_text_size_hint": "How large title, artist and album are. A title that is too wide gets a smaller font, then ends in dots; on a low tile the text gets smaller.",
     "ts_small": "Small",
     "ts_medium": "Medium",
     "ts_large": "Large",

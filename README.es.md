@@ -10,8 +10,8 @@ El título en letras grandes, debajo el artista y, abajo, una barra de progreso 
 
 - Mientras suena algo: el título y el artista. En pausa: lo mismo, con el título atenuado.
 - Cuando no suena nada: «Nada en reproducción»; mientras no se haya elegido reproductor: «Elegir reproductor».
-- Un título demasiado ancho para la tarjeta recibe primero una letra más pequeña y después se desplaza como texto
-  corrido. Igual un artista y un álbum demasiado anchos.
+- Un título demasiado ancho para la tarjeta recibe primero una letra más pequeña y después termina en puntos
+  suspensivos, como cada texto de la pantalla. Igual un artista y un álbum demasiado anchos.
 - La opción «Progreso» muestra una barra (su altura también es una opción, de 2 a 16 píxeles), el tiempo (reproducido /
   duración), ambos o nada. El reproductor debe informar de `media_duration` y `media_position`; si no, no se muestra
   ninguno.
@@ -57,6 +57,9 @@ opciones de la tarjeta y coloca tantas de estas tarjetas como quieras, junto a l
 2. Coloca las tarjetas en el diseño.
 3. En el inspector de cada tarjeta, elige el reproductor. Sirve cualquier entidad `media_player`, por ejemplo la que
    HASS.Agent crea a partir de la sesión multimedia de Windows, o la integración de Spotify.
+
+Probado en una Guition ESP32-S3 con pantalla de 4 pulgadas (480 × 480). Otras placas aún no se han probado; cuéntame
+en una incidencia cómo funciona en la tuya.
 
 Los botones usan las acciones de Home Assistant `media_player.media_play_pause`, `media_next_track`,
 `media_previous_track`, `volume_up`, `volume_down`, `media_seek`, `volume_mute` y `volume_set`. Un reproductor que no
