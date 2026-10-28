@@ -1,5 +1,11 @@
 # Journal des modifications
 
+## 0.14.1 - 2026-10-28
+
+- L'affichage de pause couvre maintenant toute la tuile, y compris les extrémités de la barre de progression dans
+  les coins.
+- Le signe de pause est plus grand : deux tiers de la hauteur de la tuile au lieu de la taille d'une icône.
+
 ## 0.14.0 - 2026-10-19
 
 - Les boutons affichent les icônes de Tessera (précédent, lecture, pause, suivant, moins fort, plus fort,

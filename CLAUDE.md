@@ -67,3 +67,8 @@ Weitere Fakten aus dem Tessera-Code, falls das Thema wiederkommt:
   SCMT in `dsp-desktop.plugins.yaml` steht, sonst einmal neu bauen.
 - PR MaxGramser/tessera-plugins#12 (SCMT in `community/`): Max merged, sobald ein Release seine fünf Punkte erfüllt
   (in 0.14.0 umgesetzt). Max gefragt, ob volume-low/-medium ins Icon-Set kommen.
+- `cover:<entity>` (Plugin-API 0.17, Tessera dev, geprüft 2026-10-23) könnte `image.scmt_cover` ersetzen: Die App holt
+  das Cover über `/api/media_player_proxy/<entity>` mit ihrem Token, wie die eigene Player-Kachel. Aber: Die Firmware
+  bildet den Bild-Key einer Plugin-Kachel nur aus Platz und Adresse (`tile_picture::set_parts`), und `cover:` nimmt
+  keine Parameter (`picture_question.source`): Bei neuem Titel bleibt wohl das alte Cover stehen. Vor dem Umbau Max
+  fragen. API 0.17 geht erst ab dem nächsten Tessera-Release (0.4.90 bietet 0.14).

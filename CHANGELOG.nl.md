@@ -1,5 +1,10 @@
 # Wijzigingenlogboek
 
+## 0.14.1 - 2026-10-28
+
+- De pauzeweergave bedekt nu de hele tegel, ook de uiteinden van de voortgangsbalk in de hoeken.
+- Het pauzeteken is groter: twee derde van de tegelhoogte in plaats van de grootte van een icoon.
+
 ## 0.14.0 - 2026-10-19
 
 - De knoppen tonen de iconen van Tessera (vorige, afspelen, pauze, volgende, zachter, harder, luidspreker) in plaats van

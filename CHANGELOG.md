@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.14.1 - 2026-10-28
+
+- The pause display now covers the whole tile, also the ends of the progress bar in the corners.
+- The pause sign is drawn larger: two thirds of the tile's height instead of the size of an icon.
+
 ## 0.14.0 - 2026-10-19
 
 - The buttons show Tessera's icons (previous, play, pause, next, quieter, louder, speaker) instead of signs such as

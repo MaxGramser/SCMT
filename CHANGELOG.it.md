@@ -1,5 +1,10 @@
 # Registro delle modifiche
 
+## 0.14.1 - 2026-10-28
+
+- L'indicazione di pausa copre ora tutta la tessera, anche le estremità della barra di avanzamento negli angoli.
+- Il segno di pausa è più grande: due terzi dell'altezza della tessera invece della dimensione di un'icona.
+
 ## 0.14.0 - 2026-10-19
 
 - I tasti mostrano le icone di Tessera (precedente, riproduci, pausa, successivo, più piano, più forte, altoparlante)

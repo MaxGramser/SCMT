@@ -1,5 +1,10 @@
 # Änderungsprotokoll
 
+## 0.14.1 - 2026-10-28
+
+- Die Pausenanzeige deckt jetzt die ganze Kachel ab, auch die Enden des Fortschrittsbalkens in den Ecken.
+- Das Pausenzeichen ist größer: zwei Drittel der Kachelhöhe statt der Größe eines Icons.
+
 ## 0.14.0 - 2026-10-19
 
 - Die Tasten zeigen Tesseras Icons (zurück, Play, Pause, weiter, leiser, lauter, Lautsprecher) statt Zeichen wie

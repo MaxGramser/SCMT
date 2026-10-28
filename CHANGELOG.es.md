@@ -1,5 +1,10 @@
 # Registro de cambios
 
+## 0.14.1 - 2026-10-28
+
+- La indicación de pausa cubre ahora toda la tarjeta, también los extremos de la barra de progreso en las esquinas.
+- El signo de pausa es más grande: dos tercios de la altura de la tarjeta en lugar del tamaño de un icono.
+
 ## 0.14.0 - 2026-10-19
 
 - Los botones muestran los iconos de Tessera (anterior, reproducir, pausa, siguiente, más bajo, más alto, altavoz) en

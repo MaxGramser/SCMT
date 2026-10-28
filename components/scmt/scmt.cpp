@@ -285,13 +285,18 @@ class NowPlayingTile : public tessera::Tile {
     }
 
     // The pause display over the whole tile: a half see-through block and the pause sign, while the player is paused.
-    // Before the volume display, so that the volume display lies on top of it.
+    // Before the volume display, so that the volume display lies on top of it. The block has square corners, so that
+    // it covers the ends of the progress bar in the corners too. The sign is two bars, as the icon font is too small.
     if (want_pause_overlay) {
       pz_bg_ = ui::block(c.parent, theme::CARD);
       lv_obj_set_pos(pz_bg_, 0, 0);
       lv_obj_set_size(pz_bg_, 0, 0);
+      lv_obj_set_style_radius(pz_bg_, 0, 0);
       lv_obj_set_style_bg_opa(pz_bg_, LV_OPA_70, 0);
-      pz_icon_ = ui::label(c.parent, Font::ICON, theme::INK);
+      for (auto &bar : pz_bar_) {
+        bar = ui::block(c.parent, theme::INK);
+        lv_obj_set_size(bar, 0, 0);
+      }
     }
 
     // The big volume display over the whole tile, last, so that it lies on top: a half see-through block, the number
@@ -300,6 +305,7 @@ class NowPlayingTile : public tessera::Tile {
       ov_bg_ = ui::block(c.parent, theme::CARD);
       lv_obj_set_pos(ov_bg_, 0, 0);
       lv_obj_set_size(ov_bg_, 0, 0);
+      lv_obj_set_style_radius(ov_bg_, 0, 0);
       lv_obj_set_style_bg_opa(ov_bg_, LV_OPA_70, 0);
       ov_num_ = ui::label(c.parent, Font::DIGITS, theme::INK);
       ov_icon_ = ui::label(c.parent, Font::ICON, theme::INK_SOFT);
@@ -602,15 +608,19 @@ class NowPlayingTile : public tessera::Tile {
     // display is there).
     if (pz_bg_ != nullptr) {
       if (has_entity_ && paused_ && !title_.empty() && !ov_on_) {
-        const std::string sign = ui::icon(ICON_PAUSE);
-        const int pw = ui::text_width(sign, Font::ICON);
+        // Two thirds of the tile's height (of its width, when that is smaller), the bars a third of that wide.
+        int sh = height_ * 2 / 3;
+        if (sh > width_ * 2 / 3) sh = width_ * 2 / 3;
+        const int bw = sh / 3, sgap = sh / 4;
+        const int sx = (width_ - 2 * bw - sgap) / 2, sy = (height_ - sh) / 2;
         lv_obj_set_size(pz_bg_, width_, height_);
-        ui::set_text(pz_icon_, sign);
-        lv_obj_set_width(pz_icon_, pw + ui::px(4));
-        lv_obj_set_pos(pz_icon_, (width_ - pw) / 2, (height_ - ui::line_height(Font::ICON)) / 2);
+        for (int i = 0; i < 2; ++i) {
+          lv_obj_set_size(pz_bar_[i], bw, sh);
+          lv_obj_set_pos(pz_bar_[i], sx + i * (bw + sgap), sy);
+        }
       } else {
         lv_obj_set_size(pz_bg_, 0, 0);
-        ui::set_text(pz_icon_, "");
+        for (auto *bar : pz_bar_) lv_obj_set_size(bar, 0, 0);
       }
     }
   }
@@ -638,7 +648,7 @@ class NowPlayingTile : public tessera::Tile {
     if (pz_bg_ != nullptr) {
       ui::set_fill(pz_bg_, tessera::Tone::NORMAL, theme::CARD);
       lv_obj_set_style_bg_opa(pz_bg_, LV_OPA_70, 0);  // after the fill, which may set its own
-      ui::set_color(pz_icon_, theme::INK);
+      for (auto *bar : pz_bar_) ui::set_fill(bar, tessera::Tone::NORMAL, theme::INK);
     }
     if (ov_bg_ != nullptr) {
       ui::set_fill(ov_bg_, tessera::Tone::NORMAL, theme::CARD);
@@ -756,7 +766,7 @@ class NowPlayingTile : public tessera::Tile {
   lv_obj_t *ov_num_{nullptr};
   lv_obj_t *ov_icon_{nullptr};
   lv_obj_t *pz_bg_{nullptr};
-  lv_obj_t *pz_icon_{nullptr};
+  lv_obj_t *pz_bar_[2]{nullptr, nullptr};
   Btn kinds_[6]{};
   int n_{0};
   int width_{0}, height_{0}, text_w_{0}, x0_{0}, text_right_{0};
