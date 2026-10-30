@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.14.2 - 2026-10-30
+
+- Builds on Tessera 0.4.91 and later (plugin API 0.24), which took away the key and value form of `tessera::action`:
+  the volume, the seek and the mute send their fields as a JSON object, a number and a true or false. The manifest names
+  plugin API 0.12, which brought those fields.
+
 ## 0.14.1 - 2026-10-28
 
 - The pause display now covers the whole tile, also the ends of the progress bar in the corners.

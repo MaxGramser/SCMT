@@ -675,9 +675,9 @@ class NowPlayingTile : public tessera::Tile {
       float lvl = static_cast<float>(vbar_fy_ + vbar_fh_ - y) / static_cast<float>(vbar_fh_);
       if (lvl < 0.0f) lvl = 0.0f;
       if (lvl > 1.0f) lvl = 1.0f;
-      char b[16];
-      snprintf(b, sizeof b, "%.2f", lvl);
-      tessera::action("media_player.volume_set", entity_.c_str(), "volume_level", b);
+      JsonDocument fields;
+      fields["volume_level"] = std::round(lvl * 100.0) / 100.0;
+      tessera::action("media_player.volume_set", entity_.c_str(), fields);
       return;
     }
     // 3. A button.
@@ -705,9 +705,9 @@ class NowPlayingTile : public tessera::Tile {
       float frac = static_cast<float>(x - area_x_) / static_cast<float>(area_w_);
       if (frac < 0.0f) frac = 0.0f;
       if (frac > 1.0f) frac = 1.0f;
-      char b[16];
-      snprintf(b, sizeof b, "%d", static_cast<int>(frac * duration_));
-      tessera::action("media_player.media_seek", entity_.c_str(), "seek_position", b);
+      JsonDocument fields;
+      fields["seek_position"] = static_cast<int>(frac * duration_);
+      tessera::action("media_player.media_seek", entity_.c_str(), fields);
       return;
     }
     // 6. Anywhere else: play or pause.
@@ -722,7 +722,9 @@ class NowPlayingTile : public tessera::Tile {
   }
 
   void mute_() {
-    tessera::action("media_player.volume_mute", entity_.c_str(), "is_volume_muted", muted_ ? "false" : "true");
+    JsonDocument fields;
+    fields["is_volume_muted"] = !muted_;
+    tessera::action("media_player.volume_mute", entity_.c_str(), fields);
   }
 
   // Shows the cover file of the option "Cover address"; a "{v}" in it becomes a number that changes with the track.
